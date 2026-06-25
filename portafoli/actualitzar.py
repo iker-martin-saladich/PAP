@@ -421,7 +421,6 @@ def main():
     print("[Web Personal]");       processar_web()
     print("\n[TFM Quantica]");     processar_tfm()
     print("\n[Elevador]");         processar_elevador()
-    print("\n[Frances]");          processar_frances()
     print("\n[Pagina principal]"); actualitzar_index()
     print("\nTot actualitzat.\n")
 
