@@ -3,460 +3,641 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Iker Martin Saladich · Portafoli</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Iker Martin Saladich</title>
+<link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream: #FAF7F2; --warm-white: #FEFCF9;
-    --text-dark: #1A1208; --text-mid: #4A3F2F; --text-muted: #8C7B68;
-    --accent: #8B5E3C; --accent-light: #C49A6C; --accent-pale: #F0E6D6;
-    --success: #4A7C59; --success-pale: #E8F2EB;
-    --border: #E2D9CE; --shadow: rgba(139,94,60,0.08);
+  
+  
+  
+  
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 3rem;height:60px;display:flex;align-items:center;justify-content:space-between;transition:background 0.3s,border-color 0.3s;}
+  nav.scrolled{background:rgba(250,247,242,0.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1rem;color:white;letter-spacing:0.02em;transition:color 0.3s;}
+  nav.scrolled .nav-logo{color:var(--text-dark);}
+  .nav-links{display:flex;gap:2rem;}
+  .nav-links a{text-decoration:none;font-size:0.82rem;color:rgba(255,255,255,0.7);transition:color 0.2s;}
+  nav.scrolled .nav-links a{color:var(--text-mid);}
+  .nav-links a:hover{color:var(--accent-light);}
+  nav.scrolled .nav-links a:hover{color:var(--accent);}
+
+  /* ══════════════════════════════════
+     HERO — pantalla completa split
+  ══════════════════════════════════ */
+  .hero{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    position:relative;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text-dark); line-height:1.7; }
 
-  nav {
-    position:sticky; top:0; z-index:100;
-    background:rgba(250,247,242,0.92); backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border);
-    padding:0 2.5rem; display:flex; align-items:center; justify-content:space-between; height:64px;
+  /* ── Esquerra: presentació ── */
+  .hero-left{
+    background:var(--text-dark);
+    display:flex;flex-direction:column;justify-content:center;
+    padding:7rem 4rem 5rem;
+    position:relative;overflow:hidden;
   }
-  .nav-logo { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--accent); letter-spacing:0.02em; }
-  .nav-links { display:flex; gap:2rem; }
-  .nav-links a { text-decoration:none; font-size:0.875rem; color:var(--text-mid); transition:color 0.2s; }
-  .nav-links a:hover { color:var(--accent); }
-
-  /* HERO */
-  .hero {
-    min-height:90vh; display:grid; grid-template-columns:1fr 1fr;
-    align-items:center; max-width:1200px; margin:0 auto; padding:4rem 2.5rem; gap:4rem;
+  .hero-left::after{
+    content:'';position:absolute;bottom:-100px;right:-100px;
+    width:350px;height:350px;border-radius:50%;
+    background:radial-gradient(circle,rgba(139,94,60,0.2) 0%,transparent 70%);
+    pointer-events:none;
   }
-  .hero-role { display:inline-flex; align-items:center; gap:0.5rem; background:var(--accent-pale); color:var(--accent); padding:0.3rem 0.9rem; border-radius:2rem; font-size:0.8rem; font-weight:500; letter-spacing:0.04em; margin-bottom:1.25rem; }
-  h1 { font-family:'Playfair Display',serif; font-size:clamp(2.4rem,4.5vw,3.8rem); font-weight:600; line-height:1.15; margin-bottom:1rem; }
-  h1 span { color:var(--accent); }
-  .hero-bio { font-size:0.95rem; color:var(--text-mid); line-height:1.85; max-width:480px; margin-bottom:2rem; }
-  .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; }
-  .btn-primary { background:var(--accent); color:white; padding:0.75rem 1.75rem; border-radius:0.5rem; text-decoration:none; font-size:0.875rem; font-weight:500; transition:background 0.2s,transform 0.15s; }
-  .btn-primary:hover { background:var(--text-dark); transform:translateY(-1px); }
-  .btn-ghost { background:transparent; color:var(--text-mid); padding:0.75rem 1.75rem; border-radius:0.5rem; text-decoration:none; font-size:0.875rem; border:1px solid var(--border); transition:border-color 0.2s,color 0.2s; }
-  .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+  .hero-identity{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem;}
+  .hero-photo-wrap{width:72px;height:72px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.15);flex-shrink:0;}
+  .hero-photo{width:100%;height:100%;object-fit:cover;object-position:center top;}
+  .hero-identity-text{}
+  .hero-tag{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-light);margin-bottom:0.2rem;font-weight:500;}
+  .hero-name{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,2.4vw,2.2rem);font-weight:700;color:white;line-height:1.1;margin-bottom:0;}
+  .hero-name em{color:var(--accent-light);font-style:italic;}
+  .hero-bio{font-size:0.875rem;color:rgba(255,255,255,0.58);line-height:1.85;margin-bottom:1.75rem;max-width:360px;}
+  .hero-chips{display:flex;flex-wrap:wrap;gap:0.45rem;margin-bottom:2rem;}
+  .chip{font-size:0.7rem;padding:0.28rem 0.7rem;border-radius:2rem;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.48);}
+  .hero-cta{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:2.5rem;}
+  .btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 1.3rem;border-radius:0.5rem;font-size:0.8rem;font-weight:500;text-decoration:none;transition:all 0.2s;}
+  .btn-primary{background:var(--accent);color:white;}
+  .btn-primary:hover{background:#a06d47;}
+  .btn-ghost{border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.65);}
+  .btn-ghost:hover{border-color:var(--accent-light);color:var(--accent-light);}
 
-  .hero-visual { display:flex; flex-direction:column; gap:1rem; }
-  .stat-cards { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-  .stat-card { background:var(--warm-white); border:1px solid var(--border); border-radius:1rem; padding:1.25rem; box-shadow:0 2px 16px var(--shadow); }
-  .stat-card .number { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--accent); line-height:1; margin-bottom:0.25rem; }
-  .stat-card .label { font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; }
-  .featured-project { background:var(--text-dark); border-radius:1rem; padding:1.5rem; color:white; }
-  .featured-project .tag { font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent-light); margin-bottom:0.5rem; }
-  .featured-project h3 { font-family:'Playfair Display',serif; font-size:1rem; font-weight:400; margin-bottom:0.75rem; line-height:1.4; }
-  .progress-bar { height:4px; background:rgba(255,255,255,0.15); border-radius:2px; overflow:hidden; }
-  .progress-fill { height:100%; background:var(--accent-light); border-radius:2px; }
-  .progress-label { display:flex; justify-content:space-between; margin-top:0.4rem; font-size:0.75rem; color:rgba(255,255,255,0.5); }
+  /* Mini stats dins el hero esquerre */
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);}
+  .hstat .n{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--accent-light);line-height:1;}
+  .hstat .l{font-size:0.65rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.15rem;}
 
-  /* SECCIONS */
-  section { max-width:1200px; margin:0 auto; padding:5rem 2.5rem; }
-  .section-label { font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); font-weight:500; margin-bottom:0.5rem; }
-  .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.5rem); font-weight:600; color:var(--text-dark); margin-bottom:3rem; }
-  hr.divider { border:none; border-top:1px solid var(--border); }
+  /* ── Dreta: projectes interactius ── */
+  .hero-right{
+    background:var(--cream);
+    display:flex;flex-direction:column;justify-content:center;
+    padding:7rem 3.5rem 5rem 3rem;
+    gap:0.75rem;
+    position:relative;
+  }
+  .hero-right-label{
+    font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--accent);font-weight:500;margin-bottom:0.25rem;
+  }
 
-  /* SKILLS */
-  .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
-  .skill-group { background:var(--warm-white); border:1px solid var(--border); border-radius:1rem; padding:1.5rem; }
-  .skill-group h3 { font-size:0.78rem; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); margin-bottom:1rem; }
-  .skill-item { display:flex; justify-content:space-between; align-items:center; padding:0.4rem 0; border-bottom:1px solid var(--border); font-size:0.875rem; color:var(--text-mid); }
-  .skill-item:last-child { border-bottom:none; }
-  .skill-dots { display:flex; gap:4px; }
-  .dot { width:7px; height:7px; border-radius:50%; background:var(--border); }
-  .dot.fill { background:var(--accent); }
-  .tools-grid { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem; }
-  .tool-pill { font-size:0.78rem; background:var(--cream); border:1px solid var(--border); color:var(--text-mid); padding:0.3rem 0.8rem; border-radius:2rem; }
-  .lang-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.4rem 1rem; margin-top:0.25rem; }
-  .lang-item { font-size:0.875rem; color:var(--text-mid); padding:0.3rem 0; }
-  .lang-level { font-size:0.75rem; color:var(--accent); font-weight:500; }
+  /* ── TARGETA DE PROJECTE EXPANDIBLE ── */
+  .pcard{
+    background:var(--warm-white);
+    border:1px solid var(--border);
+    border-radius:1rem;
+    text-decoration:none;color:inherit;
+    position:relative;overflow:hidden;
+    transition:border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    display:block;
+  }
+  .pcard::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;
+    width:3px;border-radius:3px 0 0 3px;
+    transition:width 0.25s;
+  }
+  .pcard.c-active::before{background:var(--accent);}
+  .pcard.c-done::before{background:var(--success);}
+  .pcard.c-future::before{background:var(--future);}
 
-  /* TIMELINE */
-  .timeline { position:relative; }
-  .timeline::before { content:''; position:absolute; left:14px; top:6px; bottom:0; width:1px; background:var(--border); }
-  .timeline-item { position:relative; padding-left:3rem; margin-bottom:2.25rem; }
-  .timeline-dot { position:absolute; left:8px; top:6px; width:13px; height:13px; border-radius:50%; background:var(--accent); border:2px solid var(--cream); box-shadow:0 0 0 2px var(--accent); }
-  .timeline-dot.secondary { background:var(--accent-light); box-shadow:0 0 0 2px var(--accent-light); }
-  .timeline-date { font-size:0.75rem; color:var(--text-muted); margin-bottom:0.2rem; }
-  .timeline-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:600; color:var(--text-dark); margin-bottom:0.15rem; }
-  .timeline-place { font-size:0.82rem; color:var(--accent); margin-bottom:0.35rem; }
-  .timeline-desc { font-size:0.85rem; color:var(--text-muted); line-height:1.7; }
+  .pcard:hover{
+    box-shadow:0 8px 32px var(--shadow);
+    transform:translateX(3px);
+  }
+  .pcard.c-active:hover{border-color:var(--accent-light);}
+  .pcard.c-done:hover{border-color:var(--success);}
+  .pcard.c-future:hover{border-color:var(--future-light);}
 
-  /* PUBLICACIÓ */
-  .pub-card { background:var(--warm-white); border:1px solid var(--border); border-radius:1rem; padding:1.25rem 1.5rem; margin-bottom:1rem; }
-  .pub-type { font-size:0.68rem; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); margin-bottom:0.4rem; }
-  .pub-title { font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:600; color:var(--text-dark); margin-bottom:0.25rem; line-height:1.4; }
-  .pub-authors { font-size:0.8rem; color:var(--text-muted); }
-  .pub-authors strong { color:var(--text-mid); }
+  /* Vista mini (sempre visible) */
+  .pcard-mini{
+    display:flex;align-items:center;gap:1rem;
+    padding:1rem 1.25rem;
+  }
+  .pcard-icon{
+    width:38px;height:38px;border-radius:0.6rem;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;flex-shrink:0;
+  }
+  .ic-active{background:var(--accent-pale);}
+  .ic-done{background:var(--success-pale);}
+  .ic-future{background:var(--future-pale);}
 
-  /* PROJECTES */
-  .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1.5rem; }
-  .project-card { background:var(--warm-white); border:1px solid var(--border); border-radius:1.25rem; padding:1.75rem; transition:transform 0.2s,box-shadow 0.2s; position:relative; overflow:hidden; }
-  .project-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--accent); }
-  .project-card:hover { transform:translateY(-3px); box-shadow:0 8px 32px var(--shadow); }
-  .project-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
-  .project-icon { width:44px; height:44px; border-radius:0.75rem; background:var(--accent-pale); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
-  .project-status { font-size:0.7rem; font-weight:500; padding:0.25rem 0.7rem; border-radius:2rem; background:var(--accent-pale); color:var(--accent); }
-  .project-card h3 { font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:600; color:var(--text-dark); margin-bottom:0.4rem; }
-  .project-card p { font-size:0.85rem; color:var(--text-muted); line-height:1.7; margin-bottom:1.25rem; }
-  .project-meta { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1.25rem; }
-  .tag-pill { font-size:0.72rem; background:var(--cream); border:1px solid var(--border); color:var(--text-mid); padding:0.2rem 0.6rem; border-radius:2rem; }
-  .project-progress-wrap { margin-bottom:1.25rem; }
-  .project-progress-bar { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
-  .project-progress-fill { height:100%; background:var(--accent); border-radius:3px; }
-  .project-progress-text { display:flex; justify-content:space-between; margin-top:0.35rem; font-size:0.75rem; color:var(--text-muted); }
-  .project-link { display:inline-flex; align-items:center; gap:0.35rem; font-size:0.8rem; color:var(--accent); text-decoration:none; font-weight:500; transition:gap 0.2s; }
-  .project-link:hover { gap:0.6rem; }
+  .pcard-mid{flex:1;min-width:0;}
+  .pcard-title{font-size:0.875rem;font-weight:500;color:var(--text-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pcard-sub{font-size:0.73rem;color:var(--text-muted);}
 
-  /* ACTIVITATS */
-  .activitats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; }
-  .act-card { background:var(--warm-white); border:1px solid var(--border); border-radius:1rem; padding:1.25rem; }
-  .act-card h4 { font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); margin-bottom:0.75rem; }
-  .act-item { font-size:0.875rem; color:var(--text-mid); padding:0.3rem 0; border-bottom:1px solid var(--border); display:flex; gap:0.5rem; }
-  .act-item:last-child { border-bottom:none; }
-  .act-item::before { content:'·'; color:var(--accent-light); font-weight:700; }
+  .pcard-end{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;flex-shrink:0;}
+  .sdot{display:flex;align-items:center;gap:0.3rem;font-size:0.68rem;font-weight:500;}
+  .sdot-circle{width:6px;height:6px;border-radius:50%;}
+  .s-active .sdot-circle{background:var(--accent);}
+  .s-done .sdot-circle{background:var(--success);}
+  .s-future .sdot-circle{background:var(--future);}
+  .s-active{color:var(--accent);}
+  .s-done{color:var(--success);}
+  .s-future{color:var(--future);}
+  .mini-prog{width:56px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .mini-prog-fill{height:100%;border-radius:2px;}
+  .f-active{background:var(--accent);}
+  .f-done{background:var(--success);}
+  .f-future{background:var(--future);}
 
-  /* VALORS */
-  .valors-wrap { display:flex; gap:0.75rem; flex-wrap:wrap; }
-  .valor-pill { background:var(--accent-pale); color:var(--accent); font-size:0.85rem; font-weight:500; padding:0.45rem 1rem; border-radius:2rem; }
-  .bonus-pill { background:var(--warm-white); border:1px solid var(--border); color:var(--text-mid); font-size:0.85rem; padding:0.45rem 1rem; border-radius:2rem; }
+  /* Vista expandida (apareix en hover) */
+  .pcard-expand{
+    max-height:0;overflow:hidden;
+    transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s;
+    opacity:0;
+    padding:0 1.25rem;
+  }
+  .pcard:hover .pcard-expand{
+    max-height:220px;
+    opacity:1;
+    padding-bottom:1.1rem;
+  }
+  .pcard-expand-inner{
+    border-top:1px solid var(--border);
+    padding-top:0.875rem;
+  }
+  .pcard-desc{font-size:0.8rem;color:var(--text-mid);line-height:1.75;margin-bottom:0.75rem;}
+  .tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem;}
+  .tag{font-size:0.68rem;background:var(--cream);border:1px solid var(--border);color:var(--text-muted);padding:0.15rem 0.55rem;border-radius:2rem;}
+  .prog-full{margin-bottom:0.75rem;}
+  .prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .prog-fill{height:100%;border-radius:3px;}
+  .p-active{background:var(--accent);}
+  .p-done{background:var(--success);}
+  .p-future{background:var(--future);}
+  .prog-lbl{display:flex;justify-content:space-between;margin-top:0.3rem;font-size:0.7rem;color:var(--text-muted);}
+  .pcard-link-inline{font-size:0.78rem;font-weight:500;display:inline-flex;align-items:center;gap:0.3rem;transition:gap 0.2s;}
+  .pcard:hover .pcard-link-inline{gap:0.55rem;}
+  .c-active .pcard-link-inline{color:var(--accent);}
+  .c-done .pcard-link-inline{color:var(--success);}
+  .c-future .pcard-link-inline{color:var(--future);}
 
-  footer { background:var(--text-dark); color:rgba(255,255,255,0.5); text-align:center; padding:2rem; font-size:0.8rem; }
-  footer span { color:var(--accent-light); }
+  
 
-  @media (max-width:768px) {
-    .hero { grid-template-columns:1fr; min-height:auto; padding:3rem 1.5rem; }
-    section { padding:3rem 1.5rem; }
-    nav { padding:0 1.5rem; }
-    .nav-links { gap:1rem; }
+  /* ══════════════════════════════════
+     SOBRE MI — combinat: bio + CV
+  ══════════════════════════════════ */
+  .about{max-width:1140px;margin:0 auto;padding:6rem 2.5rem;}
+  .s-label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:0.4rem;}
+  .s-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:600;color:var(--text-dark);margin-bottom:3rem;}
+
+  .about-grid{display:grid;grid-template-columns:200px 1fr;gap:4rem;align-items:start;}
+
+  .about-photo-col{display:flex;flex-direction:column;align-items:center;gap:1rem;position:sticky;top:80px;}
+  .about-photo{width:160px;height:160px;border-radius:50%;object-fit:cover;object-position:center top;border:3px solid var(--border);box-shadow:0 4px 24px var(--shadow);}
+  .about-photo-ph{width:160px;height:160px;border-radius:50%;background:var(--accent-pale);border:3px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:3rem;}
+  .about-contact-links{display:flex;flex-direction:column;gap:0.5rem;width:100%;}
+  .clink{display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:var(--text-muted);text-decoration:none;padding:0.35rem 0.5rem;border-radius:0.4rem;transition:color 0.2s,background 0.2s;}
+  .clink:hover{color:var(--accent);background:var(--accent-pale);}
+
+  .about-content{}
+  .about-name{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:600;color:var(--text-dark);margin-bottom:0.25rem;}
+  .about-role{font-size:0.85rem;color:var(--accent);font-weight:500;margin-bottom:1.25rem;}
+  .about-bio{font-size:0.9rem;color:var(--text-mid);line-height:1.88;margin-bottom:2.5rem;max-width:580px;}
+
+  /* Tabs CV */
+  .cv-tabs{display:flex;gap:0;margin-bottom:2rem;border-bottom:2px solid var(--border);}
+  .cv-tab{padding:0.6rem 1.25rem;font-size:0.82rem;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color 0.2s,border-color 0.2s;user-select:none;}
+  .cv-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .cv-panel{display:none;}
+  .cv-panel.active{display:block;}
+
+  /* Timeline */
+  .tl{position:relative;}
+  .tl::before{content:'';position:absolute;left:13px;top:6px;bottom:0;width:1px;background:var(--border);}
+  .tl-item{position:relative;padding-left:2.75rem;margin-bottom:1.75rem;}
+  .tl-dot{position:absolute;left:7px;top:7px;width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid var(--cream);box-shadow:0 0 0 2px var(--accent);}
+  .tl-dot.s{background:var(--accent-light);box-shadow:0 0 0 2px var(--accent-light);}
+  .tl-date{font-size:0.72rem;color:var(--text-muted);margin-bottom:0.12rem;}
+  .tl-title{font-family:'Playfair Display',serif;font-size:0.97rem;font-weight:600;color:var(--text-dark);margin-bottom:0.1rem;}
+  .tl-place{font-size:0.8rem;color:var(--accent);margin-bottom:0.25rem;}
+  .tl-desc{font-size:0.82rem;color:var(--text-muted);line-height:1.65;}
+
+  /* Skills panel */
+  .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+  .sg{background:var(--warm-white);border:1px solid var(--border);border-radius:0.875rem;padding:1.25rem;}
+  .sg-title{font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:0.875rem;}
+  .sk-item{display:flex;justify-content:space-between;align-items:center;padding:0.32rem 0;border-bottom:1px solid var(--border);font-size:0.84rem;color:var(--text-mid);}
+  .sk-item:last-child{border-bottom:none;}
+  .dots{display:flex;gap:3px;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--border);}
+  .dot.f{background:var(--accent);}
+  .tools-wrap{display:flex;flex-wrap:wrap;gap:0.4rem;padding-top:0.25rem;}
+  .tool-tag{font-size:0.76rem;background:var(--accent-pale);border:1px solid var(--border);color:var(--accent);padding:0.22rem 0.6rem;border-radius:2rem;}
+  .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 0.75rem;padding-top:0.25rem;}
+  .lang-item{font-size:0.84rem;color:var(--text-mid);}
+  .lang-lv{font-size:0.72rem;color:var(--accent);}
+
+  /* Recerca panel */
+  
+  
+  
+  
+  .pub-auth strong{color:var(--text-mid);}
+
+  /* Activitats panel */
+  .act-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+  
+  
+  
+  .act-item:last-child{border-bottom:none;}
+  
+  
+  
+  
+
+  
+  
+
+  /* Responsive */
+  @media(max-width:960px){
+    .hero{grid-template-columns:1fr;min-height:auto;}
+    .hero-left{padding:6rem 2rem 3rem;}
+    .hero-right{padding:3rem 2rem 4rem;}
+    .about-grid{grid-template-columns:1fr;}
+    .about-photo-col{position:static;flex-direction:row;gap:2rem;align-items:flex-start;}
+    .skills-grid{grid-template-columns:1fr;}
+    .act-grid{grid-template-columns:1fr;}
+  }
+  @media(max-width:768px){
+    nav{padding:0 1.5rem;}
+    .about,.section{padding-left:1.5rem;padding-right:1.5rem;}
+    .nav-links{display:none;}
+    .hero-stats{grid-template-columns:1fr 1fr;}
   }
 </style>
 </head>
 <body>
 
-<nav>
+<!-- NAV -->
+<nav id="nav">
   <div class="nav-logo">Iker Martin Saladich</div>
   <div class="nav-links">
     <a href="#sobre">Sobre mi</a>
-    <a href="#experiencia">Experiència</a>
-    <a href="#recerca">Recerca</a>
-    <a href="#projectes">Projectes</a>
+    <a href="#sobre" onclick="setTab('exp')">Experiència</a>
+    <a href="#sobre" onclick="setTab('skills')">Coneixements</a>
+    <a href="#sobre" onclick="setTab('recerca')">Recerca</a>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
 <div class="hero">
-  <div class="hero-text">
-    <div class="hero-role">▪ Enginyer Industrial · Màster UPC en curs</div>
-    <h1>Hola, soc<br><span>Iker Martin<br>Saladich</span></h1>
+
+  <!-- Esquerra -->
+  <div class="hero-left">
+    <div class="hero-identity">
+      <div class="hero-photo-wrap">
+        <img src="assets/Foto.png" alt="Iker Martin Saladich" class="hero-photo"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="hero-identity-text">
+        <div class="hero-tag">Enginyer Industrial · ETSEIB UPC · Payfit</div>
+        <h1 class="hero-name">Iker Martin <em>Saladich</em></h1>
+      </div>
+    </div>
     <p class="hero-bio">
-      Enginyer industrial format a l'ETSEIB (UPC), especialitzat en optimització de processos i organització industrial. Investigador a l'IOC-UPC durant tres anys, ara cursant el màster mentre treballo com a Desenvolupador de Producte a Payfit. Apasionat per la recerca, l'esport d'elit i la cooperació internacional.
+      Enginyer industrial especialitzat en optimització de processos. Investigador a l'IOC-UPC, ara cursant el màster i treballant a Payfit. Aquesta web és el meu espai per documentar el que construeixo.
     </p>
+    <div class="hero-chips">
+      <span class="chip">Optimització · LP</span>
+      <span class="chip">Computació quàntica</span>
+      <span class="chip">Python · CPLEX</span>
+      <span class="chip">Recerca aplicada</span>
+    </div>
     <div class="hero-cta">
-      <a href="#projectes" class="btn-primary">Veure projectes</a>
-      <a href="mailto:ikermartinsaladich@gmail.com" class="btn-ghost">Contactar</a>
+      <a href="mailto:ikermartinsaladich@gmail.com" class="btn btn-primary">Contactar</a>
+      <a href="#sobre" class="btn btn-ghost">Currículum</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">3+</div><div class="l">Anys recerca</div></div>
+      <div class="hstat"><div class="n">CIO24</div><div class="l">Conferència</div></div>
+      <div class="hstat"><div class="n">4</div><div class="l">Projectes</div></div>
     </div>
   </div>
-  <div class="hero-visual">
-    <div class="stat-cards">
-      <div class="stat-card">
-        <div class="number">3+</div>
-        <div class="label">Anys de recerca IOC-UPC</div>
+
+  <!-- Dreta: projectes expandibles -->
+  <div class="hero-right">
+    <div class="hero-right-label">Projectes — passa el cursor per ampliar</div>
+
+    <!-- Web personal -->
+    <a href="web_personal/plm_web.html" class="pcard c-active">
+      <div class="pcard-mini">
+        <div class="pcard-icon ic-active">🌐</div>
+        <div class="pcard-mid">
+          <div class="pcard-title">Web Personal & Sistema PLM</div>
+          <div class="pcard-sub">HTML · Python · GitHub Actions</div>
+        </div>
+        <div class="pcard-end">
+          <div class="sdot s-active"><div class="sdot-circle"></div>En marxa</div>
+          <div class="mini-prog"><div class="mini-prog-fill f-active" style="width:<!-- PLM:BAR_WEB -->65<!-- /PLM:BAR_WEB -->%"></div></div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="number">3</div>
-        <div class="label">Projectes en marxa</div>
+      <div class="pcard-expand">
+        <div class="pcard-expand-inner">
+          <p class="pcard-desc">Portafoli professional amb sistema de seguiment de projectes integrat. Publicat a GitHub Pages amb deploy automàtic via GitHub Actions.</p>
+          <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">Python</span><span class="tag">GitHub Actions</span><span class="tag">Disseny web</span></div>
+          <div class="prog-full">
+            <div class="prog-bar"><div class="prog-fill p-active" style="width:<!-- PLM:BAR_WEB -->65<!-- /PLM:BAR_WEB -->%"></div></div>
+            <div class="prog-lbl"><span>Progrés</span><span><!-- PLM:PCT_WEB -->65%<!-- /PLM:PCT_WEB --></span></div>
+          </div>
+          <span class="pcard-link-inline">Veure seguiment complet →</span>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="number">CIO<br><span style="font-size:0.9rem">2024</span></div>
-        <div class="label">Conferència internacional</div>
+    </a>
+
+    <!-- Francès -->
+    <a href="frances/plm_frances.html" class="pcard c-active">
+      <div class="pcard-mini">
+        <div class="pcard-icon ic-active">🇫🇷</div>
+        <div class="pcard-mid">
+          <div class="pcard-title">Aprenentatge del Francès</div>
+          <div class="pcard-sub">A1 → B2 · Autoformació</div>
+        </div>
+        <div class="pcard-end">
+          <div class="sdot s-active"><div class="sdot-circle"></div>En marxa</div>
+          <div class="mini-prog"><div class="mini-prog-fill f-active" style="width:33%"></div></div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="number">🏅</div>
-        <div class="label">Atleta d'elit nacional</div>
+      <div class="pcard-expand">
+        <div class="pcard-expand-inner">
+          <p class="pcard-desc">Aprenentatge autònom des de zero fins a B2. Metodologia mixta: sessions tutoritzades, Duolingo i pràctica escrita. Nivell actual A2.</p>
+          <div class="tags"><span class="tag">Idiomes</span><span class="tag">A1 → B2</span><span class="tag">Autoformació</span></div>
+          <div class="prog-full">
+            <div class="prog-bar"><div class="prog-fill p-active" style="width:33%"></div></div>
+            <div class="prog-lbl"><span>A1 completat · A2 en curs</span><span>33%</span></div>
+          </div>
+          <span class="pcard-link-inline">Veure seguiment →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Elevador -->
+    <a href="elevador_plats/plm_elevador.html" class="pcard c-done">
+      <div class="pcard-mini">
+        <div class="pcard-icon ic-done">🏗️</div>
+        <div class="pcard-mid">
+          <div class="pcard-title">Elevador de Plats — Casa Rural</div>
+          <div class="pcard-sub">Mecànica · Electrònica · DIY · ~300€</div>
+        </div>
+        <div class="pcard-end">
+          <div class="sdot s-done"><div class="sdot-circle"></div>Finalitzat</div>
+          <div class="mini-prog"><div class="mini-prog-fill f-done" style="width:100%"></div></div>
+        </div>
+      </div>
+      <div class="pcard-expand">
+        <div class="pcard-expand-inner">
+          <p class="pcard-desc">Disseny i fabricació d'un muntacàrregues domèstic de cable i politja per transportar plats entre plantes. Solució DIY funcional per ~300€.</p>
+          <div class="tags"><span class="tag">Mecànica</span><span class="tag">Electrònica</span><span class="tag">DIY</span><span class="tag">~300€</span></div>
+          <div class="prog-full">
+            <div class="prog-bar"><div class="prog-fill p-done" style="width:100%"></div></div>
+            <div class="prog-lbl"><span>Completat</span><span>100%</span></div>
+          </div>
+          <span class="pcard-link-inline">Veure documentació →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- TFM -->
+    <a href="tfm_quantica/plm_tesi.html" class="pcard c-future">
+      <div class="pcard-mini">
+        <div class="pcard-icon ic-future">⚛️</div>
+        <div class="pcard-mid">
+          <div class="pcard-title">TFM: Optimització Quàntica</div>
+          <div class="pcard-sub">Qiskit · QAOA · Sistemes energètics</div>
+        </div>
+        <div class="pcard-end">
+          <div class="sdot s-future"><div class="sdot-circle"></div>Planificat</div>
+          <div class="mini-prog"><div class="mini-prog-fill f-future" style="width:<!-- PLM:BAR_TFM -->5<!-- /PLM:BAR_TFM -->%"></div></div>
+        </div>
+      </div>
+      <div class="pcard-expand">
+        <div class="pcard-expand-inner">
+          <p class="pcard-desc">Tesi de fi de màster sobre l'aplicació d'algorismes QAOA i VQE a problemes del sector energètic com el dispatch econòmic.</p>
+          <div class="tags"><span class="tag">Computació quàntica</span><span class="tag">Qiskit</span><span class="tag">Optimització</span></div>
+          <div class="prog-full">
+            <div class="prog-bar"><div class="prog-fill p-future" style="width:<!-- PLM:BAR_TFM -->5<!-- /PLM:BAR_TFM -->%"></div></div>
+            <div class="prog-lbl"><span>Planificació inicial</span><span><!-- PLM:PCT_TFM -->5%<!-- /PLM:PCT_TFM --></span></div>
+          </div>
+          <span class="pcard-link-inline">Veure planificació →</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════
+     SOBRE MI — bio + CV en tabs
+══════════════════════════════════ -->
+<div id="sobre" class="about">
+  <p class="s-label">Sobre mi</p>
+  <h2 class="s-title">Qui soc</h2>
+
+  <div class="about-grid">
+
+    <!-- Columna foto + contacte -->
+    <div class="about-photo-col">
+      <img src="assets/Foto.png" alt="Iker Martin Saladich" class="about-photo"
+           onerror="this.outerHTML='<div class=about-photo-ph>👤</div>'">
+      <div class="about-contact-links">
+        <a href="mailto:ikermartinsaladich@gmail.com" class="clink">✉ ikermartinsaladich@gmail.com</a>
+        <a href="tel:+34663347601" class="clink">📞 +34 663 347 601</a>
+        <a href="https://github.com/iker-martin-saladich" target="_blank" class="clink">🔗 GitHub</a>
+        <span class="clink">📍 Sant Boi de Llobregat</span>
       </div>
     </div>
-    <div class="featured-project">
-      <div class="tag">▪ Publicació acadèmica</div>
-      <h3>"Electrification planning with uncertain demand: a multistage stochastic approach"</h3>
-      <div style="font-size:0.78rem;color:rgba(255,255,255,0.45);margin-top:0.25rem;">Ponsich A., Juanpera M., Martin I., et al.</div>
+
+    <!-- Columna contingut -->
+    <div class="about-content">
+      <div class="about-name">Iker Martin Saladich</div>
+      <div class="about-role">Enginyer Industrial · Màster en Organització Industrial (UPC) · Desenvolupador de Producte a Payfit</div>
+      <p class="about-bio">
+        Format a l'ETSEIB (UPC), he investigat durant tres anys a l'IOC en optimització estocàstica aplicada a l'electrificació rural amb demanda incerta. Ara combino el màster amb el treball a Payfit i el meu interès creixent per la computació quàntica aplicada a l'energia. Apassionat de l'esport d'elit, la cooperació internacional i construir coses amb les mans.
+      </p>
+
+      <!-- TABS -->
+      <div class="cv-tabs">
+        <div class="cv-tab active" onclick="setTab('exp')">Experiència</div>
+        <div class="cv-tab" onclick="setTab('formacio')">Formació</div>
+        <div class="cv-tab" onclick="setTab('skills')">Coneixements</div>
+        <div class="cv-tab" onclick="setTab('recerca')">Recerca</div>
+        <div class="cv-tab" onclick="setTab('activitats')">Activitats</div>
+      </div>
+
+      <!-- Experiència -->
+      <div class="cv-panel active" id="panel-exp">
+        <div class="tl">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-date">2025 – 2026</div>
+            <div class="tl-title">Desenvolupador de Producte</div>
+            <div class="tl-place">Payfit Recursos Humanos S.L.</div>
+            <div class="tl-desc">Desenvolupament de producte en l'àmbit de recursos humans, compaginant amb el màster.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot s"></div>
+            <div class="tl-date">2022 – 2025</div>
+            <div class="tl-title">Investigador d'Optimització de Processos</div>
+            <div class="tl-place">Institut d'Organització i Control (IOC) · UPC</div>
+            <div class="tl-desc">Recerca en optimització estocàstica per a electrificació rural amb demanda incerta. Publicació científica i presentació a la CIO 2024.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot s"></div>
+            <div class="tl-date">2019 – 2022</div>
+            <div class="tl-title">Tècnic Esportiu</div>
+            <div class="tl-place">Cornellà Atlètic</div>
+            <div class="tl-desc">Planificació esportiva compaginant amb la carrera i la competició d'elit.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formació -->
+      <div class="cv-panel" id="panel-formacio">
+        <div class="tl">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-date">2025 – actual</div>
+            <div class="tl-title">Màster en Enginyeria Industrial</div>
+            <div class="tl-place">Especialització en Organització Industrial · ETSEIB, UPC</div>
+            <div class="tl-desc">TFM sobre optimització quàntica en sistemes energètics.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot s"></div>
+            <div class="tl-date">2018 – 2024</div>
+            <div class="tl-title">Grau en Enginyeria Industrial</div>
+            <div class="tl-place">ETSEIB · Universitat Politècnica de Catalunya (UPC)</div>
+            <div class="tl-desc">Mecànica de fluids, termodinàmica, sistemes de control, enginyeria estructural i gestió empresarial.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coneixements -->
+      <div class="cv-panel" id="panel-skills">
+        <div class="skills-grid">
+          <div class="sg">
+            <div class="sg-title">Optimització i mètodes</div>
+            <div class="sk-item">Programació Lineal (LP) <div class="dots"><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div></div></div>
+            <div class="sk-item">Mètodes exactes i heurístics <div class="dots"><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot"></div></div></div>
+            <div class="sk-item">Mètodes estocàstics <div class="dots"><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot"></div></div></div>
+            <div class="sk-item">Anàlisi i predicció industrial <div class="dots"><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot"></div></div></div>
+          </div>
+          <div class="sg">
+            <div class="sg-title">Enginyeria</div>
+            <div class="sk-item">Mecànica de fluids <div class="dots"><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot"></div></div></div>
+            <div class="sk-item">Termodinàmica <div class="dots"><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot"></div></div></div>
+            <div class="sk-item">Sistemes de control <div class="dots"><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot"></div><div class="dot"></div></div></div>
+            <div class="sk-item">Enginyeria estructural <div class="dots"><div class="dot f"></div><div class="dot f"></div><div class="dot f"></div><div class="dot"></div><div class="dot"></div></div></div>
+          </div>
+          <div class="sg">
+            <div class="sg-title">Eines i programari</div>
+            <div class="tools-wrap">
+              <span class="tool-tag">Python</span><span class="tool-tag">CPLEX</span><span class="tool-tag">MATLAB</span>
+              <span class="tool-tag">SolidWorks</span><span class="tool-tag">ANSYS</span><span class="tool-tag">Autocad</span>
+              <span class="tool-tag">HTML &amp; CSS</span><span class="tool-tag">GitHub</span><span class="tool-tag">Linux</span>
+            </div>
+          </div>
+          <div class="sg">
+            <div class="sg-title">Idiomes</div>
+            <div class="lang-grid">
+              <div class="lang-item">Català <span class="lang-lv">Nadiu</span></div>
+              <div class="lang-item">Castellà <span class="lang-lv">Nadiu</span></div>
+              <div class="lang-item">Anglès <span class="lang-lv">B2 · Fluid</span></div>
+              <div class="lang-item">Francès <span class="lang-lv">A2 (en curs)</span></div>
+              <div class="lang-item">Alemany <span class="lang-lv">A1</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recerca -->
+      <div class="cv-panel" id="panel-recerca">
+        <div class="pub-card">
+          <div class="pub-type">Article científic</div>
+          <div class="pub-title">"Electrification planning with uncertain demand: a multistage stochastic approach"</div>
+          <div class="pub-auth">Ponsich A., Juanpera M., <strong>Martin I.</strong>, et al.</div>
+        </div>
+        <div class="pub-card">
+          <div class="pub-type">Conferència internacional · 2024</div>
+          <div class="pub-title">CIO 2024 — 18ena Conferència Internacional en Enginyeria Industrial i Organització Industrial</div>
+          <div class="pub-auth">Presentació de resultats de recerca en optimització estocàstica.</div>
+        </div>
+        <div class="pub-card">
+          <div class="pub-type">Projecte de cooperació · 2022 – 2023</div>
+          <div class="pub-title">Electrificació rural a Raqaypampa, Bolívia</div>
+          <div class="pub-auth">Investigador principal: A. Ponsich · IOC-UPC</div>
+        </div>
+      </div>
+
+      <!-- Activitats -->
+      <div class="cv-panel" id="panel-activitats">
+        <div class="act-grid">
+          <div class="act-card">
+            <div class="act-title">Esport d'elit</div>
+            <div class="act-item">Atleta d'elit · 2018–2022</div>
+            <div class="act-item">Medalles nacionals individuals</div>
+            <div class="act-item">Rècords nacionals col·lectius</div>
+            <div class="act-item">Competicions internacionals</div>
+          </div>
+          <div class="act-card">
+            <div class="act-title">Col·laboració comunitària</div>
+            <div class="act-item">Assemblea d'Estudiants UPC · 2022–2024</div>
+            <div class="act-item">Junta d'Escola ETSEIB · 2022–2025</div>
+            <div class="act-item">Entitats foment cultural · 2023–2026</div>
+            <div class="act-item">Voluntariat DANA de València · 2024</div>
+          </div>
+          <div class="act-card">
+            <div class="act-title">Valors i bonus</div>
+            <div class="valors-wrap" style="margin-bottom:0.6rem">
+              <span class="valor-pill">Eficient</span>
+              <span class="valor-pill">Proactiu</span>
+              <span class="valor-pill">Cooperatiu</span>
+            </div>
+            <div class="valors-wrap">
+              <span class="bonus-pill">Carnet de conduir</span>
+              <span class="bonus-pill">Flexibilitat horària</span>
+              <span class="bonus-pill">Mobilitat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
 
-<hr class="divider">
-
-<!-- SOBRE MI / SKILLS -->
-<section id="sobre">
-  <p class="section-label">Competències</p>
-  <h2 class="section-title">Coneixements i habilitats</h2>
-  <div class="skills-grid">
-
-    <div class="skill-group">
-      <h3>Optimització i mètodes</h3>
-      <div class="skill-item">Programació Lineal (LP) <div class="skill-dots"><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div></div></div>
-      <div class="skill-item">Mètodes exactes i heurístics <div class="skill-dots"><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot"></div></div></div>
-      <div class="skill-item">Mètodes estocàstics <div class="skill-dots"><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot"></div></div></div>
-      <div class="skill-item">Anàlisi i predicció industrial <div class="skill-dots"><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot"></div></div></div>
-    </div>
-
-    <div class="skill-group">
-      <h3>Enginyeria tècnica</h3>
-      <div class="skill-item">Mecànica de fluids <div class="skill-dots"><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot"></div></div></div>
-      <div class="skill-item">Termodinàmica <div class="skill-dots"><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot"></div></div></div>
-      <div class="skill-item">Sistemes de control <div class="skill-dots"><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot"></div><div class="dot"></div></div></div>
-      <div class="skill-item">Enginyeria estructural <div class="skill-dots"><div class="dot fill"></div><div class="dot fill"></div><div class="dot fill"></div><div class="dot"></div><div class="dot"></div></div></div>
-    </div>
-
-    <div class="skill-group">
-      <h3>Eines i programari</h3>
-      <div class="tools-grid">
-        <span class="tool-pill">Python</span>
-        <span class="tool-pill">CPLEX</span>
-        <span class="tool-pill">MATLAB</span>
-        <span class="tool-pill">SolidWorks</span>
-        <span class="tool-pill">ANSYS</span>
-        <span class="tool-pill">Autocad</span>
-        <span class="tool-pill">HTML &amp; CSS</span>
-        <span class="tool-pill">GitHub</span>
-        <span class="tool-pill">Linux</span>
-      </div>
-    </div>
-
-    <div class="skill-group">
-      <h3>Idiomes</h3>
-      <div class="lang-grid">
-        <div class="lang-item">Català <span class="lang-level">Nadiu</span></div>
-        <div class="lang-item">Castellà <span class="lang-level">Nadiu</span></div>
-        <div class="lang-item">Anglès <span class="lang-level">B2 · Fluid</span></div>
-        <div class="lang-item">Francès <span class="lang-level">A1</span></div>
-        <div class="lang-item">Alemany <span class="lang-level">A1</span></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- EXPERIÈNCIA + FORMACIÓ -->
-<section id="experiencia">
-  <p class="section-label">Trajectòria</p>
-  <h2 class="section-title">Formació i experiència</h2>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;">
-
-    <div>
-      <h3 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:1.5rem;">Formació acadèmica</h3>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-date">2025 – actual</div>
-          <div class="timeline-title">Màster en Enginyeria Industrial</div>
-          <div class="timeline-place">Especialització en Organització Industrial · ETSEIB, UPC</div>
-          <div class="timeline-desc">TFM en curs sobre optimització de problemes energètics amb computació quàntica.</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot secondary"></div>
-          <div class="timeline-date">2018 – 2024</div>
-          <div class="timeline-title">Grau en Enginyeria Industrial</div>
-          <div class="timeline-place">ETSEIB · Universitat Politècnica de Catalunya (UPC)</div>
-          <div class="timeline-desc">Formació generalista en mecànica de fluids, termodinàmica, sistemes de control, enginyeria estructural i gestió empresarial.</div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <h3 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:1.5rem;">Experiència professional</h3>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-date">2025 – actual</div>
-          <div class="timeline-title">Desenvolupador de Producte</div>
-          <div class="timeline-place">Payfit Recursos Humanos S.L.</div>
-          <div class="timeline-desc">Desenvolupament de producte en l'àmbit de recursos humans, compaginant-ho amb el màster.</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot secondary"></div>
-          <div class="timeline-date">2022 – 2025</div>
-          <div class="timeline-title">Investigador d'Optimització de Processos</div>
-          <div class="timeline-place">Institut d'Organització i Control (IOC) · UPC</div>
-          <div class="timeline-desc">Recerca en optimització estocàstica aplicada a la planificació d'electrificació rural amb demanda incerta. Col·laboració en publicació científica i presentació a la CIO 2024.</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot secondary"></div>
-          <div class="timeline-date">2019 – 2022</div>
-          <div class="timeline-title">Tècnic Esportiu</div>
-          <div class="timeline-place">Cornellà Atlètic</div>
-          <div class="timeline-desc">Entrenament i planificació esportiva en club d'atletisme, compaginant amb la carrera i l'activitat competitiva d'elit.</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- RECERCA I CONTRIBUCIÓ ACADÈMICA -->
-<section id="recerca">
-  <p class="section-label">Contribució acadèmica</p>
-  <h2 class="section-title">Recerca i publicacions</h2>
-
-  <div class="pub-card">
-    <div class="pub-type">Article científic</div>
-    <div class="pub-title">"Electrification planning with uncertain demand: a multistage stochastic approach"</div>
-    <div class="pub-authors">Ponsich A., Juanpera M., <strong>Martin I.</strong>, et al.</div>
-  </div>
-
-  <div class="pub-card">
-    <div class="pub-type">Conferència internacional · 2024</div>
-    <div class="pub-title">CIO 2024 — 18a Conferència Internacional en Enginyeria Industrial i Organització Industrial</div>
-    <div class="pub-authors">Presentació de resultats de recerca en optimització estocàstica.</div>
-  </div>
-
-  <div class="pub-card">
-    <div class="pub-type">Projecte de cooperació · 2022–2023</div>
-    <div class="pub-title">Electrificació rural a Raqaypampa, Bolívia</div>
-    <div class="pub-authors">Projecte cooperatiu de planificació d'electrificació rural. Investigador principal: A. Ponsich · IOC-UPC</div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- PROJECTES PERSONALS -->
-<section id="projectes">
-  <p class="section-label">Portafoli</p>
-  <h2 class="section-title">Projectes personals</h2>
-  <div class="projects-grid" id="projects-grid">
-
-    <div class="project-card">
-      <div class="project-card-header">
-        <div class="project-icon">🌐</div>
-        <span class="project-status">En marxa</span>
-      </div>
-      <h3>Web Personal</h3>
-      <p>Disseny i implementació d'un portafoli web professional amb sistema de seguiment de projectes integrat (PLM personal).</p>
-      <div class="project-meta">
-        <span class="tag-pill">HTML/CSS</span><span class="tag-pill">Python</span><span class="tag-pill">Disseny web</span>
-      </div>
-      <div class="project-progress-wrap">
-        <div class="project-progress-bar"><div class="project-progress-fill" style="width:65%"><span>65%</span></div></div>
-        <div class="project-progress-text"><span>Progrés</span><span>65%</span></div>
-      </div>
-      <a href="web_personal/plm_web.html" class="project-link">Veure seguiment →</a>
-    </div>
-
-    <div class="project-card">
-      <div class="project-card-header">
-        <div class="project-icon">⚛️</div>
-        <span class="project-status">En marxa</span>
-      </div>
-      <h3>TFM: Optimització Quàntica Energètica</h3>
-      <p>Tesi de fi de màster sobre l'aplicació d'algorismes d'optimització quàntica (QAOA/VQE) a problemes del sector energètic.</p>
-      <div class="project-meta">
-        <span class="tag-pill">Computació quàntica</span><span class="tag-pill">Qiskit</span><span class="tag-pill">Recerca</span>
-      </div>
-      <div class="project-progress-wrap">
-        <div class="project-progress-bar"><div class="project-progress-fill" id="pct-tfm" style="width:<!-- PLM:BAR_TFM -->
-41
-<!-- /PLM:BAR_TFM -->%"></div></div>
-        <div class="project-progress-text"><span>Progrés</span><span id="txt-tfm"><!-- PLM:PCT_TFM -->
-41%
-<!-- /PLM:PCT_TFM --></span></div>
-      </div>
-      <a href="tfm_quantica/plm_tesi.html" class="project-link">Veure seguiment →</a>
-    </div>
-
-    <div class="project-card">
-      <div class="project-card-header">
-        <div class="project-icon">🏗️</div>
-        <span class="project-status">En marxa</span>
-      </div>
-      <h3>Elevador de Plats — Residència Rural</h3>
-      <p>Disseny i fabricació d'un muntacàrregues domèstic de cable i politja per transportar plats entre plantes en una casa rural familiar.</p>
-      <div class="project-meta">
-        <span class="tag-pill">Mecànica</span><span class="tag-pill">Electrònica</span><span class="tag-pill">DIY</span>
-      </div>
-      <div class="project-progress-wrap">
-        <div class="project-progress-bar"><div class="project-progress-fill" id="pct-elev" style="width:<!-- PLM:BAR_ELEV -->
-23
-<!-- /PLM:BAR_ELEV -->%"></div></div>
-        <div class="project-progress-text"><span>Progrés</span><span id="txt-elev"><!-- PLM:PCT_ELEV -->
-23%
-<!-- /PLM:PCT_ELEV --></span></div>
-      </div>
-      <a href="elevador_plats/plm_elevador.html" class="project-link">Veure seguiment →</a>
-    </div>
-
-
-    <div class="project-card">
-      <div class="project-card-header">
-        <div class="project-icon">🇫🇷</div>
-        <span class="project-status">En marxa</span>
-      </div>
-      <h3>Aprenentatge del Francès</h3>
-      <p>Aprenentatge autònom des de zero fins a nivell B2 (MCER).</p>
-      <div class="project-meta">
-        <span class="tag-pill">Idiomes</span><span class="tag-pill">Autoformació</span><span class="tag-pill">A1→B2</span>
-      </div>
-      <div class="project-progress-wrap">
-        <div class="project-progress-bar"><div class="project-progress-fill" style="width:33%"><span>33%</span></div></div>
-        <div class="project-progress-text"><span>Progrés</span><span>33%</span></div>
-      </div>
-      <a href="frances/plm_frances.html" class="project-link">Veure seguiment →</a>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<!-- ACTIVITATS I VALORS -->
-<section id="activitats">
-  <p class="section-label">Més sobre mi</p>
-  <h2 class="section-title">Activitats i valors</h2>
-
-  <div class="activitats-grid" style="margin-bottom:2.5rem;">
-    <div class="act-card">
-      <h4>Esport d'elit</h4>
-      <div class="act-item">Atleta d'elit · 2018–2022</div>
-      <div class="act-item">Medalles nacionals individuals</div>
-      <div class="act-item">Rècords nacionals col·lectius</div>
-      <div class="act-item">Competicions internacionals</div>
-    </div>
-    <div class="act-card">
-      <h4>Col·laboració comunitària</h4>
-      <div class="act-item">Membre Assemblea d'Estudiants UPC · 2022–2024</div>
-      <div class="act-item">Membre Junta d'Escola ETSEIB · 2022–2025</div>
-      <div class="act-item">Voluntariat UPC — DANA de València · 2024</div>
-    </div>
-    <div class="act-card">
-      <h4>Valors professionals</h4>
-      <div class="valors-wrap" style="margin-top:0.25rem;">
-        <span class="valor-pill">Eficient</span>
-        <span class="valor-pill">Proactiu</span>
-        <span class="valor-pill">Cooperatiu</span>
-      </div>
-      <div class="valors-wrap" style="margin-top:0.75rem;">
-        <span class="bonus-pill">Carnet de conduir</span>
-        <span class="bonus-pill">Flexibilitat horària</span>
-        <span class="bonus-pill">Disponibilitat per viatjar</span>
-      </div>
-    </div>
-  </div>
-</section>
-
 <footer>
-  <p>
-    <span>Iker Martin Saladich</span> · Sant Boi de Llobregat, Barcelona ·
-    <a href="mailto:ikermartinsaladich@gmail.com" style="color:var(--accent-light);text-decoration:none;">ikermartinsaladich@gmail.com</a> ·
-    +34 663 347 601
-  </p>
+  <p><a href="mailto:ikermartinsaladich@gmail.com">ikermartinsaladich@gmail.com</a> · +34 663 347 601 · Sant Boi de Llobregat</p>
 </footer>
 
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Tabs CV
+  function setTab(id) {
+    document.querySelectorAll('.cv-tab').forEach((t,i) => {
+      const ids = ['exp','formacio','skills','recerca','activitats'];
+      t.classList.toggle('active', ids[i] === id);
+    });
+    document.querySelectorAll('.cv-panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'panel-' + id);
+    });
+  }
+
+  // Tab clicks
+  document.querySelectorAll('.cv-tab').forEach((tab, i) => {
+    const ids = ['exp','formacio','skills','recerca','activitats'];
+    tab.addEventListener('click', () => setTab(ids[i]));
+  });
+</script>
 
 </body>
 </html>
