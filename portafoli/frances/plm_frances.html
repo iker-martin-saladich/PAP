@@ -6,55 +6,14 @@
 <title>PLM · Curs de Francès — Progrés detallat</title>
 <link rel="stylesheet" href="../styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  /* ── DESIGN TOKENS (idèntics al PLM principal) ── */
-  :root {
-    --cream: #FAF7F2; --warm-white: #FEFCF9;
-    --text-dark: #1A1208; --text-mid: #4A3F2F; --text-muted: #8C7B68;
-    --accent: #1B3A5C; --accent-light: #6B9AC4; --accent-pale: #E6EEF6;
-    --success: #4A7C59; --success-pale: #E8F2EB;
-    --warning: #A07820; --warning-pale: #FEF6E0;
-    --border: #E2D9CE; --shadow: rgba(27,58,92,0.08);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text-dark); line-height:1.7; }
+<style>  /* ── Específic PLM Francès (estils únics no al styles.css) ── */
 
-  /* ── NAV (idèntic) ── */
-  nav { position:sticky; top:0; z-index:100; background:rgba(250,247,242,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:0 2.5rem; display:flex; align-items:center; justify-content:space-between; height:64px; }
-  .nav-back { text-decoration:none; color:var(--text-mid); font-size:0.875rem; transition:color 0.2s; }
-  .nav-back:hover { color:var(--accent); }
-  .nav-title { font-family:'Playfair Display',serif; font-size:0.95rem; color:var(--accent); }
+.nav-title { font-family:'Playfair Display',serif; font-size:0.95rem; color:var(--accent); }
   .nav-links { display:flex; gap:1.5rem; }
   .nav-links a { text-decoration:none; color:var(--text-muted); font-size:0.8rem; transition:color 0.2s; }
   .nav-links a:hover { color:var(--accent); }
 
-  /* ── HEADER (idèntic) ── */
-  .page-header { background:linear-gradient(135deg, #0D2137 0%, #1B3A5C 60%, #2E6DA4 100%); color:white; padding:3.5rem 2.5rem; }
-  .page-header-inner { max-width:1100px; margin:0 auto; }
-  .project-tag { font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-light); margin-bottom:0.75rem; }
-  .page-header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:600; margin-bottom:0.5rem; }
-  .page-header p { color:rgba(255,255,255,0.6); font-size:0.95rem; max-width:640px; }
   .flag { font-size:2rem; margin-right:0.5rem; vertical-align:middle; }
-  .header-stats { display:flex; gap:2.5rem; margin-top:2rem; flex-wrap:wrap; }
-  .hstat .val { font-family:'Playfair Display',serif; font-size:1.6rem; color:var(--accent-light); line-height:1; }
-  .hstat .lbl { font-size:0.72rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.06em; margin-top:0.2rem; }
-
-  /* ── LAYOUT ── */
-  main { max-width:1100px; margin:0 auto; padding:3rem 2.5rem; }
-  .card { background:var(--warm-white); border:1px solid var(--border); border-radius:1rem; padding:1.5rem; margin-bottom:1.5rem; }
-  .card-title { font-size:0.72rem; font-weight:500; text-transform:uppercase; letter-spacing:0.09em; color:var(--accent); margin-bottom:1.25rem; }
-  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
-  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
-  .section-sep { margin:2.5rem 0 1.5rem; font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--text-dark); border-bottom:1px solid var(--border); padding-bottom:0.5rem; }
-
-  /* ── PROGRESS BAR (idèntic) ── */
-  .big-progress { background:var(--warm-white); border:1px solid var(--border); border-radius:1rem; padding:1.75rem; margin-bottom:1.5rem; }
-  .big-progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
-  .big-progress-header h2 { font-family:'Playfair Display',serif; font-size:1.1rem; }
-  .pct-badge { font-size:1.4rem; font-family:'Playfair Display',serif; color:var(--accent); }
-  .progress-track { height:10px; background:var(--border); border-radius:5px; overflow:hidden; }
-  .progress-track-fill { height:100%; background:var(--accent); border-radius:5px; transition:width 0.8s ease; }
-
   /* ── MCER (idèntic) ── */
   .mcer-track { display:flex; gap:0.4rem; margin-top:1.25rem; }
   .mcer-box { flex:1; padding:0.6rem 0.4rem; border-radius:0.5rem; text-align:center; font-size:0.78rem; font-weight:500; border:1.5px solid var(--border); color:var(--text-muted); }
@@ -63,31 +22,7 @@
   .mcer-box.target  { background:var(--accent-pale); color:var(--accent); border-color:var(--accent-light); }
   .mcer-label { font-size:0.65rem; font-weight:400; display:block; margin-top:2px; opacity:0.75; }
 
-  /* ── KPI MINI CARDS ── */
-  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem; }
-  .kpi { background:var(--warm-white); border:1px solid var(--border); border-radius:0.875rem; padding:1.25rem 1rem; text-align:center; }
-  .kpi .val { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--accent); line-height:1; }
-  .kpi .lbl { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.07em; margin-top:0.3rem; }
-  .kpi .sub { font-size:0.72rem; color:var(--success); margin-top:0.15rem; }
-
-  /* ── SESSIONS TABLE ── */
-  .session-row { display:flex; align-items:center; gap:1rem; padding:0.9rem 0; border-bottom:1px solid var(--border); }
-  .session-row:last-child { border-bottom:none; }
-  .session-badge { font-size:0.7rem; font-weight:500; padding:0.2rem 0.7rem; border-radius:2rem; white-space:nowrap; }
-  .badge-done { background:var(--success-pale); color:var(--success); }
   .badge-current { background:var(--accent-pale); color:var(--accent); }
-  .badge-next { background:#F0EEEB; color:var(--text-muted); }
-  .session-name { flex:1; font-size:0.88rem; color:var(--text-dark); font-weight:500; }
-  .session-meta { font-size:0.78rem; color:var(--text-muted); }
-  .session-score { font-family:'Playfair Display',serif; font-size:1rem; color:var(--accent); white-space:nowrap; }
-
-  /* ── SKILL BARS ── */
-  .skill-row { display:flex; align-items:center; gap:1rem; margin-bottom:0.875rem; }
-  .skill-label { font-size:0.82rem; color:var(--text-mid); width:160px; flex-shrink:0; }
-  .skill-track { flex:1; height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
-  .skill-fill { height:100%; border-radius:4px; }
-  .skill-pct { font-size:0.78rem; color:var(--text-muted); width:36px; text-align:right; flex-shrink:0; }
-
   /* ── SCORE SPARKLINE ── */
   .sparkline-wrap { position:relative; height:80px; }
   .sparkline-wrap svg { width:100%; height:100%; }
@@ -115,13 +50,6 @@
   .error-rule { font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; }
   .error-count { font-size:0.68rem; font-weight:500; padding:0.15rem 0.5rem; border-radius:2rem; background:#FDEAEA; color:#8B3A3A; margin-top:0.4rem; display:inline-block; }
 
-  /* ── INSIGHT PILLS ── */
-  .insight { display:flex; align-items:flex-start; gap:0.75rem; padding:0.75rem 1rem; border-radius:0.75rem; margin-bottom:0.6rem; font-size:0.84rem; }
-  .insight-green { background:var(--success-pale); color:var(--success); }
-  .insight-blue  { background:var(--accent-pale); color:var(--accent); }
-  .insight-warn  { background:var(--warning-pale); color:var(--warning); }
-  .insight-icon  { flex-shrink:0; font-size:0.9rem; margin-top:1px; }
-
   /* ── DOCUMENTS ── */
   .doc-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
   .doc-item { display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem; background:var(--cream); border:1px solid var(--border); border-radius:0.875rem; text-decoration:none; color:inherit; transition:border-color 0.2s, box-shadow 0.2s; }
@@ -136,11 +64,6 @@
   .gram-item { padding:0.75rem 1rem; background:var(--cream); border:1px solid var(--border); border-radius:0.75rem; }
   .gram-title { font-size:0.8rem; font-weight:500; color:var(--accent); margin-bottom:0.25rem; }
   .gram-ex { font-size:0.76rem; color:var(--text-muted); font-style:italic; }
-  .gram-status { font-size:0.68rem; font-weight:500; padding:0.12rem 0.5rem; border-radius:2rem; display:inline-block; margin-top:0.35rem; }
-  .status-ok { background:var(--success-pale); color:var(--success); }
-  .status-rev { background:var(--warning-pale); color:var(--warning); }
-  .status-pend { background:#F0EEEB; color:var(--text-muted); }
-
   /* ── CHART SVG ── */
   .chart-container { position:relative; }
   .chart-labels { display:flex; justify-content:space-between; margin-top:0.5rem; }
@@ -148,13 +71,9 @@
 
   @media(max-width:768px) {
     .grid-2, .grid-3, .kpi-grid, .error-grid, .doc-grid, .grammar-grid { grid-template-columns:1fr; }
-    nav, main, .page-header { padding-left:1.25rem; padding-right:1.25rem; }
-    .mcer-track { flex-wrap:wrap; }
-    .header-stats { gap:1.5rem; }
-    .skill-label { width:120px; }
+    nav, main, .mcer-track { flex-wrap:wrap; }
     .nav-links { display:none; }
-  }
-</style>
+  }</style>
 </head>
 <body>
 

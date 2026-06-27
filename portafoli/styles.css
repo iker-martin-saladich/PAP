@@ -41,6 +41,20 @@ body {
 h1, h2, h3 { font-family: 'Playfair Display', serif; }
 
 /* ── NAV (PLMs: nav estàtica amb nav-back) ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250, 247, 242, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem; color: var(--accent);
+}
+
 .nav-plm {
   position: sticky; top: 0; z-index: 100;
   background: rgba(250, 247, 242, 0.92);
