@@ -7,10 +7,6 @@
 <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  
-  
-  
-  
 
   /* ── NAV ── */
   nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 3rem;height:60px;display:flex;background: transparent;align-items:center;justify-content:space-between;transition:background 0.3s,border-color 0.3s;}
@@ -53,7 +49,7 @@
   .hero-tag{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-light);margin-bottom:0.2rem;font-weight:500;}
   .hero-name{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,2.4vw,2.2rem);font-weight:700;color:white;line-height:1.1;margin-bottom:0;}
   .hero-name em{color:var(--accent-light);font-style:italic;}
-  .hero-bio{font-size:0.875rem;color:rgba(255,255,255,0.58);line-height:1.85;margin-bottom:1.75rem;max-width:360px;}
+  .hero-bio{font-size:0.875rem;color:rgba(255,255,255,0.58);line-height:1.85;margin-bottom:1.75rem;max-width:400px;}
   .hero-chips{display:flex;flex-wrap:wrap;gap:0.45rem;margin-bottom:2rem;}
   .chip{font-size:0.7rem;padding:0.28rem 0.7rem;border-radius:2rem;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.48);}
   .hero-cta{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:2.5rem;}
@@ -107,6 +103,16 @@
   .pcard.c-active:hover{border-color:var(--accent-light);}
   .pcard.c-done:hover{border-color:var(--success);}
   .pcard.c-future:hover{border-color:var(--future-light);}
+  .pcard.is-disabled{
+    opacity:0.65;
+    filter:saturate(0.75);
+    cursor:not-allowed;
+    pointer-events:none;
+  }
+  .pcard.is-disabled:hover{
+    box-shadow:none;
+    transform:none;
+  }
 
   /* Vista mini (sempre visible) */
   .pcard-mini{
@@ -282,26 +288,28 @@
              onerror="this.style.display='none'">
       </div>
       <div class="hero-identity-text">
-        <div class="hero-tag">Enginyer Industrial · ETSEIB UPC · Payfit</div>
+        <div class="hero-tag">Enginyer Industrial · ETSEIB UPC </div>
         <h1 class="hero-name">Iker Martin <em>Saladich</em></h1>
       </div>
     </div>
     <p class="hero-bio">
-      Enginyer industrial especialitzat en optimització de processos. Investigador a l'IOC-UPC, ara cursant el màster i treballant a Payfit. Aquesta web és el meu espai per documentar el que construeixo.
+      Enginyer industrial especialitzat en optimització de processos. Investigador a l'IOC-UPC, desenvolupador de producte per a Payfit i ara acabant el màster d'industrials. Aquesta web és el meu espai per documentar els meus projectes personals i el meu autoaprenentatge per a complementar la meva formació.
     </p>
     <div class="hero-chips">
       <span class="chip">Optimització · LP</span>
-      <span class="chip">Computació quàntica</span>
+      <span class="chip">Programació</span>
       <span class="chip">Python · CPLEX</span>
       <span class="chip">Recerca aplicada</span>
+      <span class="chip">Enginyeria Industrial</span>
+      <span class="chip">Organització Industrial</span>
     </div>
     <div class="hero-cta">
       <a href="mailto:ikermartinsaladich@gmail.com" class="btn btn-primary">Contactar</a>
-      <a href="#sobre" class="btn btn-ghost">Currículum</a>
+      <a href="/assets/CV_IkerMartinSaladich_CAT.pdf" class="btn btn-ghost" >Currículum</a>
     </div>
     <div class="hero-stats">
-      <div class="hstat"><div class="n">3+</div><div class="l">Anys recerca</div></div>
-      <div class="hstat"><div class="n">CIO24</div><div class="l">Conferència</div></div>
+      <div class="hstat"><div class="n">2+</div><div class="l">Anys recerca</div></div>
+      <div class="hstat"><div class="n">1</div><div class="l">Anys de desenvolupador</div></div>
       <div class="hstat"><div class="n">4</div><div class="l">Projectes</div></div>
     </div>
   </div>
@@ -320,7 +328,7 @@
         </div>
         <div class="pcard-end">
           <div class="sdot s-active"><div class="sdot-circle"></div>En marxa</div>
-          <div class="mini-prog"><div class="mini-prog-fill f-active" style="width:<!-- PLM:BAR_WEB -->65<!-- /PLM:BAR_WEB -->%"></div></div>
+          <div class="mini-prog"><div class="mini-prog-fill f-active" style="width:65%"></div></div>
         </div>
       </div>
       <div class="pcard-expand">
@@ -328,8 +336,8 @@
           <p class="pcard-desc">Portafoli professional amb sistema de seguiment de projectes integrat. Publicat a GitHub Pages amb deploy automàtic via GitHub Actions.</p>
           <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">Python</span><span class="tag">GitHub Actions</span><span class="tag">Disseny web</span></div>
           <div class="prog-full">
-            <div class="prog-bar"><div class="prog-fill p-active" style="width:<!-- PLM:BAR_WEB -->65<!-- /PLM:BAR_WEB -->%"></div></div>
-            <div class="prog-lbl"><span>Progrés</span><span><!-- PLM:PCT_WEB -->65%<!-- /PLM:PCT_WEB --></span></div>
+            <div class="prog-bar"><div class="prog-fill p-active" style="width:65%"></div></div>
+            <div class="prog-lbl"><span>Progrés</span><span>65%</span></div>
           </div>
           <span class="pcard-link-inline">Veure seguiment complet →</span>
         </div>
@@ -367,8 +375,8 @@
       <div class="pcard-mini">
         <div class="pcard-icon ic-done">🏗️</div>
         <div class="pcard-mid">
-          <div class="pcard-title">Elevador de Plats — Casa Rural</div>
-          <div class="pcard-sub">Mecànica · Electrònica · DIY · ~300€</div>
+          <div class="pcard-title">Elevador de Plats</div>
+          <div class="pcard-sub">Mecànica · Electrònica · DIY </div>
         </div>
         <div class="pcard-end">
           <div class="sdot s-done"><div class="sdot-circle"></div>Finalitzat</div>
@@ -389,7 +397,7 @@
     </a>
 
     <!-- TFM -->
-    <a href="tfm_quantica/plm_tesi.html" class="pcard c-future">
+    <div class="pcard c-future is-disabled" aria-disabled="true" tabindex="-1">
       <div class="pcard-mini">
         <div class="pcard-icon ic-future">⚛️</div>
         <div class="pcard-mid">
@@ -398,7 +406,7 @@
         </div>
         <div class="pcard-end">
           <div class="sdot s-future"><div class="sdot-circle"></div>Planificat</div>
-          <div class="mini-prog"><div class="mini-prog-fill f-future" style="width:<!-- PLM:BAR_TFM -->5<!-- /PLM:BAR_TFM -->%"></div></div>
+          <div class="mini-prog"><div class="mini-prog-fill f-future" style="width:0%"></div></div>
         </div>
       </div>
       <div class="pcard-expand">
@@ -406,13 +414,13 @@
           <p class="pcard-desc">Tesi de fi de màster sobre l'aplicació d'algorismes QAOA i VQE a problemes del sector energètic com el dispatch econòmic.</p>
           <div class="tags"><span class="tag">Computació quàntica</span><span class="tag">Qiskit</span><span class="tag">Optimització</span></div>
           <div class="prog-full">
-            <div class="prog-bar"><div class="prog-fill p-future" style="width:<!-- PLM:BAR_TFM -->5<!-- /PLM:BAR_TFM -->%"></div></div>
-            <div class="prog-lbl"><span>Planificació inicial</span><span><!-- PLM:PCT_TFM -->5%<!-- /PLM:PCT_TFM --></span></div>
+            <div class="prog-bar"><div class="prog-fill p-future" style="width:0%"></div></div>
+            <div class="prog-lbl"><span>Planificació inicial</span><span>0%</span></div>
           </div>
           <span class="pcard-link-inline">Veure planificació →</span>
         </div>
       </div>
-    </a>
+    </div>
 
   </div>
 </div>
@@ -445,7 +453,7 @@
       <div class="about-name">Iker Martin Saladich</div>
       <div class="about-role">Enginyer Industrial · Màster en Organització Industrial (UPC) · Desenvolupador de Producte a Payfit</div>
       <p class="about-bio">
-        Format a l'ETSEIB (UPC), he investigat durant tres anys a l'IOC en optimització estocàstica aplicada a l'electrificació rural amb demanda incerta. Ara combino el màster amb el treball a Payfit i el meu interès creixent per la computació quàntica aplicada a l'energia. Apassionat de l'esport d'elit, la cooperació internacional i construir coses amb les mans.
+        Format a l'ETSEIB (UPC), he investigat durant dos anys a l'IOC en optimització estocàstica aplicada a l'electrificació rural amb demanda incerta. Després d'una etapa com a desenvolupador de producte a la multinacional Payfit, dedico el meu temps completament a la finalització del màster i el meu interès creixent per la computació quàntica aplicada a l'energia. Apassionat de l'esport d'elit, la cooperació internacional i construir coses amb les mans.
       </p>
 
       <!-- TABS -->
