@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iker Martin Saladich — Prototip amb secció acabats</title>
+<link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 1rem;height:60px;display:flex;background: transparent;align-items:center;justify-content:space-between;transition:background 0.3s,border-color 0.3s;}
+
+  @media (min-width:480px) {
+    nav {
+      padding:0 1.5rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    nav {
+      padding:0 2rem;
+    }
+  }
+
+  @media (min-width:1024px) {
+    nav {
+      padding:0 3rem;
+    }
+  }
+
+  nav.scrolled{background:rgba(250,247,242,0.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1rem;color:white;letter-spacing:0.02em;transition:color 0.3s;}
+  nav.scrolled .nav-logo{color:var(--text-dark);}
+  .nav-links{display:flex;gap:1rem;}
+
+  @media (min-width:480px) {
+    .nav-links {
+      gap:1.5rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    .nav-links {
+      gap:2rem;
+    }
+  }
+
+  .nav-links a{color:var(--text-mid);text-decoration:none;font-size:0.75rem;font-weight:500;transition:color 0.2s;}
+
+  @media (min-width:480px) {
+    .nav-links a {
+      font-size:0.8rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    .nav-links a {
+      font-size:0.85rem;
+    }
+  }
+
+  nav.scrolled .nav-links a{color:var(--accent);}
+  .nav-links a:hover{color:var(--accent-light);}
+  nav.scrolled .nav-links a:hover{color:var(--accent);}
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:1fr;
+    position:relative;
+  }
+
+  @media (min-width:1024px) {
+    .hero {
+      grid-template-columns:1fr 1fr;
+      min-height:100vh;
+    }
+  }
+
+  .hero-left{
+    background:var(--text-dark);
+    display:flex;flex-direction:column;justify-content:center;
+    padding:4rem 1.5rem 3rem;
+    position:relative;overflow:hidden;
+  }
+
+  @media (min-width:480px) {
+    .hero-left {
+      padding:5rem 2rem 4rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    .hero-left {
+      padding:6rem 3rem 5rem;
+    }
+  }
+
+  @media (min-width:1024px) {
+    .hero-left {
+      padding:7rem 4rem 5rem;
+    }
+  }
+  .hero-left::after{
+    content:'';position:absolute;bottom:-100px;right:-100px;
+    width:200px;height:200px;border-radius:50%;
+    background:radial-gradient(circle,rgba(139,94,60,0.2) 0%,transparent 70%);
+    pointer-events:none;
+  }
+
+  @media (min-width:768px) {
+    .hero-left::after {
+      width:350px;
+      height:350px;
+    }
+  }
+  .hero-identity{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;}
+
+  @media (min-width:768px) {
+    .hero-identity {
+      gap:1.25rem;
+      margin-bottom:1.5rem;
+    }
+  }
+
+  .hero-photo-wrap{width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.15);flex-shrink:0;}
+
+  @media (min-width:768px) {
+    .hero-photo-wrap {
+      width:72px;
+      height:72px;
+    }
+  }
+
+  .hero-photo{width:100%;height:100%;object-fit:cover;}
+  .hero-tag{font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-light);margin-bottom:0.2rem;font-weight:500;}
+
+  @media (min-width:768px) {
+    .hero-tag {
+      font-size:0.65rem;
+    }
+  }
+
+  .hero-name{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.4vw,2.2rem);font-weight:700;color:white;line-height:1.1;margin-bottom:0;}
+  .hero-bio{font-size:0.8rem;color:rgba(255,255,255,0.58);line-height:1.75;margin-bottom:1.25rem;max-width:400px;}
+
+  @media (min-width:768px) {
+    .hero-bio {
+      font-size:0.875rem;
+      margin-bottom:1.75rem;
+    }
+  }
+
+  .hero-chips{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1.5rem;}
+
+  @media (min-width:768px) {
+    .hero-chips {
+      gap:0.45rem;
+      margin-bottom:2rem;
+    }
+  }
+
+  .chip{font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:2rem;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.48);}
+
+  @media (min-width:768px) {
+    .chip {
+      font-size:0.7rem;
+      padding:0.28rem 0.7rem;
+    }
+  }
+
+  .hero-cta{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.75rem;}
+
+  @media (min-width:768px) {
+    .hero-cta {
+      gap:0.75rem;
+      margin-bottom:2.5rem;
+    }
+  }
+
+  .btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;border-radius:0.5rem;font-size:0.75rem;font-weight:500;text-decoration:none;transition:all 0.2s;}
+
+  @media (min-width:768px) {
+    .btn {
+      padding:0.6rem 1.3rem;
+      font-size:0.8rem;
+    }
+  }
+
+  .btn-primary{background:var(--accent);color:white;}
+  .btn-primary:hover{background:#a06d47;}
+  .btn-ghost{border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.65);}
+  .btn-ghost:hover{border-color:var(--accent-light);color:var(--accent-light);}
+
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.08);}
+
+  @media (min-width:768px) {
+    .hero-stats {
+      gap:0.75rem;
+      padding-top:2rem;
+    }
+  }
+
+  .hstat .n{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--accent-light);line-height:1;}
+
+  @media (min-width:768px) {
+    .hstat .n {
+      font-size:1.4rem;
+    }
+  }
+
+  .hstat .l{font-size:0.6rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.15rem;}
+
+  @media (min-width:768px) {
+    .hstat .l {
+      font-size:0.65rem;
+    }
+  }
+
+  /* HERO RIGHT */
+  .hero-right{
+    background:var(--cream);
+    display:flex;flex-direction:column;justify-content:center;
+    padding:3rem 1.5rem;
+    gap:0.75rem;
+    position:relative;
+  }
+
+  @media (min-width:480px) {
+    .hero-right {
+      padding:4rem 2rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    .hero-right {
+      padding:5rem 2.5rem;
+    }
+  }
+
+  @media (min-width:1024px) {
+    .hero-right {
+      padding:7rem 3.5rem 5rem 3rem;
+    }
+  }
+  .hero-right-label{
+    font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--accent);font-weight:500;margin-bottom:0.25rem;
+  }
+
+  /* PROJECT CARDS */
+  .pcard{
+    background:var(--warm-white);
+    border:1px solid var(--border);
+    border-radius:1rem;
+    text-decoration:none;color:inherit;
+    position:relative;overflow:hidden;
+    transition:border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    display:block;
+  }
+  .pcard::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;
+    width:3px;border-radius:3px 0 0 3px;
+    transition:width 0.25s;
+  }
+  .pcard.c-active::before{background:var(--accent);}
+  .pcard.c-done::before{background:var(--success);}
+  .pcard.c-future::before{background:var(--future);}
+
+  .pcard:hover{
+    box-shadow:0 8px 32px var(--shadow);
+    transform:translateX(3px);
+  }
+  .pcard.c-active:hover{border-color:var(--accent-light);}
+  .pcard.c-done:hover{border-color:var(--success);}
+  .pcard.c-future:hover{border-color:var(--future-light);}
+
+  .pcard-mini{
+    display:flex;align-items:center;gap:1rem;
+    padding:1rem 1.25rem;
+  }
+  .pcard-icon{
+    width:38px;height:38px;border-radius:0.6rem;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;flex-shrink:0;
+  }
+  .ic-active{background:var(--accent-pale);}
+  .ic-done{background:var(--success-pale);}
+  .ic-future{background:var(--future-pale);}
+
+  .pcard-mid{flex:1;min-width:0;}
+  .pcard-title{font-size:0.875rem;font-weight:500;color:var(--text-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pcard-sub{font-size:0.73rem;color:var(--text-muted);}
+
+  .pcard-end{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;flex-shrink:0;}
+  .sdot{display:flex;align-items:center;gap:0.3rem;font-size:0.68rem;font-weight:500;}
+  .sdot-circle{width:6px;height:6px;border-radius:50%;}
+  .s-active .sdot-circle{background:var(--accent);}
+  .s-done .sdot-circle{background:var(--success);}
+  .s-future .sdot-circle{background:var(--future);}
+  .s-active{color:var(--accent);}
+  .s-done{color:var(--success);}
+  .s-future{color:var(--future);}
+  .mini-prog{width:56px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .mini-prog-fill{height:100%;border-radius:2px;}
+  .f-active{background:var(--accent);}
+  .f-done{background:var(--success);}
+  .f-future{background:var(--future);}
+
+  .pcard-expand{
+    max-height:0;overflow:hidden;
+    transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s;
+    opacity:0;
+    padding:0 1.25rem;
+  }
+  .pcard:hover .pcard-expand{
+    max-height:220px;
+    opacity:1;
+    padding-bottom:1.1rem;
+  }
+  .pcard-expand-inner{
+    border-top:1px solid var(--border);
+    padding-top:0.875rem;
+  }
+  .pcard-desc{font-size:0.8rem;color:var(--text-mid);line-height:1.75;margin-bottom:0.75rem;}
+  .tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem;}
+  .tag{font-size:0.68rem;background:var(--cream);border:1px solid var(--border);color:var(--text-muted);padding:0.15rem 0.55rem;border-radius:2rem;}
+  .prog-full{margin-bottom:0.75rem;}
+  .prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .prog-fill{height:100%;border-radius:3px;}
+  .p-active{background:var(--accent);}
+  .p-done{background:var(--success);}
+  .p-future{background:var(--future);}
+  .prog-lbl{display:flex;justify-content:space-between;margin-top:0.3rem;font-size:0.7rem;color:var(--text-muted);}
+  .pcard-link-inline{font-size:0.78rem;font-weight:500;display:inline-flex;align-items:center;gap:0.3rem;transition:gap 0.2s;}
+  .pcard:hover .pcard-link-inline{gap:0.55rem;}
+  .c-active .pcard-link-inline{color:var(--accent);}
+  .c-done .pcard-link-inline{color:var(--success);}
+  .c-future .pcard-link-inline{color:var(--future);}
+
+  /* NOVA SECCIÓ: PROJECTES ACABATS */
+  .completed-section {
+    max-width:1140px;margin:0 auto;padding:3rem 1.5rem;background:linear-gradient(135deg, rgba(74,124,89,0.03) 0%, rgba(250,247,242,0.5) 100%);
+  }
+
+  @media (min-width:480px) {
+    .completed-section {
+      padding:4rem 2rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    .completed-section {
+      padding:6rem 2.5rem;
+    }
+  }
+
+  .completed-section-header {
+    display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;
+  }
+
+  @media (min-width:768px) {
+    .completed-section-header {
+      margin-bottom:2rem;
+    }
+  }
+
+  .completed-section-icon {
+    font-size:1.75rem;flex-shrink:0;
+  }
+
+  @media (min-width:768px) {
+    .completed-section-icon {
+      font-size:2rem;
+    }
+  }
+
+  .completed-section-title {
+    font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:600;color:var(--text-dark);
+  }
+
+  .completed-section-subtitle {
+    font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;
+  }
+
+  @media (min-width:768px) {
+    .completed-section-subtitle {
+      font-size:0.85rem;
+    }
+  }
+
+  /* CARROUSSEL */
+  .carousel-container {
+    position:relative;
+  }
+
+  .carousel-track {
+    display:flex;
+    transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    gap:1rem;
+  }
+
+  .carousel-slide {
+    flex:0 0 100%;
+  }
+
+  @media (min-width:480px) {
+    .carousel-track {
+      gap:1.25rem;
+    }
+    .carousel-slide {
+      flex:0 0 calc(100% - 0.625rem);
+    }
+  }
+
+  @media (min-width:768px) {
+    .carousel-track {
+      gap:1.5rem;
+    }
+    .carousel-slide {
+      flex:0 0 calc(50% - 0.75rem);
+    }
+  }
+
+  @media (min-width:1200px) {
+    .carousel-track {
+      gap:1.5rem;
+    }
+    .carousel-slide {
+      flex:0 0 calc(33.333% - 1rem);
+    }
+  }
+
+  .carousel-controls {
+    display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;
+  }
+
+  .carousel-btn {
+    background:var(--accent-pale);color:var(--accent);
+    border:none;padding:0.5rem 1rem;border-radius:0.5rem;
+    cursor:pointer;font-size:0.8rem;font-weight:500;
+    transition:all 0.2s;flex-shrink:0;
+  }
+
+  @media (min-width:480px) {
+    .carousel-btn {
+      padding:0.6rem 1.2rem;
+      font-size:0.9rem;
+    }
+  }
+
+  .carousel-btn:hover:not(:disabled) {
+    background:var(--accent);color:white;
+  }
+
+  .carousel-btn:disabled {
+    background:var(--border);color:var(--text-muted);cursor:not-allowed;opacity:0.5;
+  }
+
+  .carousel-dots {
+    display:flex;gap:0.4rem;order:2;
+  }
+
+  @media (min-width:480px) {
+    .carousel-dots {
+      order:auto;
+    }
+  }
+
+  .dot {
+    width:6px;height:6px;border-radius:50%;background:var(--border);
+    cursor:pointer;transition:all 0.2s;flex-shrink:0;
+  }
+
+  @media (min-width:480px) {
+    .dot {
+      width:8px;height:8px;
+    }
+  }
+
+  .dot.active {
+    background:var(--success);width:16px;border-radius:3px;
+  }
+
+  @media (min-width:480px) {
+    .dot.active {
+      width:24px;border-radius:4px;
+    }
+  }
+
+  .dot:hover {
+    background:var(--accent);
+  }
+
+  /* Variant compacte dels projectes acabats */
+  .pcard-done {
+    background:var(--warm-white);
+    border:2px solid var(--success);
+    border-radius:1rem;
+    padding:1rem;
+    text-decoration:none;
+    color:inherit;
+    transition:all 0.2s;
+    display:flex;
+    flex-direction:column;
+    height:100%;
+  }
+
+  @media (min-width:480px) {
+    .pcard-done {
+      padding:1.25rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    .pcard-done {
+      padding:1.5rem;
+    }
+  }
+
+  .pcard-done:hover {
+    box-shadow:0 4px 16px rgba(74,124,89,0.15);
+    transform:translateY(-2px);
+  }
+
+  .done-header {
+    display:flex;align-items:start;justify-content:space-between;margin-bottom:0.75rem;
+  }
+
+  @media (min-width:768px) {
+    .done-header {
+      margin-bottom:1rem;
+    }
+  }
+
+  .done-icon {
+    font-size:1.75rem;flex-shrink:0;
+  }
+
+  @media (min-width:768px) {
+    .done-icon {
+      font-size:2rem;
+    }
+  }
+
+  .done-badge {
+    background:var(--success-pale);color:var(--success);
+    font-size:0.6rem;font-weight:600;padding:0.2rem 0.5rem;
+    border-radius:3rem;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0;
+  }
+
+  @media (min-width:480px) {
+    .done-badge {
+      font-size:0.65rem;
+      padding:0.25rem 0.6rem;
+    }
+  }
+
+  .done-title {
+    font-size:0.9rem;font-weight:600;color:var(--text-dark);margin-bottom:0.2rem;
+  }
+
+  @media (min-width:480px) {
+    .done-title {
+      font-size:0.95rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    .done-title {
+      font-size:1rem;
+      margin-bottom:0.3rem;
+    }
+  }
+
+  .done-meta {
+    font-size:0.7rem;color:var(--text-muted);margin-bottom:0.5rem;
+  }
+
+  @media (min-width:768px) {
+    .done-meta {
+      font-size:0.75rem;
+      margin-bottom:0.75rem;
+    }
+  }
+
+  .done-desc {
+    font-size:0.75rem;color:var(--text-mid);line-height:1.5;margin-bottom:0.75rem;flex-grow:1;
+  }
+
+  @media (min-width:480px) {
+    .done-desc {
+      font-size:0.8rem;
+      line-height:1.6;
+      margin-bottom:0.75rem;
+    }
+  }
+
+  @media (min-width:768px) {
+    .done-desc {
+      font-size:0.8rem;
+      line-height:1.75;
+      margin-bottom:1rem;
+    }
+  }
+
+  .done-tags {
+    display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.75rem;
+  }
+
+  @media (min-width:768px) {
+    .done-tags {
+      gap:0.4rem;
+      margin-bottom:1rem;
+    }
+  }
+
+  .done-tag {
+    font-size:0.6rem;background:var(--success-pale);color:var(--success);
+    padding:0.15rem 0.4rem;border-radius:2rem;font-weight:500;white-space:nowrap;
+  }
+
+  @media (min-width:480px) {
+    .done-tag {
+      font-size:0.65rem;
+      padding:0.2rem 0.5rem;
+    }
+  }
+
+  .done-info {
+    display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;
+    padding-top:0.75rem;border-top:1px solid var(--border);
+    margin-top:auto;
+  }
+
+  @media (min-width:768px) {
+    .done-info {
+      gap:0.75rem;
+      padding-top:1rem;
+    }
+  }
+
+  .info-item {
+    font-size:0.7rem;color:var(--text-muted);
+  }
+
+  @media (min-width:480px) {
+    .info-item {
+      font-size:0.75rem;
+    }
+  }
+
+  .info-label {
+    text-transform:uppercase;letter-spacing:0.05em;font-weight:500;color:var(--success);
+    margin-bottom:0.05rem;font-size:0.6rem;
+  }
+
+  @media (min-width:480px) {
+    .info-label {
+      margin-bottom:0.1rem;
+      font-size:0.65rem;
+    }
+  }
+
+  .info-value {
+    font-size:0.85rem;color:var(--text-dark);font-weight:500;
+  }
+
+  @media (min-width:480px) {
+    .info-value {
+      font-size:0.9rem;
+    }
+  }
+
+  /* DIVISOR */
+  .div {
+    height:1px;background:linear-gradient(90deg,transparent 0%,var(--border) 20%,var(--border) 80%,transparent 100%);
+    margin:4rem 0;
+    border:none;
+  }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">IMS</span>
+  <div class="nav-links">
+    <a href="#actius">En marxa</a>
+    <a href="#acabats">Acabats</a>
+    <a href="#sobre">Sobre mi</a>
+  </div>
+</nav>
+
+<!-- HERO ORIGINAL -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-identity">
+      <div class="hero-photo-wrap">
+        <img src="assets/Foto.png" alt="Iker" class="hero-photo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22><rect fill=%22%23ccc%22 width=%22100%22 height=%22100%22/></svg>'">
+      </div>
+      <div class="hero-identity-text">
+        <div class="hero-tag">Enginyer Industrial</div>
+        <div class="hero-name">Iker Martin <em>Saladich</em></div>
+      </div>
+    </div>
+    <p class="hero-bio">Màster en Organització Industrial. Especialitat en sistemes de seguiment de projectes, tecnologia web i optimització.</p>
+    <div class="hero-chips">
+      <span class="chip">Organització</span>
+      <span class="chip">Tecnologia</span>
+      <span class="chip">Disseny</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary">Descarregar CV</a>
+      <a href="#" class="btn btn-ghost">Veure més</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="n">4</div>
+        <div class="l">Projectes actius</div>
+      </div>
+      <div class="hstat">
+        <div class="n">2+</div>
+        <div class="l">Acabats</div>
+      </div>
+      <div class="hstat">
+        <div class="n">5 any</div>
+        <div class="l">Experiència</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTES EN MARXA (secció original) -->
+  <div class="hero-right">
+    <div class="hero-right-label" id="actius">📌 Projectes actius</div>
+
+    <!-- Web personal -->
+    <a href="web_personal/plm_web.html" class="pcard c-active">
+      <div class="pcard-mini">
+        <div class="pcard-icon ic-active">🌐</div>
+        <div class="pcard-mid">
+          <div class="pcard-title">Web Personal & Sistema PLM</div>
+          <div class="pcard-sub">HTML · Python · GitHub Actions</div>
+        </div>
+        <div class="pcard-end">
+          <div class="sdot s-active"><div class="sdot-circle"></div>En marxa</div>
+          <div class="mini-prog"><div class="mini-prog-fill f-active" style="width:65%"></div></div>
+        </div>
+      </div>
+      <div class="pcard-expand">
+        <div class="pcard-expand-inner">
+          <p class="pcard-desc">Portafoli professional amb sistema de seguiment de projectes integrat. Publicat a GitHub Pages.</p>
+          <div class="tags"><span class="tag">HTML/CSS</span><span class="tag">Python</span><span class="tag">GitHub</span></div>
+          <div class="prog-full">
+            <div class="prog-bar"><div class="prog-fill p-active" style="width:65%"></div></div>
+            <div class="prog-lbl"><span>Progrés</span><span>65%</span></div>
+          </div>
+          <span class="pcard-link-inline">Veure seguiment →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Francès -->
+    <a href="frances/plm_frances.html" class="pcard c-active">
+      <div class="pcard-mini">
+        <div class="pcard-icon ic-active">🇫🇷</div>
+        <div class="pcard-mid">
+          <div class="pcard-title">Aprenentatge del Francès</div>
+          <div class="pcard-sub">A1 → B2 · Autoformació</div>
+        </div>
+        <div class="pcard-end">
+          <div class="sdot s-active"><div class="sdot-circle"></div>En marxa</div>
+          <div class="mini-prog"><div class="mini-prog-fill f-active" style="width:33%"></div></div>
+        </div>
+      </div>
+      <div class="pcard-expand">
+        <div class="pcard-expand-inner">
+          <p class="pcard-desc">Aprenentatge autònom A1 → B2. Metodologia mixta: sessions, Duolingo i pràctica.</p>
+          <div class="tags"><span class="tag">Idiomes</span><span class="tag">A2</span></div>
+          <div class="prog-full">
+            <div class="prog-bar"><div class="prog-fill p-active" style="width:33%"></div></div>
+            <div class="prog-lbl"><span>A1 completat · A2 en curs</span><span>33%</span></div>
+          </div>
+          <span class="pcard-link-inline">Veure seguiment →</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ═══════════════════════════════════════════════════
+     SECCIÓ NOVA: PROJECTES ACABATS
+   ═══════════════════════════════════════════════════ -->
+
+<section class="completed-section" id="acabats">
+  <div class="completed-section-header">
+    <div class="completed-section-icon">✅</div>
+    <div>
+      <h2 class="completed-section-title">Projectes Completats</h2>
+      <p class="completed-section-subtitle">Treballs finalitzats i documentats</p>
+    </div>
+  </div>
+
+  <div class="carousel-container">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- EXEMPLE 1: Projecte acabat simple -->
+      <div class="carousel-slide">
+        <a href="#" class="pcard-done">
+          <div class="done-header">
+            <div class="done-icon">📊</div>
+            <span class="done-badge">Completat</span>
+          </div>
+          <div class="done-title">Sistema de Dashboards PLM</div>
+          <div class="done-meta">Febrer 2026</div>
+          <p class="done-desc">Sistema automàtic de seguiment de projectes amb Python, Excel i visualització en HTML.</p>
+          <div class="done-tags">
+            <span class="done-tag">Python</span>
+            <span class="done-tag">Excel</span>
+            <span class="done-tag">Automatització</span>
+          </div>
+          <div class="done-info">
+            <div class="info-item">
+              <div class="info-label">Durada</div>
+              <div class="info-value">3 setmanes</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Estat</div>
+              <div class="info-value">100%</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- EXEMPLE 2: Web acabada -->
+      <div class="carousel-slide">
+        <a href="#" class="pcard-done">
+          <div class="done-header">
+            <div class="done-icon">🎨</div>
+            <span class="done-badge">Completat</span>
+          </div>
+          <div class="done-title">Redisseny Portafoli v1</div>
+          <div class="done-meta">Gener 2026</div>
+          <p class="done-desc">Redisseny complet del portafoli web amb disseny modern, responsive i animacions.</p>
+          <div class="done-tags">
+            <span class="done-tag">HTML/CSS</span>
+            <span class="done-tag">Disseny</span>
+            <span class="done-tag">Frontend</span>
+          </div>
+          <div class="done-info">
+            <div class="info-item">
+              <div class="info-label">Durada</div>
+              <div class="info-value">4 setmanes</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Estat</div>
+              <div class="info-value">100%</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- EXEMPLE 3: Documentació acabada -->
+      <div class="carousel-slide">
+        <a href="#" class="pcard-done">
+          <div class="done-header">
+            <div class="done-icon">📚</div>
+            <span class="done-badge">Completat</span>
+          </div>
+          <div class="done-title">Documentació Tècnica Fase 1</div>
+          <div class="done-meta">Desembre 2025</div>
+          <p class="done-desc">Documentació competa del sistema PLM amb especificacions, guides d'ús i manuals.</p>
+          <div class="done-tags">
+            <span class="done-tag">Documentació</span>
+            <span class="done-tag">Markdown</span>
+            <span class="done-tag">Guies</span>
+          </div>
+          <div class="done-info">
+            <div class="info-item">
+              <div class="info-label">Durada</div>
+              <div class="info-value">2 setmanes</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Estat</div>
+              <div class="info-value">100%</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- EXEMPLE 4: Extra per veure carroussel -->
+      <div class="carousel-slide">
+        <a href="#" class="pcard-done">
+          <div class="done-header">
+            <div class="done-icon">🚀</div>
+            <span class="done-badge">Completat</span>
+          </div>
+          <div class="done-title">Setup GitHub Actions CI/CD</div>
+          <div class="done-meta">Novembre 2025</div>
+          <p class="done-desc">Pipeline automàtic de desplegament continu per al portafoli amb validació i tests.</p>
+          <div class="done-tags">
+            <span class="done-tag">DevOps</span>
+            <span class="done-tag">GitHub</span>
+            <span class="done-tag">Automatització</span>
+          </div>
+          <div class="done-info">
+            <div class="info-item">
+              <div class="info-label">Durada</div>
+              <div class="info-value">1 setmana</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Estat</div>
+              <div class="info-value">100%</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="carousel-controls">
+      <button class="carousel-btn" id="prevBtn">← Anterior</button>
+      <div class="carousel-dots" id="dotsContainer"></div>
+      <button class="carousel-btn" id="nextBtn">Següent →</button>
+    </div>
+  </div>
+
+  <p style="text-align:center;margin-top:1.5rem;font-size:0.8rem;color:var(--text-muted);">
+    💡 <strong>Veure més:</strong> Fes clic en qualsevol projecte per veure els detalls, documentació i resultats finals.
+  </p>
+
+</section>
+
+<hr class="div">
+
+<!-- SOBRE MI -->
+<div id="sobre" style="max-width:1140px;margin:0 auto;padding:3rem 1.5rem;text-align:center;">
+  <style>
+    @media (min-width:480px) {
+      #sobre { padding:4rem 2rem!important; }
+    }
+    @media (min-width:768px) {
+      #sobre { padding:6rem 2.5rem!important; }
+    }
+  </style>
+  <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.5vw,1.8rem);margin-bottom:1rem;color:var(--text-dark);">Sobre aquest prototip</h2>
+  <p style="font-size:clamp(0.85rem,1.5vw,0.95rem);color:var(--text-mid);max-width:700px;margin:0 auto;line-height:1.8;">
+    Aquesta és una versió prototip que mostra una <strong>secció dedicada per a projectes acabats</strong>. 
+    Els elements principals són:
+  </p>
+  <ul style="text-align:left;max-width:600px;margin:1.5rem auto;font-size:clamp(0.8rem,1.5vw,0.9rem);color:var(--text-mid);line-height:1.8;">
+    <li>✅ <strong>Secció visual separada</strong> amb gradient i icona distintiva</li>
+    <li>📊 <strong>Targetes compactes</strong> optimitzades per a projectes completats</li>
+    <li>🎨 <strong>Disseny cohesionat</strong> amb la resta del portafoli</li>
+    <li>📈 <strong>Informació clau</strong>: data, durada, tecnologies utilitzades</li>
+    <li>🔗 <strong>Enllaçable a PLMs detallats</strong> o documentació</li>
+  </ul>
+</div>
+
+<script>
+  // Comportament scroll nav
+  window.addEventListener('scroll', function() {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+
+  // ═══════════════════════════════════════
+  // CARROUSSEL LÒGICA
+  // ═══════════════════════════════════════
+
+  const track = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.carousel-slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const dotsContainer = document.getElementById('dotsContainer');
+
+  let currentIndex = 0;
+  const totalSlides = slides.length;
+
+  // Detectar número de slids visibles
+  function getSlidesPerView() {
+    const width = window.innerWidth;
+    if (width >= 1200) return 3;
+    if (width >= 768) return 2;
+    return 1;
+  }
+
+  // Crear dots
+  function createDots() {
+    dotsContainer.innerHTML = '';
+    const slidesPerView = getSlidesPerView();
+    const numDots = Math.max(1, totalSlides - slidesPerView + 1);
+    
+    for (let i = 0; i < numDots; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  // Actualitzar posició del track
+  function updateCarousel() {
+    const slidesPerView = getSlidesPerView();
+    const slideWidth = 100 / slidesPerView;
+    const offset = -currentIndex * slideWidth;
+    track.style.transform = `translateX(${offset}%)`;
+
+    // Actualitzar dots
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === currentIndex);
+    });
+
+    // Actualitzar botons
+    const maxIndex = Math.max(0, totalSlides - slidesPerView);
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === maxIndex;
+  }
+
+  // Navegar
+  function goToSlide(index) {
+    const slidesPerView = getSlidesPerView();
+    const maxIndex = Math.max(0, totalSlides - slidesPerView);
+    currentIndex = Math.max(0, Math.min(index, maxIndex));
+    updateCarousel();
+  }
+
+  function nextSlide() {
+    const slidesPerView = getSlidesPerView();
+    const maxIndex = Math.max(0, totalSlides - slidesPerView);
+    if (currentIndex < maxIndex) {
+      goToSlide(currentIndex + 1);
+    }
+  }
+
+  function prevSlide() {
+    if (currentIndex > 0) {
+      goToSlide(currentIndex - 1);
+    }
+  }
+
+  // Event listeners
+  nextBtn.addEventListener('click', nextSlide);
+  prevBtn.addEventListener('click', prevSlide);
+
+  // Responsive
+  window.addEventListener('resize', () => {
+    currentIndex = 0;
+    createDots();
+    updateCarousel();
+  });
+
+  // Init
+  createDots();
+  updateCarousel();
+
+</script>
+
+</body>
+</html>
