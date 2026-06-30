@@ -2,15 +2,19 @@
 
 Portafoli personal amb sistema PLM integrat per al seguiment de projectes.
 
+## Web pública
+
+[iker-martin-saladich.github.io/PAP](https://iker-martin-saladich.github.io/PAP/)
+
 ## Estructura
 
 ```
-portafoli/
+site/
 ├── index.html                    ← Pàgina principal
+    index_future.html             ← Pàgina principal futura
 ├── actualitzar.py                ← Llegeix els Excel i actualitza els HTML
 ├── web_personal/
-│   ├── plm_web.html
-│   └── PLM_Web_Personal.xlsx
+│   └── plm_web.html
 ├── tfm_quantica/
 │   ├── plm_tesi.html
 │   └── PLM_TFM_Quantica.xlsx
@@ -18,8 +22,7 @@ portafoli/
 │   ├── plm_elevador.html
 │   └── PLM_Elevador_Plats.xlsx
 └── frances/
-    ├── plm_frances.html
-    └── PLM_Frances.xlsx
+    └── plm_frances.html
 ```
 
 ## Flux de treball

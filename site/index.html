@@ -17,7 +17,35 @@
   .nav-links a{color:var(--text-mid);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s;}
   nav.scrolled .nav-links a{color:var(--accent);}
   .nav-links a:hover{color:var(--accent-light);}
-  nav.scrolled .nav-links a:hover{color:var(--accent);}
+  nav.scrolled .nav-links a:hover{color:var(--accent);} 
+
+  /* ── GOOGLE TRANSLATE WIDGET ── */
+  #google_translate_element{display:flex;align-items:center;}
+  #google_translate_element .goog-te-gadget{font-family:'DM Sans',sans-serif !important;}
+  #google_translate_element .goog-te-gadget-simple{
+    display:inline-flex;align-items:center;gap:0.25rem;
+    padding:0.3rem 0.65rem;border:1px solid rgba(255,255,255,0.95);
+    border-radius:0.4rem;background:transparent;
+    color:#fff;box-shadow:none;
+    font-size:0.72rem;font-weight:600;letter-spacing:0.03em;
+    transition:all 0.2s;
+  }
+  #google_translate_element .goog-te-gadget-simple:hover{
+    background:rgba(255,255,255,0.95);border-color:white;
+  }
+  #google_translate_element .goog-te-gadget-simple img{display:none !important;}
+  #google_translate_element .goog-te-gadget-simple .goog-te-menu-value{display:flex;align-items:center;gap:0.25rem;}
+  #google_translate_element .goog-te-gadget-simple .goog-te-menu-value span{color:#fff !important;}
+  #google_translate_element .goog-te-gadget-simple .goog-te-menu-value span:last-child{display:none !important;}
+  #google_translate_element .goog-te-combo{background:transparent;border:none;color:inherit;font:inherit;padding:0;margin:0;appearance:none;-webkit-appearance:none;cursor:pointer;outline:none;}
+  nav.scrolled #google_translate_element .goog-te-gadget-simple{
+    border-color:var(--border);color:var(--text-dark);background:rgba(255,255,255,0.95);box-shadow:none;text-shadow:none;
+  }
+  nav.scrolled #google_translate_element .goog-te-gadget-simple:hover{
+    border-color:var(--accent);background:var(--accent-pale);color:var(--accent);
+  }
+  nav.scrolled #google_translate_element .goog-te-gadget-simple .goog-te-menu-value span{color:var(--text-dark) !important;}
+  nav.scrolled #google_translate_element .goog-te-gadget-simple:hover .goog-te-menu-value span{color:var(--accent) !important;}
 
   /* ══════════════════════════════════
      HERO — pantalla completa split
@@ -267,6 +295,7 @@
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-logo">Iker Martin Saladich</div>
+  <div id="google_translate_element"></div>
 </nav>
 
 <!-- ══════════════════════════════════
@@ -283,7 +312,7 @@
       </div>
       <div class="hero-identity-text">
         <div class="hero-tag">Enginyer Industrial · ETSEIB UPC </div>
-        <h1 class="hero-name">Iker Martin <em>Saladich</em></h1>
+        <h1 class="hero-name">Iker <em>Martin Saladich</em></h1>
       </div>
     </div>
     <p class="hero-bio">
@@ -445,7 +474,7 @@
     <!-- Columna contingut -->
     <div class="about-content">
       <div class="about-name">Iker Martin Saladich</div>
-      <div class="about-role">Enginyer Industrial · Màster en Organització Industrial (UPC) </div>
+      <div class="about-role">Enginyer Industrial · Màster en Enginyeria Industrial · Menció en Organització Industrial (UPC) </div>
       <p class="about-bio">
         Format a l'ETSEIB (UPC), he investigat durant dos anys a l'IOC en optimització estocàstica aplicada a l'electrificació rural amb demanda incerta. Després d'una etapa com a desenvolupador de producte a la multinacional Payfit, dedico el meu temps completament a la finalització del màster i el meu interès creixent per la computació quàntica aplicada a l'energia. Apassionat de l'esport d'elit, la cooperació internacional i l'impuls cultural.
       </p>
@@ -628,6 +657,17 @@
     tab.addEventListener('click', () => setTab(ids[i]));
   });
 </script>
+
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ca',
+    includedLanguages: 'ca,es,en',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
