@@ -292,35 +292,6 @@ def injectar(html_path, seccions):
     html_path.write_text(text, encoding="utf-8")
 
 
-def processar_tfm():
-    xlsx = BASE / "tfm_quantica" / "PLM_TFM_Quantica.xlsx"
-    html = BASE / "tfm_quantica" / "plm_tesi.html"
-    if not xlsx.exists():
-        print("  Excel tfm no trobat"); return
-    wb   = load_workbook(xlsx, data_only=True)
-    ws_c = nom_full(wb, ["Capitols", "Cap\u00edtols"])
-    ws_t = wb["Tasques"]
-    ws_r = wb["Riscos"]
-    ws_b = wb["Bibliografia"]
-    pg   = progress_global(ws_c, 6)
-    cd   = sum(1 for r in files_dades(ws_c) if cel(ws_c, r, 8) == "Completat")
-    td   = sum(1 for r in files_dades(ws_t) if cel(ws_t, r, 5) == "Completat")
-    tt   = len(files_dades(ws_t))
-    rt   = sum(1 for r in files_dades(ws_b) if cel(ws_b, r, 3) and "Afegeix" not in str(cel(ws_b, r, 3)))
-    s = {
-        "PROGRESS_PCT": str(int(pg)) + "%",
-        "PROGRESS_BAR": str(int(pg)),
-        "H_PROGRESS":   str(int(pg)) + "%",
-        "H_CAPS":       str(cd) + "/" + str(len(files_dades(ws_c))),
-        "H_TASQUES":    str(td) + "/" + str(tt),
-        "H_REFS":       str(rt),
-        "FASES":        html_fases(ws_c, 2, 3, 6, 8),
-        "TASQUES":      html_tasques(ws_t, 2, 3, 4, 5, 6, 7),
-        "RISCOS":       html_riscos(ws_r, 2, 3, 4, 5, 7),
-        "BIBLIOGRAFIA": html_bibliografia(ws_b),
-    }
-    injectar(html, s)
-    print("  OK  plm_tesi.html -> " + str(int(pg)) + "%")
 
 def processar_elevador():
     xlsx = BASE / "elevador_plats" / "PLM_Elevador_Plats.xlsx"
@@ -364,7 +335,6 @@ def actualitzar_index():
     if not index.exists():
         return
     configs = [
-        ("tfm",  BASE / "tfm_quantica"   / "PLM_TFM_Quantica.xlsx",   ["Capitols", "Cap\u00edtols"],   6),
         ("elev", BASE / "elevador_plats" / "PLM_Elevador_Plats.xlsx", ["Fases"],                       6),
     ]
     prog = {}
@@ -376,17 +346,14 @@ def actualitzar_index():
         except Exception:
             prog[pid] = 0
     s = {
-        "PCT_TFM":  str(int(prog["tfm"]))  + "%",
-        "BAR_TFM":  str(int(prog["tfm"])),
         "PCT_ELEV": str(int(prog["elev"])) + "%",
         "BAR_ELEV": str(int(prog["elev"])),
     }
     injectar(index, s)
-    print("  OK  index.html -> tfm " + str(int(prog["tfm"])) + "% | elev " + str(int(prog["elev"])) + "%")
+    print("  OK  index.html -> elev " + str(int(prog["elev"])) + "%")
 
 def main():
     print("\n=== Actualitzant portafoli ===\n")
-    print("\n[TFM Quantica]");     processar_tfm()
     print("\n[Elevador]");         processar_elevador()
     print("\n[Pagina principal]"); actualitzar_index()
     print("\nTot actualitzat.\n")
