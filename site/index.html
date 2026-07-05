@@ -182,7 +182,8 @@
     opacity:0;
     padding:0 1.25rem;
   }
-  .pcard:hover .pcard-expand{
+  .pcard:hover .pcard-expand,
+  .pcard.is-open .pcard-expand{
     max-height:220px;
     opacity:1;
     padding-bottom:1.1rem;
@@ -202,7 +203,8 @@
   .p-future{background:var(--future);}
   .prog-lbl{display:flex;justify-content:space-between;margin-top:0.3rem;font-size:0.7rem;color:var(--text-muted);}
   .pcard-link-inline{font-size:0.78rem;font-weight:500;display:inline-flex;align-items:center;gap:0.3rem;transition:gap 0.2s;}
-  .pcard:hover .pcard-link-inline{gap:0.55rem;}
+  .pcard:hover .pcard-link-inline,
+  .pcard.is-open .pcard-link-inline{gap:0.55rem;}
   .c-active .pcard-link-inline{color:var(--accent);}
   .c-done .pcard-link-inline{color:var(--success);}
   .c-future .pcard-link-inline{color:var(--future);}
@@ -393,6 +395,32 @@
       </div>
     </a>
 
+    <!-- TFM -->
+    <a href="tfm_quantica/tfm_quantum_uc.html" class="pcard c-active">
+      <div class="pcard-mini">
+        <div class="pcard-icon ic-future">⚛️</div>
+        <div class="pcard-mid">
+          <div class="pcard-title">TFM: Optimització Quàntica</div>
+          <div class="pcard-sub">Qiskit · QAOA · Sistemes energètics</div>
+        </div>
+        <div class="pcard-end">
+          <div class="sdot s-active"><div class="sdot-circle"></div>En marxa</div>
+          <div class="mini-prog"><div class="mini-prog-fill f-active" style="width:5%"></div></div>
+        </div>
+      </div>
+      <div class="pcard-expand">
+        <div class="pcard-expand-inner">
+          <p class="pcard-desc">Tesi de fi de màster sobre l'aplicació d'algorismes QAOA i VQE a problemes del sector energètic com el dispatch econòmic.</p>
+          <div class="tags"><span class="tag">Computació quàntica</span><span class="tag">Qiskit</span><span class="tag">Optimització</span></div>
+          <div class="prog-full">
+            <div class="prog-bar"><div class="prog-fill p-active" style="width:5%"></div></div>
+            <div class="prog-lbl"><span>Planificació inicial</span><span>5%</span></div>
+          </div>
+          <span class="pcard-link-inline">Veure seguiment →</span>
+        </div>
+      </div>
+    </a>
+
     <!-- Elevador -->
     <div class="pcard c-future is-disabled" aria-disabled="true" tabindex="-1">
       <div class="pcard-mini">
@@ -415,32 +443,6 @@
             <div class="prog-lbl"><span>Planificació inicial</span><span>0%</span></div>
           </div>
           <span class="pcard-link-inline">Veure documentació →</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- TFM -->
-    <div class="pcard c-future is-disabled" aria-disabled="true" tabindex="-1">
-      <div class="pcard-mini">
-        <div class="pcard-icon ic-future">⚛️</div>
-        <div class="pcard-mid">
-          <div class="pcard-title">TFM: Optimització Quàntica</div>
-          <div class="pcard-sub">Qiskit · QAOA · Sistemes energètics</div>
-        </div>
-        <div class="pcard-end">
-          <div class="sdot s-future"><div class="sdot-circle"></div>Planificat</div>
-          <div class="mini-prog"><div class="mini-prog-fill f-future" style="width:0%"></div></div>
-        </div>
-      </div>
-      <div class="pcard-expand">
-        <div class="pcard-expand-inner">
-          <p class="pcard-desc">Tesi de fi de màster sobre l'aplicació d'algorismes QAOA i VQE a problemes del sector energètic com el dispatch econòmic.</p>
-          <div class="tags"><span class="tag">Computació quàntica</span><span class="tag">Qiskit</span><span class="tag">Optimització</span></div>
-          <div class="prog-full">
-            <div class="prog-bar"><div class="prog-fill p-future" style="width:0%"></div></div>
-            <div class="prog-lbl"><span>Planificació inicial</span><span>0%</span></div>
-          </div>
-          <span class="pcard-link-inline">Veure planificació →</span>
         </div>
       </div>
     </div>

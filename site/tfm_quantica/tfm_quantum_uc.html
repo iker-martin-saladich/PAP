@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TFM · Optimització Quàntica per a Microxarxes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<style>
+:root{--accent:#2A5C1A;--accent-light:#5A9E35;--accent-pale:#EAF3DF;--cream:#F3F7EE;--warm-white:#FAFDF6;--border:#DDEACF;--shadow:rgba(42,92,26,0.08);--q:#3B1F72;--q-light:#7C55C4;--q-pale:#EDE6F8;--q-mid:#5E3A9E;--text-dark:#111A0A;--text-mid:#3D4F2A;--text-muted:#728060;--tab-h:56px;--radius-lg:16px;--radius-md:10px;--radius-sm:6px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-dark);line-height:1.7;overflow-x:hidden}
+h1,h2,h3{font-family:'Playfair Display',serif}
+nav{position:sticky;top:0;z-index:200;background:rgba(243,247,238,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-back{text-decoration:none;color:var(--text-muted);font-size:.82rem;transition:color .2s}
+.nav-back:hover{color:var(--accent)}
+.nav-title{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--accent);letter-spacing:.04em}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{text-decoration:none;color:var(--text-muted);font-size:.78rem;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.hero{background:linear-gradient(145deg,#0C1A06 0%,#1A0D38 45%,#0E2A06 100%);padding:4rem 2.5rem 3rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(124,85,196,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(124,85,196,.08) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(90,158,53,.12) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.16em;color:var(--q-light);text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem}
+.hero-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--q-light)}
+.hero h1{font-size:clamp(1.9rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1rem;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:var(--accent-light)}
+.hero-sub{font-size:.92rem;color:rgba(255,255,255,.5);max-width:620px;line-height:1.75;margin-bottom:2.5rem}
+.hero-stats{display:flex;gap:2rem;flex-wrap:wrap}
+.hstat-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-md);padding:1rem 1.4rem;min-width:110px}
+.hstat-val{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--accent-light);line-height:1}
+.hstat-val.q{color:var(--q-light)}
+.hstat-lbl{font-size:.68rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem}
+.hero-progress{margin-top:2.5rem}
+.hero-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.hero-progress-label{font-size:.78rem;color:rgba(255,255,255,.4)}
+.hero-progress-pct{font-family:'DM Mono',monospace;font-size:.9rem;color:var(--accent-light)}
+.hero-track{height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.hero-fill{height:100%;width:5%;background:linear-gradient(90deg,var(--accent-light),var(--q-light));border-radius:2px}
+.fases-strip{display:flex;margin-top:1.5rem;border-radius:var(--radius-sm);overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.fase{flex:1;padding:.5rem .25rem;text-align:center;font-size:.62rem;color:rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.06)}
+.fase:last-child{border-right:none}
+.fase.done{background:rgba(90,158,53,.2);color:#8FD45A}
+.fase.current{background:rgba(90,158,53,.35);color:#B2E87A;font-weight:500}
+.fase .f-name{font-weight:500;display:block}
+.fase .f-sub{font-size:.58rem;opacity:.7;margin-top:1px;display:block}
+.tabs-wrap{position:sticky;top:60px;z-index:100;background:rgba(243,247,238,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.tabs{max-width:1100px;margin:0 auto;display:flex;padding:0 2.5rem;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;padding:0 1.5rem;height:var(--tab-h);background:none;border:none;border-bottom:2px solid transparent;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text-muted);cursor:pointer;transition:color .2s,border-color .2s;display:flex;align-items:center;gap:.5rem;white-space:nowrap}
+.tab-btn:hover{color:var(--accent)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.tab-btn .tab-count{font-family:'DM Mono',monospace;font-size:.65rem;background:var(--accent-pale);color:var(--accent);padding:.05rem .4rem;border-radius:2rem}
+.tab-btn.active .tab-count{background:var(--accent);color:#fff}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.panel-inner{max-width:1100px;margin:0 auto;padding:2.5rem 2.5rem 4rem}
+.section-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:.4rem}
+.section-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;color:var(--text-dark);margin-bottom:1.75rem}
+.card{background:var(--warm-white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem;margin-bottom:1.25rem}
+.card-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.insight{display:flex;align-items:flex-start;gap:.75rem;padding:.875rem 1rem;border-radius:var(--radius-md);margin-bottom:.625rem;font-size:.84rem;line-height:1.6}
+.insight-icon{flex-shrink:0;font-size:.9rem;margin-top:2px}
+.insight-green{background:#EAF4ED;color:#2D6B3E}
+.insight-blue{background:var(--q-pale);color:var(--q)}
+.insight-warn{background:#FEF6E0;color:#8A6200}
+.insight-accent{background:var(--accent-pale);color:var(--accent)}
+.crono-wrap{position:relative}
+.crono-line{position:absolute;left:119px;top:0;bottom:0;width:1px;background:var(--border)}
+.crono-item{display:grid;grid-template-columns:100px 20px 1fr;gap:0 1.25rem;padding:1.5rem 0;align-items:start;position:relative}
+.crono-item+.crono-item{border-top:1px solid var(--border)}
+.crono-date{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text-muted);padding-top:3px;text-align:right}
+.crono-dot-wrap{display:flex;justify-content:center;padding-top:4px;position:relative;z-index:1}
+.cdot{width:12px;height:12px;border-radius:50%;border:2px solid var(--warm-white);box-shadow:0 0 0 1.5px currentColor}
+.cdot.done{background:#4A7C59;color:#4A7C59}
+.cdot.active{background:var(--accent-light);color:var(--accent-light);box-shadow:0 0 0 1.5px var(--accent-light),0 0 12px rgba(90,158,53,.4);animation:pulse 2s ease-in-out infinite}
+.cdot.future{background:var(--border);color:var(--border)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 1.5px var(--accent-light),0 0 8px rgba(90,158,53,.3)}50%{box-shadow:0 0 0 1.5px var(--accent-light),0 0 18px rgba(90,158,53,.5)}}
+.crono-title{font-size:.9rem;font-weight:500;color:var(--text-dark);margin-bottom:.2rem;line-height:1.4}
+.crono-title.active{color:var(--accent)}
+.crono-sub{font-size:.78rem;color:var(--text-muted);line-height:1.6}
+.crono-tags{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.5rem}
+.ctag{font-size:.65rem;padding:.1rem .5rem;border-radius:2rem;border:1px solid var(--border);color:var(--text-muted);background:var(--cream)}
+.ctag.q{background:var(--q-pale);color:var(--q);border-color:var(--q-light)}
+.ctag.g{background:var(--accent-pale);color:var(--accent);border-color:var(--accent-light)}
+.scope-hero{background:linear-gradient(135deg,var(--q) 0%,#1A0D38 50%,var(--accent) 100%);border-radius:var(--radius-lg);padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.scope-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:32px 32px}
+.scope-hero-inner{position:relative;z-index:1}
+.scope-hero h2{font-family:'Playfair Display',serif;font-size:1.4rem;color:#fff;margin-bottom:.875rem;line-height:1.3}
+.scope-hero p{font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.75;max-width:700px}
+.scope-hero strong{color:var(--accent-light)}
+.pipeline{display:flex;align-items:stretch;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:1.5rem 0}
+.pipe-step{flex:1;padding:1.25rem 1rem;border-right:1px solid var(--border);background:var(--warm-white);position:relative}
+.pipe-step:last-child{border-right:none}
+.pipe-step.q-step{background:var(--q-pale)}
+.pipe-num{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--text-muted);margin-bottom:.5rem}
+.pipe-icon{font-size:1.3rem;margin-bottom:.4rem}
+.pipe-name{font-size:.82rem;font-weight:500;color:var(--text-dark);margin-bottom:.2rem}
+.pipe-name.q{color:var(--q)}
+.pipe-sub{font-size:.7rem;color:var(--text-muted);line-height:1.5}
+.pipe-arrow-abs{position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:20px;height:20px;background:var(--cream);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--text-muted);z-index:2}
+.pipe-step:last-child .pipe-arrow-abs{display:none}
+.nisq-def-box{background:linear-gradient(135deg,#1A0D38,#0C1A06);border-radius:var(--radius-lg);padding:2rem;color:white;margin-bottom:1.25rem;position:relative;overflow:hidden}
+.nisq-def-box::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(124,85,196,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(124,85,196,.1) 1px,transparent 1px);background-size:24px 24px}
+.nisq-def-inner{position:relative;z-index:1}
+.nisq-acronym{display:flex;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.nisq-letter{text-align:center}
+.nisq-letter .nl{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--q-light);line-height:1}
+.nisq-letter .nw{font-size:.7rem;color:rgba(255,255,255,.5);margin-top:.2rem}
+.nisq-desc{font-size:.84rem;color:rgba(255,255,255,.6);line-height:1.7}
+.nisq-desc strong{color:var(--accent-light)}
+.nisq-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.nisq-concept-card{background:var(--warm-white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem}
+.nisq-concept-card h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--text-dark);margin-bottom:1rem}
+.nisq-bar-wrap{margin-top:.5rem}
+.nisq-row{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}
+.nisq-label{font-size:.76rem;color:var(--text-mid);width:175px;flex-shrink:0}
+.nisq-track{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.nisq-fill{height:100%;border-radius:4px}
+.nisq-val{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--text-muted);width:70px;text-align:right;flex-shrink:0}
+.era-timeline{display:flex;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border);margin-top:1.25rem}
+.era-box{flex:1;padding:.75rem .875rem;text-align:center;background:var(--warm-white);border-right:1px solid var(--border)}
+.era-box:last-child{border-right:none}
+.era-box.current{background:var(--q-pale)}
+.era-name{font-size:.75rem;font-weight:500;color:var(--text-dark)}
+.era-name.q{color:var(--q)}
+.era-range{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--text-muted);margin-top:2px}
+.era-tag{font-size:.6rem;margin-top:4px;padding:.1rem .4rem;border-radius:2rem;display:inline-block;background:var(--q-pale);color:var(--q)}
+.linia-card{background:var(--warm-white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;margin-bottom:1rem}
+.linia-card.chosen{border-color:var(--accent-light)}
+.linia-card.chosen::before{content:'ESCOLLIDA';position:absolute;top:16px;right:16px;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;background:var(--accent);color:#fff;padding:.2rem .6rem;border-radius:2rem}
+.linia-card.dropped{opacity:.55}
+.linia-card.dropped::before{content:'DESESTIMADA';position:absolute;top:16px;right:16px;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;background:var(--border);color:var(--text-muted);padding:.2rem .6rem;border-radius:2rem}
+.linia-num{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--text-muted);margin-bottom:.4rem}
+.linia-title{font-size:.92rem;font-weight:500;color:var(--text-dark);margin-bottom:.75rem}
+.linia-row{display:flex;justify-content:space-between;font-size:.75rem;padding:.3rem 0;border-top:1px solid var(--border);color:var(--text-muted)}
+.linia-row span:last-child{color:var(--text-dark);font-weight:500}
+.paper-card{background:var(--warm-white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.375rem 1.5rem;margin-bottom:.875rem;border-left:3px solid var(--border);transition:box-shadow .2s,transform .15s}
+.paper-card:hover{box-shadow:0 4px 20px var(--shadow);transform:translateY(-1px)}
+.paper-card.uc{border-left-color:var(--accent-light)}
+.paper-card.qs{border-left-color:var(--q-light)}
+.paper-card.rev{border-left-color:#C49A6C}
+.paper-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.4rem}
+.paper-title{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:600;color:var(--text-dark);line-height:1.4;flex:1}
+.paper-year{font-family:'DM Mono',monospace;font-size:.68rem;padding:.15rem .55rem;border-radius:2rem;white-space:nowrap;flex-shrink:0;background:var(--accent-pale);color:var(--accent)}
+.paper-year.q{background:var(--q-pale);color:var(--q)}
+.paper-authors{font-size:.76rem;color:var(--text-muted);margin-bottom:.2rem}
+.paper-venue{font-size:.73rem;color:var(--accent);font-weight:500}
+.paper-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem;flex-wrap:wrap;gap:.5rem}
+.paper-tags{display:flex;gap:.3rem;flex-wrap:wrap}
+.ptag{font-size:.65rem;background:var(--cream);border:1px solid var(--border);color:var(--text-muted);padding:.1rem .45rem;border-radius:2rem}
+.ptag.q{background:var(--q-pale);color:var(--q);border-color:var(--q-light)}
+.ptag.h{background:#FEF6E0;color:#8A6200;border-color:#C49A6C}
+.access{font-family:'DM Mono',monospace;font-size:.62rem;font-weight:600;padding:.12rem .5rem;border-radius:2rem}
+.access.oa{background:#EAF4ED;color:#2D6B3E}
+.access.pre{background:var(--q-pale);color:var(--q)}
+.access.inst{background:#F0EEEB;color:var(--text-muted)}
+.filter-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.filter-pill{font-size:.75rem;padding:.35rem .9rem;border-radius:2rem;border:1px solid var(--border);background:var(--warm-white);color:var(--text-muted);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.filter-pill:hover{border-color:var(--accent-light);color:var(--accent)}
+.filter-pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.algo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.algo-card{background:var(--q-pale);border:1px solid rgba(124,85,196,.2);border-radius:var(--radius-md);padding:1.25rem}
+.algo-name{font-family:'DM Mono',monospace;font-size:.82rem;font-weight:500;color:var(--q);margin-bottom:.4rem}
+.algo-full{font-size:.72rem;color:var(--q-mid);margin-bottom:.5rem;font-weight:500}
+.algo-desc{font-size:.78rem;color:#4A3070;line-height:1.55}
+.algo-rol{font-size:.7rem;color:var(--q-light);margin-top:.5rem;font-weight:500}
+.fam-section{margin-bottom:2.5rem}
+.fam-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.fam-icon{font-size:1.4rem}
+.fam-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--text-dark)}
+.fam-desc{font-size:.78rem;color:var(--text-muted);margin-top:1px}
+.fam-pill{font-family:'DM Mono',monospace;font-size:.62rem;padding:.2rem .65rem;border-radius:2rem}
+.fp-meta{background:var(--accent-pale);color:var(--accent)}
+.fp-heur{background:#EAF4ED;color:#2D6B3E}
+.fp-decomp{background:#FEF6E0;color:#8A6200}
+.fp-ml{background:#E6EEF6;color:#2C4F7C}
+.tec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.tec-card{background:var(--warm-white);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.25rem;cursor:pointer;transition:border-color .25s,box-shadow .25s,transform .2s;position:relative}
+.tec-card:hover{border-color:var(--accent-light);box-shadow:0 6px 24px var(--shadow);transform:translateY(-2px)}
+.tec-card::after{content:'↗';position:absolute;top:12px;right:14px;font-size:.75rem;color:var(--border);transition:color .2s,transform .2s}
+.tec-card:hover::after{color:var(--accent-light);transform:translate(1px,-1px)}
+.tec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;padding-right:1.25rem}
+.tec-name{font-size:.88rem;font-weight:500;color:var(--text-dark)}
+.tec-badge{font-size:.62rem;padding:.1rem .45rem;border-radius:2rem;font-family:'DM Mono',monospace}
+.tb-meta{background:var(--accent-pale);color:var(--accent)}
+.tb-heur{background:#EAF4ED;color:#2D6B3E}
+.tb-decomp{background:#FEF6E0;color:#8A6200}
+.tb-ml{background:#E6EEF6;color:#2C4F7C}
+.tec-desc{font-size:.78rem;color:var(--text-muted);line-height:1.6;margin-bottom:.5rem}
+.tec-rol{font-size:.71rem;color:var(--accent);font-weight:500}
+.tec-rol::before{content:'→ ';color:var(--accent-light)}
+.tec-hint{font-size:.68rem;color:var(--border);margin-top:.5rem;font-style:italic;transition:color .2s}
+.tec-card:hover .tec-hint{color:var(--text-muted)}
+.quantum-map{background:linear-gradient(135deg,#0C1A06 0%,#1A0D38 100%);border-radius:var(--radius-lg);padding:2rem;position:relative;overflow:hidden}
+.quantum-map::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(124,85,196,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(124,85,196,.07) 1px,transparent 1px);background-size:32px 32px}
+.qmap-inner{position:relative;z-index:1}
+.qmap-title{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.14em;color:var(--q-light);text-transform:uppercase;margin-bottom:1.25rem}
+.qmap-row{display:flex;align-items:center;gap:.75rem}
+.qmap-step{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-sm);padding:.6rem .875rem;flex:1;text-align:center}
+.qmap-step.qs{background:rgba(124,85,196,.2);border-color:rgba(124,85,196,.4)}
+.qmap-sname{font-size:.78rem;font-weight:500;color:rgba(255,255,255,.85)}
+.qmap-ssub{font-size:.65rem;color:rgba(255,255,255,.35);margin-top:2px}
+.qmap-arrow{font-size:.75rem;color:rgba(255,255,255,.2);flex-shrink:0}
+.modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(10,18,5,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1.5rem}
+.modal-overlay.open{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-box{background:var(--warm-white);border:1px solid var(--border);border-radius:var(--radius-lg);width:100%;max-width:820px;max-height:90vh;display:flex;flex-direction:column;animation:slideUp .25s ease;overflow:hidden}
+@keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.modal-header-left{display:flex;align-items:center;gap:.875rem}
+.modal-icon{font-size:1.4rem}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--text-dark)}
+.modal-subtitle{font-size:.75rem;color:var(--text-muted);margin-top:1px}
+.modal-close{background:var(--cream);border:1px solid var(--border);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;color:var(--text-muted);transition:background .2s,color .2s;flex-shrink:0}
+.modal-close:hover{background:var(--accent-pale);color:var(--accent)}
+.modal-body{overflow-y:auto;padding:1.5rem;flex:1}
+.modal-svg-wrap{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-md);padding:1rem;margin-bottom:1.25rem;overflow:auto}
+.modal-svg-wrap svg{width:100%;height:auto;display:block}
+.modal-desc{font-size:.85rem;color:var(--text-mid);line-height:1.75}
+.modal-desc strong{color:var(--accent)}
+.modal-desc p{margin-bottom:.625rem}
+.modal-rol-box{background:var(--accent-pale);border:1px solid var(--accent-light);border-radius:var(--radius-sm);padding:.75rem 1rem;font-size:.8rem;color:var(--accent);margin-top:1rem;font-weight:500}
+.modal-rol-box::before{content:'→ Rol en l\'esquema híbrid: '}
+.page-footer{text-align:center;padding:2rem 0 1rem;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--text-muted);letter-spacing:.06em}
+@media(max-width:768px){.grid-2,.tec-grid,.algo-grid,.nisq-grid{grid-template-columns:1fr}.pipeline{flex-direction:column}.crono-line{display:none}.crono-item{grid-template-columns:60px 16px 1fr}.hero h1{font-size:1.7rem}.panel-inner{padding:1.5rem}.nav-links{display:none}.modal-box{max-height:95vh}}
+</style>
+</head>
+<body>
+
+<!-- MODAL pantalla completa -->
+<div class="modal-overlay" id="tecModal" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <span class="modal-icon" id="mIcon"></span>
+        <div><div class="modal-title" id="mTitle"></div><div class="modal-subtitle" id="mSub"></div></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-svg-wrap" id="mSvg"></div>
+      <div class="modal-desc" id="mDesc"></div>
+      <div class="modal-rol-box" id="mRol"></div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a href="../index.html" class="nav-back">← Portafoli</a>
+  <span class="nav-title">TFM · QUANTUM UC</span>
+  <div class="nav-links">
+    <a href="#" onclick="switchTab('scope');return false">Scope</a>
+    <a href="#" onclick="switchTab('crono');return false">Cronologia</a>
+    <a href="#" onclick="switchTab('literatura');return false">Literatura</a>
+    <a href="#" onclick="switchTab('tecniques');return false">Tècniques</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">TFM · Màster en Enginyeria · 2025–2026</div>
+    <h1>Heurístiques per a<br><em>Quantum Unit Commitment</em><br>en Microxarxes</h1>
+    <p class="hero-sub">Tècniques heurístiques i metaheurístiques com a capa clàssica per a l'optimització híbrida clàssic-quàntica del problema d'encesa i apagada de generadors en microxarxes.</p>
+    <div class="hero-stats">
+      <div class="hstat-card"><div class="hstat-val">L1</div><div class="hstat-lbl">Línia escollida</div></div>
+      <div class="hstat-card"><div class="hstat-val">6</div><div class="hstat-lbl">Papers clau</div></div>
+      <div class="hstat-card"><div class="hstat-val q">9</div><div class="hstat-lbl">Tècniques estudiad.</div></div>
+      <div class="hstat-card"><div class="hstat-val">NISQ</div><div class="hstat-lbl">Era hardware</div></div>
+    </div>
+    <div class="hero-progress">
+      <div class="hero-progress-top"><span class="hero-progress-label">Progrés global TFM</span><span class="hero-progress-pct">5%</span></div>
+      <div class="hero-track"><div class="hero-fill"></div></div>
+    </div>
+    <div class="fases-strip">
+      <div class="fase done"><span class="f-name">Definició</span><span class="f-sub">✓ fet</span></div>
+      <div class="fase current"><span class="f-name">Revisió Bib.</span><span class="f-sub">en curs</span></div>
+      <div class="fase"><span class="f-name">Metodologia</span><span class="f-sub">Fase 3</span></div>
+      <div class="fase"><span class="f-name">Implementació</span><span class="f-sub">Fase 4</span></div>
+      <div class="fase"><span class="f-name">Resultats</span><span class="f-sub">Fase 5</span></div>
+      <div class="fase"><span class="f-name">Redacció</span><span class="f-sub">Fase 6</span></div>
+      <div class="fase"><span class="f-name">Defensa</span><span class="f-sub">objectiu</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('scope')" data-tab="scope">🎯 Scope &amp; Context</button>
+    <button class="tab-btn" onclick="switchTab('crono')" data-tab="crono">📅 Cronologia</button>
+    <button class="tab-btn" onclick="switchTab('literatura')" data-tab="literatura">📚 Literatura <span class="tab-count">6</span></button>
+    <button class="tab-btn" onclick="switchTab('tecniques')" data-tab="tecniques">⚙️ Tècniques <span class="tab-count">9</span></button>
+  </div>
+</div>
+
+<!-- ════ SCOPE ════ -->
+<div id="panel-scope" class="tab-panel active">
+  <div class="panel-inner">
+    <div class="section-label">Proposta de recerca</div>
+    <div class="section-title">Scope &amp; Context</div>
+    <div class="scope-hero">
+      <div class="scope-hero-inner">
+        <h2>Heurístiques per a Quantum Unit Commitment en Microxarxes</h2>
+        <p>Aplicació de tècniques <strong>heurístiques i metaheurístiques</strong> com a capa clàssica per millorar la resolució del problema de <strong>Unit Commitment (UC)</strong> en microxarxes, en un context de <strong>computació quàntica híbrida clàssic-quàntica</strong>. Les heurístiques compensen les limitacions del hardware NISQ actual: inicialitzen, guien o refinen les solucions dels algorismes quàntics com QAOA o Quantum Annealing.</p>
+      </div>
+    </div>
+    <div class="section-label">Pipeline metodològic</div>
+    <div class="pipeline">
+      <div class="pipe-step"><div class="pipe-arrow-abs">→</div><div class="pipe-num">01</div><div class="pipe-icon">🔨</div><div class="pipe-name">Constructiva</div><div class="pipe-sub">Greedy · GRASP<br>Solució inicial</div></div>
+      <div class="pipe-step"><div class="pipe-arrow-abs">→</div><div class="pipe-num">02</div><div class="pipe-icon">🔍</div><div class="pipe-name">Cerca local</div><div class="pipe-sub">2-opt · VND<br>Refinament</div></div>
+      <div class="pipe-step"><div class="pipe-arrow-abs">→</div><div class="pipe-num">03</div><div class="pipe-icon">🧬</div><div class="pipe-name">Metaheurística</div><div class="pipe-sub">GA · PSO · ACO<br>Cerca global</div></div>
+      <div class="pipe-step q-step"><div class="pipe-num" style="color:var(--q-light)">04</div><div class="pipe-icon">⚛️</div><div class="pipe-name q">Solver quàntic</div><div class="pipe-sub">QAOA · Annealing<br>Avantatge quàntic</div></div>
+    </div>
+    <div class="section-label" style="margin-top:2rem">Context tecnològic — Era NISQ</div>
+    <div class="nisq-def-box">
+      <div class="nisq-def-inner">
+        <div class="nisq-acronym">
+          <div class="nisq-letter"><div class="nl">N</div><div class="nw">Noisy</div></div>
+          <div class="nisq-letter"><div class="nl">I</div><div class="nw">Intermediate</div></div>
+          <div class="nisq-letter"><div class="nl">S</div><div class="nw">Scale</div></div>
+          <div class="nisq-letter"><div class="nl">Q</div><div class="nw">Quantum</div></div>
+        </div>
+        <div class="nisq-desc">Terme encunyat per <strong>John Preskill el 2018</strong> per descriure l'era actual de la computació quàntica. Els dispositius existents tenen entre 50 i ~5000 qubits però són <strong>inherentment sorollosos</strong>: els qubits perden la seva informació quàntica per <strong>decoherència</strong> (pertorbacions tèrmiques i electromagnètiques), introduint errors en els càlculs. Circuits curts i enfocaments híbrids clàssic-quàntics és el paradigma dominant fins que arribi la computació quàntica tolerant a errors (FTQC).</div>
+      </div>
+    </div>
+    <div class="nisq-grid" style="margin-top:1.25rem">
+      <div class="nisq-concept-card">
+        <h3>Capacitats del hardware actual</h3>
+        <div class="nisq-bar-wrap">
+          <div class="nisq-row"><span class="nisq-label">Qubits disponibles</span><div class="nisq-track"><div class="nisq-fill" style="width:30%;background:var(--accent-light)"></div></div><span class="nisq-val">~5.000</span></div>
+          <div class="nisq-row"><span class="nisq-label">Qualitat de qubit (fidelitat)</span><div class="nisq-track"><div class="nisq-fill" style="width:38%;background:var(--q-light)"></div></div><span class="nisq-val">baixa</span></div>
+          <div class="nisq-row"><span class="nisq-label">Profunditat de circuit</span><div class="nisq-track"><div class="nisq-fill" style="width:18%;background:#C49A6C"></div></div><span class="nisq-val">molt limitada</span></div>
+          <div class="nisq-row"><span class="nisq-label">Casos UC demostrats</span><div class="nisq-track"><div class="nisq-fill" style="width:12%;background:#4A7C59"></div></div><span class="nisq-val">≤ 14 busos</span></div>
+        </div>
+        <div class="era-timeline">
+          <div class="era-box"><div class="era-name">NISQ</div><div class="era-range">2018–avui</div><div class="era-tag">Ara</div></div>
+          <div class="era-box"><div class="era-name">Early FTQC</div><div class="era-range">~2030</div></div>
+          <div class="era-box"><div class="era-name">FTQC complet</div><div class="era-range">&gt;2035</div></div>
+        </div>
+      </div>
+      <div class="nisq-concept-card">
+        <h3>Implicacions per al TFM</h3>
+        <div class="insight insight-blue" style="margin-bottom:.625rem"><span class="insight-icon">⚛️</span><span>Els errors NISQ fan que els algorismes quàntics purs siguin poc fiables. Els <strong>esquemes híbrids</strong> (capa clàssica + solver quàntic) són la solució estàndard.</span></div>
+        <div class="insight insight-green" style="margin-bottom:.625rem"><span class="insight-icon">✅</span><span>Les <strong>heurístiques clàssiques</strong> compensen: una bona solució inicial redueix la profunditat de circuit necessària per al QAOA, mitigant l'efecte del soroll.</span></div>
+        <div class="insight insight-warn"><span class="insight-icon">⚠️</span><span>L'escalabilitat a microxarxes reals (&gt;20 generadors) és un <strong>repte obert</strong>. La tesi pot contribuir demostrant que la capa heurística millora la qualitat de solució en sistemes reals.</span></div>
+      </div>
+    </div>
+    <div class="section-label" style="margin-top:2rem">Comparativa de línies de recerca</div>
+    <div class="grid-2">
+      <div class="linia-card chosen">
+        <div class="linia-num">Línia 01</div>
+        <div class="linia-title">Heurístiques per a UC quàntic en microxarxes</div>
+        <div class="linia-row"><span>Literatura existent</span><span>Molta i sòlida</span></div>
+        <div class="linia-row"><span>Contribució possible</span><span>Capa heurística híbrida</span></div>
+        <div class="linia-row"><span>Connexió power syst.</span><span>Directa</span></div>
+        <div class="linia-row"><span>Viabilitat NISQ</span><span>Alta</span></div>
+      </div>
+      <div>
+        <div class="linia-card dropped" style="margin-bottom:1.25rem">
+          <div class="linia-num">Línia 02</div>
+          <div class="linia-title">Microxarxa rural — variables binàries de connexió</div>
+          <div class="linia-row"><span>Motiu desestimació</span><span>Poca literatura vinculant. Electrificació rural decreixent.</span></div>
+        </div>
+        <div class="linia-card dropped">
+          <div class="linia-num">Línia 03</div>
+          <div class="linia-title">Quantum SVM (QSVM)</div>
+          <div class="linia-row"><span>Motiu desestimació</span><span>Avantatge real limitat a NISQ. Connexió indirecta amb power systems.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ CRONOLOGIA ════ -->
+<div id="panel-crono" class="tab-panel">
+  <div class="panel-inner">
+    <div class="section-label">Evolució del projecte</div>
+    <div class="section-title">Cronologia i fites</div>
+    <div class="grid-2" style="margin-bottom:1.5rem">
+      <div class="insight insight-accent"><span class="insight-icon">✦</span><span><strong>Propera fita:</strong> dilluns — reunió tutores per tancar el scope definitiu. Presentar la proposta amb justificació bibliogràfica.</span></div>
+      <div class="insight insight-blue"><span class="insight-icon">📌</span><span><strong>Fase actual:</strong> revisió bibliogràfica i estudi del marc teòric de tècniques d'optimització clàssiques i quàntiques.</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Fites completades i previstes</div>
+      <div class="crono-wrap">
+        <div class="crono-line"></div>
+        <div class="crono-item">
+          <div class="crono-date">Juny 2025</div>
+          <div class="crono-dot-wrap"><div class="cdot done"></div></div>
+          <div class="crono-body"><div class="crono-title">Primera reunió amb tutores</div><div class="crono-sub">Proposta de tres línies de recerca. Presentació del context: optimització quàntica aplicada a sistemes elèctrics.</div><div class="crono-tags"><span class="ctag g">Completada</span><span class="ctag">Tutories</span></div></div>
+        </div>
+        <div class="crono-item">
+          <div class="crono-date">Jul 2025</div>
+          <div class="crono-dot-wrap"><div class="cdot done"></div></div>
+          <div class="crono-body"><div class="crono-title">Decisió de línia: L1 — Quantum UC per a microxarxes</div><div class="crono-sub">Desestimades L2 i L3. Escollida L1 per solidesa bibliogràfica i connexió amb el grup de recerca de les tutores.</div><div class="crono-tags"><span class="ctag g">Completada</span><span class="ctag">Decisió estratègica</span></div></div>
+        </div>
+        <div class="crono-item">
+          <div class="crono-date">Jul 2025</div>
+          <div class="crono-dot-wrap"><div class="cdot done"></div></div>
+          <div class="crono-body"><div class="crono-title">Revisió bibliogràfica inicial — IEEE, Elsevier, arXiv</div><div class="crono-sub">Identificació de 6 papers clau. Mapa de l'estat de l'art: QAOA, Quantum Annealing, Benders híbrida, Quantum Surrogate LR.</div><div class="crono-tags"><span class="ctag g">Completada</span><span class="ctag q">6 papers</span></div></div>
+        </div>
+        <div class="crono-item">
+          <div class="crono-date">Jul 2025</div>
+          <div class="crono-dot-wrap"><div class="cdot done"></div></div>
+          <div class="crono-body"><div class="crono-title">Estudi del marc teòric — 9 tècniques d'optimització</div><div class="crono-sub">Heurístiques (Greedy, GRASP, 2-opt, VND), metaheurístiques (GA, SA, Tabu, PSO, ACO), descomposició (Lagrangiana, Benders, Dantzig-Wolfe) i aprenentatge automàtic (RL, GNN).</div><div class="crono-tags"><span class="ctag g">Completada</span><span class="ctag">Marc teòric</span></div></div>
+        </div>
+        <div class="crono-item">
+          <div class="crono-date">Dill. pròxim</div>
+          <div class="crono-dot-wrap"><div class="cdot active"></div></div>
+          <div class="crono-body"><div class="crono-title active">✦ Reunió tutores — Tancament del scope</div><div class="crono-sub">Presentar la proposta definitiva: heurístiques i metaheurístiques per a Quantum Unit Commitment en microxarxes.</div><div class="crono-tags"><span class="ctag g">Fita activa</span><span class="ctag">Tutories</span></div></div>
+        </div>
+        <div class="crono-item">
+          <div class="crono-date">Ag 2025</div>
+          <div class="crono-dot-wrap"><div class="cdot future"></div></div>
+          <div class="crono-body"><div class="crono-title">Revisió de literatura aprofundida</div><div class="crono-sub">Lectura sistemàtica dels papers seleccionats. Redacció de l'estat de l'art. Identificació de buits i contribució original.</div><div class="crono-tags"><span class="ctag">Pendent</span></div></div>
+        </div>
+        <div class="crono-item">
+          <div class="crono-date">Set 2025</div>
+          <div class="crono-dot-wrap"><div class="cdot future"></div></div>
+          <div class="crono-body"><div class="crono-title">Definició de la metodologia</div><div class="crono-sub">Selecció de la metaheurística a integrar amb QAOA / Quantum Annealing. Disseny de l'esquema híbrid i formulació QUBO del UC.</div><div class="crono-tags"><span class="ctag">Pendent</span></div></div>
+        </div>
+        <div class="crono-item">
+          <div class="crono-date">Oct–Des 2025</div>
+          <div class="crono-dot-wrap"><div class="cdot future"></div></div>
+          <div class="crono-body"><div class="crono-title">Implementació i experimentació</div><div class="crono-sub">Codificació en Qiskit / Ocean SDK (D-Wave). Benchmarking amb mètodes clàssics.</div><div class="crono-tags"><span class="ctag">Pendent</span><span class="ctag q">Qiskit · D-Wave</span></div></div>
+        </div>
+        <div class="crono-item">
+          <div class="crono-date">Gen 2026</div>
+          <div class="crono-dot-wrap"><div class="cdot future"></div></div>
+          <div class="crono-body"><div class="crono-title">Redacció de la memòria i defensa</div><div class="crono-sub">Redacció en català. Defensa davant del tribunal.</div><div class="crono-tags"><span class="ctag">Pendent</span><span class="ctag g">Objectiu final</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LITERATURA ════ -->
+<div id="panel-literatura" class="tab-panel">
+  <div class="panel-inner">
+    <div class="section-label">Estat de l'art</div>
+    <div class="section-title">Revisió de literatura</div>
+    <div class="filter-row">
+      <button class="filter-pill on" onclick="filterPapers('all',this)">Tots</button>
+      <button class="filter-pill" onclick="filterPapers('uc',this)">Quantum UC</button>
+      <button class="filter-pill" onclick="filterPapers('qs',this)">Híbrid quàntic</button>
+      <button class="filter-pill" onclick="filterPapers('rev',this)">Reviews</button>
+      <button class="filter-pill" onclick="filterPapers('oa',this)">Open Access</button>
+    </div>
+    <div id="papers-list">
+      <div class="paper-card uc" data-type="uc" data-access="inst">
+        <div class="paper-top"><div class="paper-title">Quantum Distributed Unit Commitment: An Application in Microgrids</div><span class="paper-year q">2022</span></div>
+        <div class="paper-authors">Nikmehr N., Zhang P., Bragin M.A.</div>
+        <div class="paper-venue">IEEE Transactions on Power Systems, 37(5): 3592–3603</div>
+        <div class="paper-footer"><div class="paper-tags"><span class="ptag q">Quantum UC</span><span class="ptag q">Microxarxes</span></div><span class="access inst">Institucional</span></div>
+      </div>
+      <div class="paper-card qs" data-type="qs" data-access="inst">
+        <div class="paper-top"><div class="paper-title">Novel Resolution of Unit Commitment Problems through Quantum Surrogate Lagrangian Relaxation</div><span class="paper-year">2023</span></div>
+        <div class="paper-authors">Feng F., Zhang P., Bragin M.A., Zhou Y.</div>
+        <div class="paper-venue">IEEE Transactions on Power Systems, 38(3): 2460–2471</div>
+        <div class="paper-footer"><div class="paper-tags"><span class="ptag h">Lagrangiana quàntica</span><span class="ptag q">Quantum Surrogate</span></div><span class="access inst">Institucional</span></div>
+      </div>
+      <div class="paper-card qs" data-type="qs" data-access="inst">
+        <div class="paper-top"><div class="paper-title">Learning Infused Quantum-Classical Distributed Optimization for Power Generation Scheduling</div><span class="paper-year">2023</span></div>
+        <div class="paper-authors">Mahroo R., Kargarian A.</div>
+        <div class="paper-venue">IEEE Transactions on Quantum Engineering, 4: 1–14</div>
+        <div class="paper-footer"><div class="paper-tags"><span class="ptag q">Híbrid clàssic-quàntic</span></div><span class="access inst">Institucional</span></div>
+      </div>
+      <div class="paper-card rev" data-type="rev" data-access="oa">
+        <div class="paper-top"><div class="paper-title">Opportunities for Quantum Computing within Net-Zero Power System Optimization</div><span class="paper-year q">2024</span></div>
+        <div class="paper-authors">Morstyn T., Wang X.</div>
+        <div class="paper-venue">Joule / Elsevier — Open Access CC-BY</div>
+        <div class="paper-footer"><div class="paper-tags"><span class="ptag q">Review</span><span class="ptag">Power Systems</span></div><span class="access oa">Open Access ✓</span></div>
+      </div>
+      <div class="paper-card qs" data-type="qs" data-access="oa">
+        <div class="paper-top"><div class="paper-title">A Hybrid Classical-Quantum Approach to Highly Constrained Unit Commitment Problems</div><span class="paper-year">2024</span></div>
+        <div class="paper-authors">Salgado B., Sequeira A., Santos L.P.</div>
+        <div class="paper-venue">arXiv: 2412.11312</div>
+        <div class="paper-footer"><div class="paper-tags"><span class="ptag q">Híbrid</span><span class="ptag h">Benders</span></div><span class="access pre">Preprint ✓</span></div>
+      </div>
+      <div class="paper-card rev" data-type="rev" data-access="oa">
+        <div class="paper-top"><div class="paper-title">A Review of Quantum Computing Technologies in Power System Optimization</div><span class="paper-year">2025</span></div>
+        <div class="paper-authors">Chen Y., Vu T.</div>
+        <div class="paper-venue">PNNL Technical Report — Accés públic</div>
+        <div class="paper-footer"><div class="paper-tags"><span class="ptag q">Review general</span></div><span class="access oa">Públic ✓</span></div>
+      </div>
+    </div>
+    <div style="margin-top:2.5rem">
+      <div class="section-label">Algorismes quàntics identificats</div>
+      <div class="algo-grid">
+        <div class="algo-card"><div class="algo-name">QAOA</div><div class="algo-full">Quantum Approximate Optimization Algorithm</div><div class="algo-desc">Algorisme variacional en circuits parametritzats. Adequat per a problemes QUBO binaris com el UC. Implementable en IBM Quantum (Qiskit).</div><div class="algo-rol">→ Solver del problema mestre binari en esquema híbrid</div></div>
+        <div class="algo-card"><div class="algo-name">Quantum Annealing</div><div class="algo-full">D-Wave Advantage — fins a 5000+ qubits</div><div class="algo-desc">Implementació física del Simulated Annealing via efecte túnel quàntic. El hardware més usat a la literatura de UC quàntic.</div><div class="algo-rol">→ Hardware dominant als papers de Quantum UC</div></div>
+        <div class="algo-card"><div class="algo-name">Benders Híbrida</div><div class="algo-full">Hybrid Quantum-Classical Benders Decomposition</div><div class="algo-desc">Binàries (ON/OFF) al solver quàntic; despacho continu al LP clàssic. Enfocament dominant.</div><div class="algo-rol">→ Esquema híbrid més estudiat i validat</div></div>
+        <div class="algo-card"><div class="algo-name">Quantum Surrogate LR</div><div class="algo-full">Quantum Surrogate Lagrangian Relaxation</div><div class="algo-desc">Substitueix l'actualització clàssica de multiplicadors λ per un solver quàntic. Feng et al. (2023).</div><div class="algo-rol">→ Alternativa Lagrangiana a la Benders híbrida</div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1.5rem">
+      <div class="card-label">Observacions de la revisió</div>
+      <div class="insight insight-green"><span class="insight-icon">✅</span><span><strong>Benders Decomposition híbrida</strong> és l'enfocament dominant. Binari (quàntic) / continu (clàssic) és el patró estructural més repetit.</span></div>
+      <div class="insight insight-blue"><span class="insight-icon">📌</span><span><strong>Buit identificat:</strong> integració de metaheurístiques (GA, ACO) com a capa d'inicialització del solver quàntic en UC per a microxarxes és poc explorada — oportunitat de contribució original.</span></div>
+      <div class="insight insight-warn"><span class="insight-icon">⚠️</span><span><strong>Limitació d'escala:</strong> avantatges demostrats en sistemes petits (≤14 busos). Escalabilitat a microxarxes reals és un repte obert.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TÈCNIQUES ════ -->
+<div id="panel-tecniques" class="tab-panel">
+  <div class="panel-inner">
+    <div class="section-label">Marc teòric estudiat</div>
+    <div class="section-title">Tècniques d'optimització</div>
+    <div class="insight insight-accent" style="margin-bottom:1.75rem"><span class="insight-icon">💡</span><span>Clica qualsevol tècnica per veure el diagrama explicatiu en pantalla completa.</span></div>
+    <div class="quantum-map" style="margin-bottom:2rem">
+      <div class="qmap-inner">
+        <div class="qmap-title">Pipeline híbrid clàssic-quàntic per al Unit Commitment</div>
+        <div class="qmap-row">
+          <div class="qmap-step"><div class="qmap-sname">Greedy / GRASP</div><div class="qmap-ssub">Solució inicial</div></div>
+          <div class="qmap-arrow">→</div>
+          <div class="qmap-step"><div class="qmap-sname">Cerca local</div><div class="qmap-ssub">2-opt · VND</div></div>
+          <div class="qmap-arrow">→</div>
+          <div class="qmap-step"><div class="qmap-sname">Metaheurística</div><div class="qmap-ssub">GA · PSO · ACO</div></div>
+          <div class="qmap-arrow">→</div>
+          <div class="qmap-step qs"><div class="qmap-sname">⚛️ QAOA / Annealing</div><div class="qmap-ssub">Solver quàntic</div></div>
+          <div class="qmap-arrow">→</div>
+          <div class="qmap-step"><div class="qmap-sname">Postprocés</div><div class="qmap-ssub">Cerca local · Benders</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="fam-section">
+      <div class="fam-header"><span class="fam-icon">🔨</span><div><div class="fam-name">Heurístiques constructives</div><div class="fam-desc">Construeixen una solució de zero pas a pas, seguint regles locals</div></div><span class="fam-pill fp-heur">Constructiva</span></div>
+      <div class="tec-grid">
+        <div class="tec-card" onclick="openModal('greedy')"><div class="tec-head"><span class="tec-name">Greedy</span><span class="tec-badge tb-heur">Constructiva</span></div><div class="tec-desc">Tria la millor opció local a cada pas sense visió de futur. Ràpid però pot ser globalment subòptim.</div><div class="tec-rol">Inicialitzador ràpid del schedule ON/OFF</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('grasp')"><div class="tec-head"><span class="tec-name">GRASP</span><span class="tec-badge tb-heur">Constructiva</span></div><div class="tec-desc">Greedy Randomized Adaptive Search Procedure. Llista de candidats + tria aleatòria + cerca local iterativa.</div><div class="tec-rol">Solució inicial robusta per al solver quàntic</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+      </div>
+    </div>
+    <div class="fam-section">
+      <div class="fam-header"><span class="fam-icon">🔍</span><div><div class="fam-name">Cerca local</div><div class="fam-desc">Milloren iterativament una solució explorant petits canvis al veïnat</div></div><span class="fam-pill fp-heur">Cerca local</span></div>
+      <div class="tec-grid">
+        <div class="tec-card" onclick="openModal('hillclimbing')"><div class="tec-head"><span class="tec-name">Hill Climbing / 2-opt</span><span class="tec-badge tb-heur">Cerca local</span></div><div class="tec-desc">Millora intercanviant segments del schedule (2-opt). Vulnerable a òptims locals.</div><div class="tec-rol">Refinament de la solució quàntica sorollosa</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('vnd')"><div class="tec-head"><span class="tec-name">VND</span><span class="tec-badge tb-heur">Cerca local</span></div><div class="tec-desc">Variable Neighborhood Descent. Múltiples estructures de veïnat en seqüència per escapar òptims locals.</div><div class="tec-rol">Cerca local avançada per al postprocés</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+      </div>
+    </div>
+    <div class="fam-section">
+      <div class="fam-header"><span class="fam-icon">🧬</span><div><div class="fam-name">Metaheurístiques</div><div class="fam-desc">Estratègies d'alt nivell inspirades en fenòmens naturals per guiar la cerca global</div></div><span class="fam-pill fp-meta">Metaheurística</span></div>
+      <div class="tec-grid">
+        <div class="tec-card" onclick="openModal('ga')"><div class="tec-head"><span class="tec-name">Algoritmes Genètics</span><span class="tec-badge tb-meta">Metaheurística</span></div><div class="tec-desc">Evolució: selecció, creuament i mutació de schedules. Cromosoma = vector binari ON/OFF per hora.</div><div class="tec-rol">Inicialitzador o substitut del selector quàntic</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('sa')"><div class="tec-head"><span class="tec-name">Simulated Annealing</span><span class="tec-badge tb-meta">Metaheurística</span></div><div class="tec-desc">Acceptació probabilística de solucions pitjors (temperatura T decreixent). Base del Quantum Annealing.</div><div class="tec-rol">Base conceptual del Quantum Annealing D-Wave</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('tabu')"><div class="tec-head"><span class="tec-name">Tabu Search</span><span class="tec-badge tb-meta">Metaheurística</span></div><div class="tec-desc">Memòria explícita (llista tabú) de moviments recents per evitar cicles i òptims locals.</div><div class="tec-rol">Guia la cerca post-solució quàntica</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('pso')"><div class="tec-head"><span class="tec-name">PSO</span><span class="tec-badge tb-meta">Metaheurística</span></div><div class="tec-desc">Particle Swarm Optimization. Intel·ligència col·lectiva: pBest + gBest. Variant quàntica: QPSO.</div><div class="tec-rol">QPSO: partícules en superposició quàntica</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('aco')"><div class="tec-head"><span class="tec-name">ACO</span><span class="tec-badge tb-meta">Metaheurística</span></div><div class="tec-desc">Ant Colony Optimization. Feromona acumulada guia la construcció incremental hora a hora del UC.</div><div class="tec-rol">Construcció seqüencial UC — buit de recerca</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+      </div>
+    </div>
+    <div class="fam-section">
+      <div class="fam-header"><span class="fam-icon">✂️</span><div><div class="fam-name">Relaxació i descomposició</div><div class="fam-desc">Parteixen el problema en subproblemes tractables coordinats iterativament</div></div><span class="fam-pill fp-decomp">Descomposició</span></div>
+      <div class="tec-grid">
+        <div class="tec-card" onclick="openModal('lagrangiana')"><div class="tec-head"><span class="tec-name">Relaxació Lagrangiana</span><span class="tec-badge tb-decomp">Descomposició</span></div><div class="tec-desc">Restriccions d'acoblament com a penalitzacions λ. Desacobla per generador. Quantum Surrogate LR: λ quàntic.</div><div class="tec-rol">Quantum Surrogate Lagrangian Relaxation</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('benders')"><div class="tec-head"><span class="tec-name">Benders Decomposition</span><span class="tec-badge tb-decomp">Descomposició</span></div><div class="tec-desc">Binàries al solver quàntic (mestre); contínues al LP clàssic (subproblema). Talls de Benders coordinen.</div><div class="tec-rol">Esquema híbrid dominant a la literatura</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('dantzigwolfe')"><div class="tec-head"><span class="tec-name">Dantzig-Wolfe</span><span class="tec-badge tb-decomp">Descomposició</span></div><div class="tec-desc">Partició per estructura de bloc. Cada generador és un bloc. Generació de columnes per combinar propostes.</div><div class="tec-rol">Oportunitat — poc literatura quàntica</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+      </div>
+    </div>
+    <div class="fam-section">
+      <div class="fam-header"><span class="fam-icon">🤖</span><div><div class="fam-name">Aprenentatge automàtic</div><div class="fam-desc">Mètodes que aprenen de l'experiència per guiar o complementar l'optimització</div></div><span class="fam-pill fp-ml">Aprenentatge</span></div>
+      <div class="tec-grid">
+        <div class="tec-card" onclick="openModal('rl')"><div class="tec-head"><span class="tec-name">Reinforcement Learning</span><span class="tec-badge tb-ml">Aprenentatge</span></div><div class="tec-desc">Agent aprèn la política ON/OFF per interacció amb la microxarxa. Recompensa = cost baix + restriccions respectades.</div><div class="tec-rol">Guia la descomposició quàntica adaptativament</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+        <div class="tec-card" onclick="openModal('gnn')"><div class="tec-head"><span class="tec-name">Graph Neural Networks</span><span class="tec-badge tb-ml">Aprenentatge</span></div><div class="tec-desc">La microxarxa com a graf: nodes (generadors, bateries) + arestes (línies). Pas de missatges per decisions coordinades.</div><div class="tec-rol">Modelat de restriccions de topologia</div><div class="tec-hint">Clica per veure el diagrama →</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">TFM · Iker Martin Saladich · Quantum UC per a Microxarxes · Juliol 2025</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
+  window.scrollTo({ top: document.querySelector('.tabs-wrap').offsetTop - 60, behavior: 'smooth' });
+}
+function filterPapers(type, btn) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.paper-card').forEach(card => {
+    if (type === 'all') card.style.display = '';
+    else if (type === 'oa') card.style.display = card.dataset.access === 'oa' ? '' : 'none';
+    else card.style.display = card.dataset.type === type ? '' : 'none';
+  });
+}
+const SVG_GREEDY = `<svg viewBox="0 0 660 320" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="22" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Algorisme Greedy — Unit Commitment</text><rect x="20" y="38" width="620" height="28" rx="4" fill="#EAF3DF"/><text x="80" y="57" text-anchor="middle" font-size="11" fill="#2A5C1A" font-weight="500">Pas</text><text x="230" y="57" text-anchor="middle" font-size="11" fill="#2A5C1A" font-weight="500">Situació (demanda)</text><text x="420" y="57" text-anchor="middle" font-size="11" fill="#2A5C1A" font-weight="500">Decisió Greedy</text><text x="590" y="57" text-anchor="middle" font-size="11" fill="#2A5C1A" font-weight="500">Resultat</text><rect x="20" y="70" width="620" height="60" rx="4" fill="#FAFDF6" stroke="#DDEACF"/><rect x="20" y="70" width="120" height="60" rx="4" fill="#EAF3DF" stroke="#DDEACF"/><text x="80" y="104" text-anchor="middle" font-size="12" font-weight="600" fill="#2A5C1A">t = 1</text><text x="230" y="90" text-anchor="middle" font-size="11" fill="#3D4F2A">Demanda: 80 MW</text><text x="230" y="107" text-anchor="middle" font-size="10" fill="#728060">Gen A: 50MW, 10€/MWh · Gen B: 40MW, 15€/MWh</text><text x="420" y="100" text-anchor="middle" font-size="10" fill="#3D4F2A">Engega A (més barat) + B parcial</text><rect x="540" y="80" width="90" height="40" rx="6" fill="#EAF4ED" stroke="#4A7C59"/><text x="585" y="104" text-anchor="middle" font-size="11" font-weight="500" fill="#2D6B3E">A+B: ON ✓</text><rect x="20" y="135" width="620" height="60" rx="4" fill="#FAFDF6" stroke="#DDEACF"/><rect x="20" y="135" width="120" height="60" rx="4" fill="#EAF3DF" stroke="#DDEACF"/><text x="80" y="169" text-anchor="middle" font-size="12" font-weight="600" fill="#2A5C1A">t = 2</text><text x="230" y="155" text-anchor="middle" font-size="11" fill="#3D4F2A">Demanda: 30 MW (baixa)</text><text x="230" y="180" text-anchor="middle" font-size="10" fill="#728060">Gen B: cost aturada=8€</text><text x="420" y="165" text-anchor="middle" font-size="10" fill="#3D4F2A">Apaga B → estalvi immediat</text><rect x="540" y="145" width="90" height="40" rx="6" fill="#FEF6E0" stroke="#C49A6C"/><text x="585" y="169" text-anchor="middle" font-size="10" font-weight="500" fill="#8A6200">A:ON · B:OFF</text><rect x="20" y="200" width="620" height="65" rx="4" fill="#FFF8F8" stroke="#D9A0A0"/><rect x="20" y="200" width="120" height="65" rx="4" fill="#FDEAEA" stroke="#D9A0A0"/><text x="80" y="236" text-anchor="middle" font-size="12" font-weight="600" fill="#8B3A3A">t = 3 ⚠</text><text x="230" y="220" text-anchor="middle" font-size="11" fill="#3D4F2A">Demanda: 85 MW (sobtada)</text><text x="230" y="252" text-anchor="middle" font-size="10" fill="#8B3A3A">Cost arrencada B: 20€ (car!)</text><text x="420" y="230" text-anchor="middle" font-size="10" fill="#8B3A3A">Greedy no va anticipar el cost</text><text x="420" y="247" text-anchor="middle" font-size="10" fill="#8B3A3A">d'apagar B a t=2 → miopia</text><rect x="540" y="210" width="90" height="45" rx="6" fill="#FDEAEA" stroke="#8B3A3A"/><text x="585" y="231" text-anchor="middle" font-size="10" font-weight="500" fill="#8B3A3A">Cost extra</text><text x="585" y="247" text-anchor="middle" font-size="10" font-weight="500" fill="#8B3A3A">+20€ ⚠</text><rect x="20" y="278" width="620" height="32" rx="4" fill="#EDE6F8"/><text x="330" y="298" text-anchor="middle" font-size="10" fill="#3B1F72">Limitació clau: pren la millor decisió local sense visió de futur → GRASP corregeix afegint aleatorietat i cerca local</text></svg>`;
+const SVG_GRASP = `<svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="22" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">GRASP — Cicle iteratiu</text><rect x="20" y="42" width="175" height="90" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="107" y="68" text-anchor="middle" font-size="12" font-weight="600" fill="#2A5C1A">Llista restringida</text><text x="107" y="86" text-anchor="middle" font-size="10" fill="#3D4F2A">Candidats amb cost</text><text x="107" y="101" text-anchor="middle" font-size="10" fill="#3D4F2A">dins [cmin, cmin+α(cmax−cmin)]</text><text x="107" y="122" text-anchor="middle" font-size="10" fill="#728060">α=0 → Greedy · α=1 → aleatori</text><line x1="195" y1="87" x2="240" y2="87" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="245" y="42" width="155" height="90" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="322" y="70" text-anchor="middle" font-size="12" font-weight="600" fill="#8A6200">Construcció</text><text x="322" y="88" text-anchor="middle" font-size="10" fill="#3D4F2A">Aleatoritzada</text><text x="322" y="116" text-anchor="middle" font-size="9" fill="#728060">Solució inicial diversa</text><line x1="400" y1="87" x2="445" y2="87" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="450" y="42" width="155" height="90" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="527" y="70" text-anchor="middle" font-size="12" font-weight="600" fill="#3B1F72">Cerca local</text><text x="527" y="88" text-anchor="middle" font-size="10" fill="#3D4F2A">Millora la solució</text><text x="527" y="104" text-anchor="middle" font-size="10" fill="#728060">fins òptim local</text><text x="527" y="120" text-anchor="middle" font-size="10" fill="#728060">(2-opt, VND…)</text><line x1="527" y1="132" x2="527" y2="165" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="380" y="168" width="295" height="38" rx="6" fill="#EAF4ED" stroke="#4A7C59"/><text x="527" y="191" text-anchor="middle" font-size="11" font-weight="500" fill="#2D6B3E">Actualitza millor solució global</text><path d="M380 187 Q20 187 20 87" fill="none" stroke="#DDEACF" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar)"/><text x="120" y="215" text-anchor="middle" font-size="10" fill="#728060">repeteix N iteracions</text><rect x="20" y="225" width="290" height="44" rx="6" fill="#F3F7EE" stroke="#DDEACF"/><text x="165" y="243" text-anchor="middle" font-size="11" font-weight="600" fill="#111A0A">Greedy pur</text><text x="165" y="260" text-anchor="middle" font-size="10" fill="#728060">1 solució · determinista</text><rect x="350" y="225" width="290" height="44" rx="6" fill="#EAF3DF" stroke="#5A9E35"/><text x="495" y="243" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">GRASP</text><text x="495" y="260" text-anchor="middle" font-size="10" fill="#3D4F2A">N solucions · estocàstic · explora</text></svg>`;
+const SVG_HC = `<svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Hill Climbing — Paisatge d'optimització UC</text><path d="M30 200 Q80 170 130 180 Q175 195 210 145 Q245 95 285 72 Q320 55 355 82 Q395 115 435 95 Q470 78 510 38 Q545 16 575 48 Q600 75 630 60 L640 200" fill="#EAF3DF" stroke="#5A9E35" stroke-width="2"/><path d="M30 200 Q80 170 130 180 Q175 195 210 145 Q245 95 285 72 Q320 55 355 82 Q395 115 435 95 Q470 78 510 38 Q545 16 575 48 Q600 75 630 60 L640 200 L640 220 L30 220 Z" fill="#F3F7EE" opacity="0.5"/><line x1="30" y1="220" x2="640" y2="220" stroke="#DDEACF" stroke-width="1"/><circle cx="510" cy="38" r="8" fill="#5A9E35" stroke="white" stroke-width="2"/><text x="510" y="22" text-anchor="middle" font-size="10" fill="#2A5C1A" font-weight="600">Òptim global</text><circle cx="285" cy="72" r="6" fill="#D85A30" stroke="white" stroke-width="2"/><text x="285" y="58" text-anchor="middle" font-size="9" fill="#8B3A3A">local</text><circle cx="130" cy="180" r="5" fill="#3B1F72"/><text x="80" y="172" text-anchor="start" font-size="9" fill="#7C55C4">inici 1 → atrapat</text><circle cx="400" cy="107" r="5" fill="#5A9E35"/><text x="400" y="130" text-anchor="middle" font-size="9" fill="#2A5C1A">random restart → global ✓</text><rect x="20" y="232" width="190" height="40" rx="6" fill="#FAFDF6" stroke="#DDEACF"/><text x="115" y="248" text-anchor="middle" font-size="10" font-weight="600" fill="#111A0A">Best improvement</text><text x="115" y="264" text-anchor="middle" font-size="9" fill="#728060">avalua tots els veïns</text><rect x="235" y="232" width="190" height="40" rx="6" fill="#FAFDF6" stroke="#DDEACF"/><text x="330" y="248" text-anchor="middle" font-size="10" font-weight="600" fill="#111A0A">First improvement</text><text x="330" y="264" text-anchor="middle" font-size="9" fill="#728060">accepta el primer que millora</text><rect x="450" y="232" width="190" height="40" rx="6" fill="#EAF3DF" stroke="#5A9E35"/><text x="545" y="248" text-anchor="middle" font-size="10" font-weight="600" fill="#2A5C1A">Random restart</text><text x="545" y="264" text-anchor="middle" font-size="9" fill="#3D4F2A">múltiples punts inicials</text></svg>`;
+const SVG_VND = `<svg viewBox="0 0 660 260" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">VND — Variable Neighborhood Descent</text><rect x="30" y="45" width="140" height="70" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="100" y="70" text-anchor="middle" font-size="12" font-weight="600" fill="#2A5C1A">Veïnat 1 (N1)</text><text x="100" y="88" text-anchor="middle" font-size="10" fill="#3D4F2A">Canvia ON/OFF</text><text x="100" y="103" text-anchor="middle" font-size="10" fill="#728060">d'un generador en 1h</text><line x1="170" y1="80" x2="218" y2="80" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><text x="194" y="70" text-anchor="middle" font-size="9" fill="#8B3A3A">bloquejat</text><rect x="222" y="45" width="155" height="70" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="299" y="70" text-anchor="middle" font-size="12" font-weight="600" fill="#8A6200">Veïnat 2 (N2)</text><text x="299" y="88" text-anchor="middle" font-size="10" fill="#3D4F2A">Intercanvia 2 gens.</text><text x="299" y="103" text-anchor="middle" font-size="10" fill="#728060">en un interval temporal</text><line x1="377" y1="80" x2="425" y2="80" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><text x="401" y="70" text-anchor="middle" font-size="9" fill="#8B3A3A">bloquejat</text><rect x="429" y="45" width="160" height="70" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="509" y="70" text-anchor="middle" font-size="12" font-weight="600" fill="#3B1F72">Veïnat 3 (N3)</text><text x="509" y="88" text-anchor="middle" font-size="10" fill="#3D4F2A">Desplaça bloc arrencada</text><text x="509" y="103" text-anchor="middle" font-size="10" fill="#728060">±1h per minimitzar cost</text><path d="M509 115 Q509 155 100 155 Q30 155 30 115" fill="none" stroke="#5A9E35" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar)"/><text x="270" y="148" text-anchor="middle" font-size="9" fill="#2A5C1A">millora trobada → torna a N1</text><rect x="200" y="175" width="260" height="38" rx="6" fill="#EAF4ED" stroke="#4A7C59"/><text x="330" y="195" text-anchor="middle" font-size="11" font-weight="500" fill="#2D6B3E">Convergit: cap N millora → solució local òptima</text></svg>`;
+const SVG_GA = `<svg viewBox="0 0 660 285" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Algoritmes Genètics — Cicle evolutiu UC</text><rect x="20" y="38" width="165" height="95" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="102" y="62" text-anchor="middle" font-size="12" font-weight="600" fill="#2A5C1A">Població inicial</text><text x="102" y="80" text-anchor="middle" font-size="10" fill="#3D4F2A" font-family="DM Mono,monospace">Ind.1: 1 0 1 1 0 1</text><text x="102" y="96" text-anchor="middle" font-size="10" fill="#3D4F2A" font-family="DM Mono,monospace">Ind.2: 0 1 1 0 1 0</text><text x="102" y="112" text-anchor="middle" font-size="10" fill="#3D4F2A" font-family="DM Mono,monospace">Ind.3: 1 1 0 1 0 1</text><text x="102" y="126" text-anchor="middle" font-size="9" fill="#728060">ON/OFF per hora</text><line x1="185" y1="85" x2="228" y2="85" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="232" y="50" width="130" height="65" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="297" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#8A6200">Selecció</text><text x="297" y="92" text-anchor="middle" font-size="10" fill="#3D4F2A">Torneig / ruleta</text><text x="297" y="107" text-anchor="middle" font-size="10" fill="#728060">cost baix → més</text><line x1="362" y1="82" x2="405" y2="82" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="409" y="38" width="230" height="95" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="524" y="62" text-anchor="middle" font-size="12" font-weight="600" fill="#3B1F72">Creuament</text><text x="524" y="80" text-anchor="middle" font-size="10" fill="#4A3070" font-family="DM Mono,monospace">P1: 1 0 1 | 1 0 1</text><text x="524" y="96" text-anchor="middle" font-size="10" fill="#4A3070" font-family="DM Mono,monospace">P2: 0 1 1 | 0 1 0</text><text x="524" y="112" text-anchor="middle" font-size="10" fill="#2A5C1A" font-family="DM Mono,monospace">Fill: 1 0 1 0 1 0 ✓</text><text x="524" y="126" text-anchor="middle" font-size="9" fill="#728060">punt de tall aleatori</text><line x1="524" y1="133" x2="524" y2="165" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="409" y="168" width="230" height="65" rx="8" fill="#FDEAEA" stroke="#8B3A3A"/><text x="524" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#8B3A3A">Mutació</text><text x="524" y="207" text-anchor="middle" font-size="10" fill="#3D4F2A" font-family="DM Mono,monospace">1 0 1 0 1 0</text><text x="524" y="224" text-anchor="middle" font-size="10" fill="#8B3A3A" font-family="DM Mono,monospace">1 0 0 0 1 0  ← bit flip</text><line x1="409" y1="200" x2="220" y2="200" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="20" y="178" width="200" height="46" rx="8" fill="#EAF4ED" stroke="#4A7C59"/><text x="120" y="198" text-anchor="middle" font-size="11" font-weight="500" fill="#2D6B3E">Nova generació</text><text x="120" y="215" text-anchor="middle" font-size="10" fill="#728060">cost global millora</text><path d="M20 200 Q5 200 5 85 Q5 38 20 38" fill="none" stroke="#DDEACF" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar)"/><rect x="20" y="255" width="620" height="22" rx="5" fill="#EDE6F8"/><text x="330" y="270" text-anchor="middle" font-size="10" fill="#3B1F72">Connexió quàntica: QAOA pot substituir la selecció → GA-QAOA híbrid</text></svg>`;
+const SVG_SA = `<svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Simulated Annealing — Flux i comparativa quàntica</text><rect x="20" y="40" width="140" height="52" rx="8" fill="#F3F7EE" stroke="#DDEACF"/><text x="90" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#111A0A">Sol. actual</text><text x="90" y="79" text-anchor="middle" font-size="10" fill="#728060">schedule UC, cost C</text><line x1="160" y1="66" x2="200" y2="66" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="204" y="40" width="150" height="52" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="279" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">Solució veïna</text><text x="279" y="79" text-anchor="middle" font-size="10" fill="#3D4F2A">commuta 1 ON/OFF → C'</text><line x1="354" y1="66" x2="394" y2="66" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="398" y="40" width="150" height="52" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="473" y="58" text-anchor="middle" font-size="11" font-weight="600" fill="#8A6200">C' &lt; C ?</text><text x="473" y="75" text-anchor="middle" font-size="10" fill="#3D4F2A">Millora el cost?</text><line x1="473" y1="92" x2="473" y2="130" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><text x="485" y="115" font-size="9" fill="#2A5C1A">Sí</text><rect x="398" y="133" width="150" height="38" rx="6" fill="#EAF4ED" stroke="#4A7C59"/><text x="473" y="156" text-anchor="middle" font-size="11" font-weight="500" fill="#2D6B3E">Accepta sempre</text><line x1="398" y1="66" x2="200" y2="140" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><text x="290" y="108" text-anchor="middle" font-size="9" fill="#8B3A3A">No</text><rect x="55" y="143" width="230" height="52" rx="8" fill="#FDEAEA" stroke="#8B3A3A"/><text x="170" y="163" text-anchor="middle" font-size="11" font-weight="600" fill="#8B3A3A">Accepta amb P = e^(−ΔC/T)</text><text x="170" y="180" text-anchor="middle" font-size="10" fill="#3D4F2A">T alta → P≈1 · T baixa → P≈0</text><line x1="170" y1="195" x2="170" y2="228" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="473" y1="171" x2="290" y2="228" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="90" y="230" width="280" height="38" rx="6" fill="#EDE6F8" stroke="#7C55C4"/><text x="230" y="248" text-anchor="middle" font-size="10" font-weight="500" fill="#3B1F72">T ← T · α (α≈0.95) — refreda lentament</text><text x="230" y="262" text-anchor="middle" font-size="9" fill="#5E3A9E">menys exploració a mesura que avança</text><path d="M90 248 Q20 248 20 66" fill="none" stroke="#DDEACF" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar)"/><rect x="435" y="190" width="210" height="70" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="540" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#3B1F72">⚛️ Quantum Annealing</text><text x="540" y="228" text-anchor="middle" font-size="10" fill="#4A3070">Efecte túnel quàntic</text><text x="540" y="244" text-anchor="middle" font-size="10" fill="#4A3070">substitueix fluctuació tèrmica</text><text x="540" y="255" text-anchor="middle" font-size="9" fill="#7C55C4">Hardware: D-Wave Advantage</text></svg>`;
+const SVG_TABU = `<svg viewBox="0 0 660 270" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Tabu Search — Flux amb memòria</text><rect x="20" y="40" width="140" height="52" rx="8" fill="#F3F7EE" stroke="#DDEACF"/><text x="90" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#111A0A">Sol. actual</text><text x="90" y="79" text-anchor="middle" font-size="10" fill="#728060">schedule ON/OFF</text><line x1="160" y1="66" x2="200" y2="66" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="204" y="40" width="155" height="80" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="281" y="65" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">Veïnat complet</text><text x="281" y="82" text-anchor="middle" font-size="10" fill="#3D4F2A">Tots els moviments</text><text x="281" y="97" text-anchor="middle" font-size="10" fill="#3D4F2A">possibles d'ON/OFF</text><line x1="281" y1="120" x2="281" y2="155" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="160" y="158" width="240" height="52" rx="8" fill="#FDEAEA" stroke="#8B3A3A"/><text x="280" y="178" text-anchor="middle" font-size="11" font-weight="600" fill="#8B3A3A">Filtra llista tabú</text><text x="280" y="196" text-anchor="middle" font-size="10" fill="#3D4F2A">Elimina moviments recents prohibits</text><rect x="470" y="120" width="170" height="90" rx="8" fill="#F3F7EE" stroke="#DDEACF"/><text x="555" y="142" text-anchor="middle" font-size="11" font-weight="600" fill="#111A0A">Llista tabú</text><text x="555" y="160" text-anchor="middle" font-size="10" fill="#728060" font-family="DM Mono,monospace">Gen2→OFF (t-1)</text><text x="555" y="175" text-anchor="middle" font-size="10" fill="#728060" font-family="DM Mono,monospace">Gen4→ON  (t-2)</text><text x="555" y="190" text-anchor="middle" font-size="10" fill="#728060" font-family="DM Mono,monospace">Gen1→OFF (t-3)</text><line x1="280" y1="210" x2="280" y2="238" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="155" y="240" width="250" height="24" rx="6" fill="#EAF4ED" stroke="#4A7C59"/><text x="280" y="256" text-anchor="middle" font-size="10" font-weight="500" fill="#2D6B3E">Millor veí permès → nova sol. actual</text><path d="M155 252 Q20 252 20 66" fill="none" stroke="#DDEACF" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar)"/></svg>`;
+const SVG_PSO = `<svg viewBox="0 0 660 270" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">PSO — Partícules en l'espai de solucions UC</text><rect x="20" y="35" width="390" height="210" rx="10" fill="#F3F7EE" stroke="#DDEACF"/><text x="215" y="55" text-anchor="middle" font-size="10" fill="#728060">Espai de solucions UC (schedules)</text><circle cx="280" cy="130" r="14" fill="none" stroke="#5A9E35" stroke-width="2" stroke-dasharray="4 2"/><circle cx="280" cy="130" r="5" fill="#5A9E35"/><text x="280" y="155" text-anchor="middle" font-size="9" fill="#2A5C1A" font-weight="600">gBest</text><circle cx="80" cy="200" r="8" fill="#7C55C4" stroke="white" stroke-width="1.5"/><path d="M80 200 Q155 170 215 145" fill="none" stroke="#7C55C4" stroke-width="1.5" marker-end="url(#ar)"/><text x="65" y="220" font-size="9" fill="#7C55C4">P1</text><circle cx="350" cy="75" r="8" fill="#D85A30" stroke="white" stroke-width="1.5"/><path d="M350 75 Q320 100 295 122" fill="none" stroke="#D85A30" stroke-width="1.5" marker-end="url(#ar)"/><text x="355" y="72" font-size="9" fill="#D85A30">P2</text><circle cx="70" cy="90" r="8" fill="#4A7C59" stroke="white" stroke-width="1.5"/><path d="M70 90 Q160 108 255 128" fill="none" stroke="#4A7C59" stroke-width="1.5" marker-end="url(#ar)"/><text x="55" y="87" font-size="9" fill="#4A7C59">P3</text><rect x="430" y="38" width="215" height="100" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="537" y="60" text-anchor="middle" font-size="11" font-weight="600" fill="#3B1F72">Actualització velocitat</text><text x="537" y="80" text-anchor="middle" font-size="10" fill="#4A3070">v ← w·v</text><text x="537" y="96" text-anchor="middle" font-size="10" fill="#4A3070">+ c₁·r₁·(pBest − x)</text><text x="537" y="112" text-anchor="middle" font-size="10" fill="#4A3070">+ c₂·r₂·(gBest − x)</text><text x="537" y="128" text-anchor="middle" font-size="9" fill="#7C55C4">w=inèrcia · c₁=personal · c₂=social</text><rect x="430" y="152" width="215" height="50" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="537" y="172" text-anchor="middle" font-size="10" font-weight="600" fill="#8A6200">Binarització per UC</text><text x="537" y="190" text-anchor="middle" font-size="10" fill="#3D4F2A">P(ON) = sigmoid(v)</text><rect x="430" y="216" width="215" height="38" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="537" y="233" text-anchor="middle" font-size="10" font-weight="600" fill="#3B1F72">⚛️ QPSO</text><text x="537" y="248" text-anchor="middle" font-size="9" fill="#5E3A9E">partícules en superposició quàntica</text></svg>`;
+const SVG_ACO = `<svg viewBox="0 0 660 295" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">ACO — Formigues i feromones per al Unit Commitment</text><rect x="20" y="38" width="170" height="80" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="105" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">1 · Construcció</text><text x="105" y="79" text-anchor="middle" font-size="10" fill="#3D4F2A">Cada formiga tria ON/OFF</text><text x="105" y="94" text-anchor="middle" font-size="10" fill="#3D4F2A">per hora seguint τ i η</text><text x="105" y="109" text-anchor="middle" font-size="9" fill="#728060">P ∝ τ^α · η^β</text><line x1="190" y1="78" x2="240" y2="78" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="244" y="38" width="175" height="80" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="331" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#8A6200">2 · Avaluació</text><text x="331" y="79" text-anchor="middle" font-size="10" fill="#3D4F2A">Calcula cost operatiu</text><text x="331" y="94" text-anchor="middle" font-size="10" fill="#3D4F2A">total del schedule</text><line x1="419" y1="78" x2="469" y2="78" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="473" y="38" width="165" height="80" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="555" y="62" text-anchor="middle" font-size="11" font-weight="600" fill="#3B1F72">3 · Actualitza</text><text x="555" y="78" text-anchor="middle" font-size="11" font-weight="600" fill="#3B1F72">feromona</text><text x="555" y="95" text-anchor="middle" font-size="10" fill="#4A3070">τ ← (1−ρ)·τ + Δτ</text><text x="555" y="110" text-anchor="middle" font-size="9" fill="#7C55C4">ρ = evaporació</text><text x="330" y="142" text-anchor="middle" font-size="11" font-weight="600" fill="#111A0A">Graf de decisions hora per hora:</text><rect x="30" y="155" width="55" height="32" rx="5" fill="#EAF3DF" stroke="#5A9E35"/><text x="57" y="175" text-anchor="middle" font-size="11" font-weight="500" fill="#2A5C1A">t=1</text><rect x="152" y="155" width="55" height="32" rx="5" fill="#EAF3DF" stroke="#5A9E35"/><text x="179" y="175" text-anchor="middle" font-size="11" font-weight="500" fill="#2A5C1A">t=2</text><rect x="274" y="155" width="55" height="32" rx="5" fill="#EAF3DF" stroke="#5A9E35"/><text x="301" y="175" text-anchor="middle" font-size="11" font-weight="500" fill="#2A5C1A">t=3</text><text x="390" y="175" text-anchor="middle" font-size="13" fill="#728060">···</text><rect x="430" y="155" width="55" height="32" rx="5" fill="#EAF3DF" stroke="#5A9E35"/><text x="457" y="175" text-anchor="middle" font-size="11" font-weight="500" fill="#2A5C1A">t=24</text><line x1="85" y1="171" x2="152" y2="171" stroke="#5A9E35" stroke-width="3.5" marker-end="url(#ar)"/><text x="119" y="162" text-anchor="middle" font-size="8" fill="#2A5C1A">τ alta</text><line x1="207" y1="171" x2="274" y2="171" stroke="#5A9E35" stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#ar)"/><text x="241" y="162" text-anchor="middle" font-size="8" fill="#728060">τ baixa</text><rect x="30" y="240" width="610" height="46" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="335" y="260" text-anchor="middle" font-size="11" font-weight="600" fill="#3B1F72">⚛️ QACO — Quantum Ant Colony Optimization</text><text x="335" y="277" text-anchor="middle" font-size="9" fill="#5E3A9E">Formigues en superposició quàntica · Pràcticament inexplorat en UC → oportunitat de contribució original</text></svg>`;
+const SVG_LAG = `<svg viewBox="0 0 660 295" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Relaxació Lagrangiana — Desacoblament per generador</text><rect x="20" y="35" width="620" height="50" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="330" y="58" text-anchor="middle" font-size="11" font-weight="600" fill="#8A6200">Problema relaxat: min Σ cost(i) + λ · (violació restricció balanç de potència)</text><text x="330" y="76" text-anchor="middle" font-size="10" fill="#3D4F2A">La restricció "Σ generació = demanda" es penalitza en lloc d'imposar-se estrictament</text><line x1="150" y1="85" x2="100" y2="120" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="260" y1="85" x2="255" y2="120" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="400" y1="85" x2="405" y2="120" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="530" y1="85" x2="570" y2="120" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="30" y="122" width="130" height="55" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="95" y="148" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">Gen 1</text><text x="95" y="165" text-anchor="middle" font-size="9" fill="#728060">ON/OFF + potència</text><rect x="185" y="122" width="130" height="55" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="250" y="148" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">Gen 2</text><text x="250" y="165" text-anchor="middle" font-size="9" fill="#728060">ON/OFF + potència</text><rect x="335" y="122" width="130" height="55" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="400" y="148" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">Gen 3</text><text x="400" y="165" text-anchor="middle" font-size="9" fill="#728060">ON/OFF + potència</text><rect x="500" y="122" width="130" height="55" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="565" y="148" text-anchor="middle" font-size="11" font-weight="600" fill="#3B1F72">Bateria</text><text x="565" y="165" text-anchor="middle" font-size="9" fill="#728060">SOC + flux</text><line x1="95" y1="177" x2="220" y2="215" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="250" y1="177" x2="268" y2="215" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="400" y1="177" x2="350" y2="215" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="565" y1="177" x2="440" y2="215" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="165" y="218" width="330" height="42" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="330" y="237" text-anchor="middle" font-size="11" font-weight="600" fill="#8A6200">Actualitza multiplicadors λ</text><text x="330" y="252" text-anchor="middle" font-size="10" fill="#3D4F2A">λ ← λ + α · (demanda − generació total)</text><rect x="20" y="272" width="620" height="18" rx="5" fill="#EDE6F8" stroke="#7C55C4"/><text x="330" y="284" text-anchor="middle" font-size="9" fill="#3B1F72">⚛️ Quantum Surrogate LR (Feng et al. 2023): el pas d'actualització de λ es substitueix per un solver quàntic</text></svg>`;
+const SVG_BEND = `<svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Benders Decomposition — Esquema híbrid quàntic-clàssic</text><rect x="40" y="38" width="220" height="95" rx="10" fill="#EDE6F8" stroke="#7C55C4"/><text x="150" y="62" text-anchor="middle" font-size="12" font-weight="600" fill="#3B1F72">Problema mestre</text><text x="150" y="80" text-anchor="middle" font-size="10" fill="#4A3070">Variables binàries: u(i,t)</text><text x="150" y="96" text-anchor="middle" font-size="10" fill="#4A3070">ON/OFF cada generador/hora</text><rect x="65" y="108" width="150" height="20" rx="4" fill="#3B1F72"/><text x="140" y="122" text-anchor="middle" font-size="10" fill="white" font-weight="500">⚛️ Solver quàntic</text><line x1="150" y1="133" x2="150" y2="180" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><text x="175" y="162" font-size="9" fill="#728060">schedule fixat û</text><rect x="40" y="183" width="220" height="80" rx="10" fill="#EAF3DF" stroke="#5A9E35"/><text x="150" y="207" text-anchor="middle" font-size="12" font-weight="600" fill="#2A5C1A">Subproblema</text><text x="150" y="224" text-anchor="middle" font-size="10" fill="#3D4F2A">Variables contínues: p(i,t)</text><text x="150" y="240" text-anchor="middle" font-size="10" fill="#3D4F2A">Despacho econòmic òptim</text><rect x="65" y="250" width="150" height="10" rx="3" fill="#5A9E35"/><text x="140" y="259" text-anchor="middle" font-size="9" fill="white">Solver LP clàssic</text><line x1="260" y1="223" x2="360" y2="223" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="364" y="183" width="250" height="80" rx="10" fill="#FEF6E0" stroke="#C49A6C"/><text x="489" y="207" text-anchor="middle" font-size="11" font-weight="600" fill="#8A6200">Resultat del subproblema</text><text x="489" y="225" text-anchor="middle" font-size="10" fill="#3D4F2A">Factible → cota superior actualitzada</text><text x="489" y="243" text-anchor="middle" font-size="10" fill="#8B3A3A">Infactible → tall de factibilitat</text><text x="489" y="258" text-anchor="middle" font-size="9" fill="#728060">Optimalitat → tall d'optimalitat</text><path d="M489 183 Q489 85 260 75" fill="none" stroke="#7C55C4" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ar)"/><text x="530" y="128" font-size="9" fill="#7C55C4">tall de Benders</text><text x="530" y="142" font-size="9" fill="#7C55C4">(restricció nova)</text><rect x="200" y="275" width="260" height="22" rx="5" fill="#EAF4ED" stroke="#4A7C59"/><text x="330" y="290" text-anchor="middle" font-size="10" font-weight="500" fill="#2D6B3E">Convergència: cota inferior ≈ cota superior → òptim</text></svg>`;
+const SVG_DW = `<svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Dantzig-Wolfe — Descomposició per estructura de bloc</text><rect x="130" y="35" width="400" height="40" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="330" y="52" text-anchor="middle" font-size="11" font-weight="600" fill="#8A6200">Restricció d'acoblament (linking)</text><text x="330" y="68" text-anchor="middle" font-size="10" fill="#3D4F2A">Σ potència(i,t) = demanda(t) — compartida per tots els blocs</text><line x1="200" y1="75" x2="105" y2="110" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="270" y1="75" x2="255" y2="110" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="390" y1="75" x2="405" y2="110" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="460" y1="75" x2="560" y2="110" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="30" y="112" width="145" height="65" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="102" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">Bloc Gen 1</text><text x="102" y="155" text-anchor="middle" font-size="9" fill="#728060">Ramping, Pmin/Pmax</text><text x="102" y="169" text-anchor="middle" font-size="9" fill="#728060">min up/down time</text><rect x="185" y="112" width="145" height="65" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="257" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">Bloc Gen 2</text><text x="257" y="155" text-anchor="middle" font-size="9" fill="#728060">Ramping, Pmin/Pmax</text><text x="257" y="169" text-anchor="middle" font-size="9" fill="#728060">min up/down time</text><rect x="340" y="112" width="145" height="65" rx="8" fill="#EAF3DF" stroke="#5A9E35"/><text x="412" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="#2A5C1A">Bloc Gen 3</text><text x="412" y="155" text-anchor="middle" font-size="9" fill="#728060">Ramping, Pmin/Pmax</text><rect x="490" y="112" width="145" height="65" rx="8" fill="#EDE6F8" stroke="#7C55C4"/><text x="562" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="#3B1F72">Bloc Bateria</text><text x="562" y="155" text-anchor="middle" font-size="9" fill="#728060">SOC, C/D rate</text><line x1="102" y1="177" x2="210" y2="220" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="257" y1="177" x2="288" y2="220" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="412" y1="177" x2="375" y2="220" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><line x1="562" y1="177" x2="452" y2="220" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="165" y="223" width="330" height="42" rx="8" fill="#FEF6E0" stroke="#C49A6C"/><text x="330" y="241" text-anchor="middle" font-size="11" font-weight="600" fill="#8A6200">Problema Mestre Restringit (RMP)</text><text x="330" y="257" text-anchor="middle" font-size="10" fill="#3D4F2A">Combina les millors columnes de cada bloc respectant l'acoblament</text></svg>`;
+const SVG_RL = `<svg viewBox="0 0 660 275" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">Reinforcement Learning — Agent i Microxarxa UC</text><rect x="50" y="80" width="180" height="100" rx="10" fill="#EDE6F8" stroke="#7C55C4"/><text x="140" y="112" text-anchor="middle" font-size="12" font-weight="600" fill="#3B1F72">Agent RL</text><text x="140" y="130" text-anchor="middle" font-size="10" fill="#4A3070">Política π apresa</text><text x="140" y="148" text-anchor="middle" font-size="10" fill="#4A3070">per prova i error</text><text x="140" y="166" text-anchor="middle" font-size="9" fill="#7C55C4">DQN · PPO · SAC</text><rect x="430" y="80" width="190" height="100" rx="10" fill="#EAF3DF" stroke="#5A9E35"/><text x="525" y="112" text-anchor="middle" font-size="12" font-weight="600" fill="#2A5C1A">Entorn</text><text x="525" y="130" text-anchor="middle" font-size="10" fill="#3D4F2A">Microxarxa</text><text x="525" y="148" text-anchor="middle" font-size="10" fill="#3D4F2A">Generadors · Bateries</text><text x="525" y="166" text-anchor="middle" font-size="9" fill="#728060">Càrregues · Renovables</text><path d="M230 100 Q330 50 430 100" fill="none" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="258" y="42" width="144" height="36" rx="6" fill="#F3F7EE" stroke="#DDEACF"/><text x="330" y="57" text-anchor="middle" font-size="10" font-weight="600" fill="#111A0A">Acció (aₜ)</text><text x="330" y="72" text-anchor="middle" font-size="9" fill="#728060">ON/OFF generadors · càrrega bateria</text><path d="M430 160 Q330 220 230 160" fill="none" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="220" y="185" width="220" height="48" rx="6" fill="#F3F7EE" stroke="#DDEACF"/><text x="330" y="204" text-anchor="middle" font-size="10" font-weight="600" fill="#111A0A">Estat (sₜ) + Recompensa (rₜ)</text><text x="330" y="220" text-anchor="middle" font-size="9" fill="#728060">Potència · SOC · Preu energia</text><text x="330" y="234" text-anchor="middle" font-size="9" fill="#2A5C1A">rₜ = −cost operatiu − penalitzacions</text><rect x="60" y="248" width="540" height="22" rx="5" fill="#EDE6F8" stroke="#7C55C4"/><text x="330" y="263" text-anchor="middle" font-size="10" fill="#3B1F72" font-weight="500">Objectiu: maximitzar Σ rₜ → minimitzar cost operatiu total respectant restriccions</text></svg>`;
+const SVG_GNN = `<svg viewBox="0 0 660 275" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#728060" stroke-width="1.5"/></marker></defs><text x="330" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#111A0A">GNN — Microxarxa com a graf i pas de missatges</text><text x="105" y="45" text-anchor="middle" font-size="10" fill="#728060">Graf de la microxarxa</text><line x1="105" y1="90" x2="105" y2="155" stroke="#DDEACF" stroke-width="2"/><line x1="105" y1="155" x2="55" y2="225" stroke="#DDEACF" stroke-width="2"/><line x1="105" y1="155" x2="165" y2="225" stroke="#DDEACF" stroke-width="2"/><line x1="105" y1="90" x2="55" y2="225" stroke="#DDEACF" stroke-width="1.5" stroke-dasharray="4 2"/><circle cx="105" cy="78" r="24" fill="#FEF6E0" stroke="#C49A6C" stroke-width="1.5"/><text x="105" y="74" text-anchor="middle" font-size="10" font-weight="600" fill="#8A6200">PV</text><text x="105" y="89" text-anchor="middle" font-size="9" fill="#728060">Solar</text><circle cx="105" cy="163" r="24" fill="#E6EEF6" stroke="#3A5C8B" stroke-width="1.5"/><text x="105" y="159" text-anchor="middle" font-size="10" font-weight="600" fill="#2C4F7C">Bus</text><text x="105" y="174" text-anchor="middle" font-size="9" fill="#728060">Central</text><circle cx="50" cy="233" r="24" fill="#EAF3DF" stroke="#5A9E35" stroke-width="1.5"/><text x="50" y="229" text-anchor="middle" font-size="10" font-weight="600" fill="#2A5C1A">Gen</text><text x="50" y="244" text-anchor="middle" font-size="9" fill="#728060">Dièsel</text><circle cx="165" cy="233" r="24" fill="#EDE6F8" stroke="#7C55C4" stroke-width="1.5"/><text x="165" y="229" text-anchor="middle" font-size="10" font-weight="600" fill="#3B1F72">Bat</text><text x="165" y="244" text-anchor="middle" font-size="9" fill="#728060">Bateria</text><line x1="200" y1="155" x2="250" y2="155" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="255" y="100" width="155" height="110" rx="10" fill="#EDE6F8" stroke="#7C55C4"/><text x="332" y="128" text-anchor="middle" font-size="12" font-weight="600" fill="#3B1F72">GNN</text><text x="332" y="148" text-anchor="middle" font-size="10" fill="#4A3070">Capa 1: agrega</text><text x="332" y="164" text-anchor="middle" font-size="10" fill="#4A3070">informació veïns</text><text x="332" y="182" text-anchor="middle" font-size="10" fill="#4A3070">Capa 2: actualitza</text><text x="332" y="198" text-anchor="middle" font-size="10" fill="#4A3070">representació node</text><line x1="410" y1="155" x2="455" y2="155" stroke="#728060" stroke-width="1.5" marker-end="url(#ar)"/><rect x="460" y="100" width="175" height="110" rx="10" fill="#EAF3DF" stroke="#5A9E35"/><text x="547" y="125" text-anchor="middle" font-size="12" font-weight="600" fill="#2A5C1A">Decisió</text><text x="547" y="145" text-anchor="middle" font-size="10" fill="#3D4F2A">Gen: ON ✓</text><text x="547" y="162" text-anchor="middle" font-size="10" fill="#3D4F2A">PV: ON ✓</text><text x="547" y="179" text-anchor="middle" font-size="10" fill="#3D4F2A">Bat: carrega</text><text x="547" y="196" text-anchor="middle" font-size="10" fill="#2A5C1A">Cost: mínim ✓</text><text x="330" y="250" text-anchor="middle" font-size="10" fill="#728060">Cada node rep informació dels seus veïns → decisió global coordinada</text><text x="330" y="266" text-anchor="middle" font-size="10" fill="#2A5C1A" font-weight="500">Generalitza a topologies no vistes durant l'entrenament ✓</text></svg>`;
+
+const MODALS = {
+  greedy:      {icon:'🔨',title:'Greedy',sub:'Heurística constructiva',desc:`<p>El <strong>Greedy</strong> construeix una solució pas a pas triant sempre l'opció millor <strong>localment</strong>, sense reconsiderar decisions passades ni anticipar el futur. Aplicat al UC: en cada hora t, engega els generadors més barats fins a cobrir la demanda.</p><p>Pateix <em>miopia</em>: apagar un generador per estalviar ara pot forçar una arrencada cara poc després. S'usa principalment com a <strong>inicialitzador</strong> per a metaheurístiques i per als algorismes quàntics.</p>`,rol:'Inicialitzador ràpid del schedule ON/OFF per a metaheurístiques i QAOA',svg:SVG_GREEDY},
+  grasp:       {icon:'🔀',title:'GRASP',sub:'Greedy Randomized Adaptive Search Procedure',desc:`<p><strong>GRASP</strong> afegeix <em>aleatorietat controlada</em> al Greedy: construeix una llista restringida de candidats i en tria un a l'atzar. Cada iteració té una fase constructiva aleatoritzada i una fase de cerca local. El paràmetre <strong>α</strong> controla l'aleatorietat: α=0 és Greedy pur; α=1 és completament aleatori.</p>`,rol:'Genera solucions inicials diverses i de qualitat per inicialitzar QAOA o metaheurístiques',svg:SVG_GRASP},
+  hillclimbing:{icon:'⛰️',title:'Hill Climbing / 2-opt',sub:'Cerca local bàsica',desc:`<p><strong>Hill Climbing</strong> explora els veïns fins que cap veí millora la solució actual. El <strong>2-opt</strong> intercanvia els estats ON/OFF de segments del schedule. Variants: <em>best improvement</em>, <em>first improvement</em> i <em>random restart</em>.</p>`,rol:'Refinament postprocés de la solució quàntica sorollosa (NISQ introdueix errors que la cerca local pot corregir)',svg:SVG_HC},
+  vnd:         {icon:'🔄',title:'VND',sub:'Variable Neighborhood Descent',desc:`<p><strong>VND</strong> usa múltiples estructures de veïnat en seqüència. Quan queda atrapada en un òptim local, canvia a un veïnat diferent. En UC: N1 (canvia 1 gen), N2 (intercanvia 2 gens), N3 (desplaça bloc). Si N3 no millora → convergit.</p>`,rol:'Cerca local avançada per al postprocés de solucions quàntiques. Millora la robustesa respecte al Hill Climbing simple',svg:SVG_VND},
+  ga:          {icon:'🧬',title:'Algoritmes Genètics',sub:'Metaheurística evolutiva',desc:`<p>Els <strong>GA</strong> imiten l'evolució: cada <em>cromosoma</em> és un vector binari ON/OFF. La <em>funció d'aptitud</em> és el cost total d'operació. Les tres operacions clau: <em>selecció</em>, <em>creuament</em> i <em>mutació</em>.</p>`,rol:'Pot inicialitzar QAOA amb una població de qualitat, o substituir la fase de selecció en un esquema híbrid GA-QAOA',svg:SVG_GA},
+  sa:          {icon:'🌡️',title:'Simulated Annealing',sub:'Metaheurística — Base del Quantum Annealing',desc:`<p><strong>SA</strong> imita el refredament de metalls: accepta solucions pitjors amb probabilitat <strong>P = e^(−ΔC/T)</strong> que decreix amb el temps. El <strong>Quantum Annealing de D-Wave</strong> és l'anàleg quàntic: l'efecte túnel quàntic substitueix les fluctuacions tèrmiques.</p>`,rol:'Base conceptual del Quantum Annealing (D-Wave). El SA clàssic és el benchmark natural per comparar amb el hardware quàntic',svg:SVG_SA},
+  tabu:        {icon:'🚫',title:'Tabu Search',sub:'Metaheurística amb memòria explícita',desc:`<p><strong>Tabu Search</strong> manté una <em>llista tabú</em> de moviments recents prohibits. A diferència del SA, és <em>determinista</em>: avalua tots els veïns, exclou els tabú, i pren el millor permès. El <em>criteri d'aspiració</em>: si un moviment tabú porta al millor global, s'accepta.</p>`,rol:"Guia eficient la cerca local post-solució quàntica. Especialment potent quan l'espai UC té molts òptims locals propers",svg:SVG_TABU},
+  pso:         {icon:'🐦',title:'PSO',sub:'Particle Swarm Optimization',desc:`<p><strong>PSO</strong> imita un estol d'ocells. La fórmula: <strong>v ← w·v + c₁·r₁·(pBest−x) + c₂·r₂·(gBest−x)</strong>. Per al UC (binari), cal binarització via sigmoide: P(ON) = sigmoid(v). <strong>QPSO</strong> posa les partícules en superposició quàntica.</p>`,rol:"QPSO (Quantum PSO): partícules en superposició quàntica exploren l'espai de schedules en paral·lel",svg:SVG_PSO},
+  aco:         {icon:'🐜',title:'ACO',sub:'Ant Colony Optimization',desc:`<p><strong>ACO</strong> imita les formigues: feromona acumulada en camins bons. Cada formiga construeix un schedule hora a hora amb probabilitat <strong>P ∝ τ^α · η^β</strong>. L'evaporació (ρ) manté diversitat. <strong>QACO</strong> per a UC és pràcticament inexplorat — oportunitat de contribució.</p>`,rol:'Construcció seqüencial del schedule UC hora a hora. QACO per a UC en microxarxes és un buit de recerca — oportunitat original',svg:SVG_ACO},
+  lagrangiana: {icon:'⚖️',title:'Relaxació Lagrangiana',sub:'Tècnica de descomposició',desc:`<p>La <strong>Relaxació Lagrangiana</strong> incorpora restriccions difícils (balanç de potència) com a penalitzacions λ a la funció objectiu. El resultat: el problema es <strong>desacobla per generador</strong>. <strong>Quantum Surrogate LR</strong> (Feng et al., 2023): l'actualització de λ es resol quànticament.</p>`,rol:"Quantum Surrogate LR: l'actualització dels multiplicadors λ es resol quànticament, accelerant la convergència",svg:SVG_LAG},
+  benders:     {icon:'✂️',title:'Benders Decomposition',sub:'Esquema híbrid dominant a la literatura',desc:`<p><strong>Benders</strong> parteix per tipus de variable: binàries (ON/OFF) al <em>problema mestre</em>, contínues (potència) al <em>subproblema</em>. Comunicació via <em>talls de Benders</em>. És l'<strong>enfocament híbrid dominant</strong>: mestre quàntic (QAOA/Annealing) + subproblema LP clàssic.</p>`,rol:'Problema mestre binari → QAOA / Quantum Annealing. Subproblema continu → solver LP clàssic. Esquema híbrid més validat',svg:SVG_BEND},
+  dantzigwolfe:{icon:'🧩',title:'Dantzig-Wolfe Decomposition',sub:'Descomposició per estructura de bloc',desc:`<p><strong>Dantzig-Wolfe</strong> parteix per estructura de bloc: cada generador té les seves restriccions privades i comparteixin el balanç de potència. Mecanisme: <em>generació de columnes</em>. Menys freqüent a la literatura quàntica de UC → <strong>oportunitat de contribució</strong>.</p>`,rol:'Oportunitat de contribució — aplicar QAOA a la generació de columnes és pràcticament inexplorat en Quantum UC',svg:SVG_DW},
+  rl:          {icon:'🤖',title:'Reinforcement Learning',sub:'Aprenentatge per interacció',desc:`<p>Un <em>agent</em> aprèn la política ON/OFF interactuant amb la microxarxa. <strong>Estat</strong>: càrrega, bateria, preu. <strong>Acció</strong>: quins generadors engegar. <strong>Recompensa</strong>: inversament proporcional al cost. Papers de 2025 combinen RL amb descomposició quàntica adaptativa.</p>`,rol:'Aprèn a guiar la descomposició quàntica de forma adaptativa. Papers de 2025 combinen RL amb esquemes híbrids quàntics',svg:SVG_RL},
+  gnn:         {icon:'🕸️',title:'Graph Neural Networks',sub:'Xarxes neuronals per a estructures de graf',desc:`<p>Les <strong>GNN</strong> aprenen sobre grafs. Una microxarxa és un graf: <em>nodes</em> (generadors, bateries) + <em>arestes</em> (línies). <em>Pas de missatges</em>: cada node agrega informació dels veïns. Avantatge clau: <strong>generalitzen per topologia</strong> — un model entrenat en 5 nodes funciona en 20 nodes.</p>`,rol:'Modela restriccions de topologia de la xarxa. Generalitza a configuracions no vistes. Complementa el solver quàntic amb informació de connectivitat',svg:SVG_GNN},
+};
+
+function openModal(key) {
+  const d = MODALS[key];
+  if (!d) return;
+  document.getElementById('mIcon').textContent = d.icon;
+  document.getElementById('mTitle').textContent = d.title;
+  document.getElementById('mSub').textContent = d.sub;
+  document.getElementById('mSvg').innerHTML = d.svg;
+  document.getElementById('mDesc').innerHTML = d.desc;
+  document.getElementById('mRol').textContent = d.rol;
+  document.getElementById('tecModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModalDirect() {
+  document.getElementById('tecModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('tecModal')) closeModalDirect();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+</script>
+</body>
+</html>
