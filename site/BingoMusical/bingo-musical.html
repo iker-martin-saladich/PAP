@@ -127,6 +127,8 @@
   /* ── FITXA DE CODI (reutilitza pub-card) ── */
   .pub-card.code a{ color: var(--accent); text-decoration:none; font-family:'DM Mono',monospace; font-size:0.7rem; }
   .pub-card.code a:hover{ text-decoration:underline; }
+  .docs-grid{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:1rem; }
+  @media (max-width: 700px){ .docs-grid{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -138,7 +140,7 @@
     <a href="#pipeline">Pipeline</a>
     <a href="#resultat">Resultat</a>
     <a href="#estructura">Estructura</a>
-    <a href="#codi">Codi</a>
+    <a href="#documents">Documents</a>
   </div>
 </nav>
 
@@ -211,7 +213,6 @@
 
 <div class="insight insight-green"><span class="insight-icon">✅</span><span><strong>Zero duplicats</strong> — l'script comprova que no hi hagi dos cartrons idèntics ni línies repetides entre cartrons diferents.</span></div>
 <div class="insight insight-blue"><span class="insight-icon">🎯</span><span><strong>Dibuix vectorial</strong> — el text es dibuixa directament amb reportlab, així que canviar el nombre de files/columnes no fa perdre qualitat: la mida de lletra s'ajusta sola.</span></div>
-<div class="insight insight-warn"><span class="insight-icon">🗂️</span><span><strong>Pipeline alternatiu</strong> — es manté el flux original basat en Excel (carpeta <code>llegat/</code>) per compatibilitat amb l'script de fa dos anys.</span></div>
 
 
 <div id="resultat" class="s-label" style="margin-top:3rem;">Resultat</div>
@@ -236,14 +237,21 @@
 ├── BingoMusical.png             <span class="dim"># plantilla de fons (es canvia cada any)</span>
 └── BingoMusical_final.pdf       <span class="dim"># resultat: Cartrons llestos per imprimir</span>
 </div>
-<div id="codi" class="s-label" style="margin-top:3rem;">Codi</div>
-<div class="s-title">Scripts del projecte</div>
-<div class="grid-2">
+
+<div id="documents" class="s-label" style="margin-top:3rem;">Documents</div>
+<div class="s-title">Documents del projecte</div>
+<div class="docs-grid">
   <div class="pub-card code">
     <div class="pub-type">Script principal</div>
     <div class="pub-title">generar_bingo.py</div>
     <div class="pub-auth">Genera els cartrons i el PDF final en un sol pas, sense Excel ni imatges intermèdies.</div>
     <div style="margin-top:0.6rem;"><a href="generar_bingo.py" download>↓ Descarregar script</a></div>
+  </div>
+  <div class="pub-card code">
+    <div class="pub-type">Plantilla</div>
+    <div class="pub-title">BingoMusical.png</div>
+    <div class="pub-auth">Plantilla de fons per a la generació dels cartrons de bingo.</div>
+    <div style="margin-top:0.6rem;"><a href="BingoMusical.png" download>↓ Descarregar plantilla</a></div>
   </div>
 </div>
 
