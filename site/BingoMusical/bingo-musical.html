@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bingo Musical · Generador de cartrons</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* ── Paleta pròpia — Bingo Musical ──
+     Inspirada en el degradat groc-rosa i les vores negres de la
+     plantilla real del cartell, portada a un to més fosc i editorial. */
+  :root{
+    --accent:       #C2447A;
+    --accent-light: #E895B8;
+    --accent-pale:  #FBE6EE;
+    --gold:         #E0A83E;
+    --gold-pale:    #FBF2DE;
+    --cream:        #FDF8F5;
+    --warm-white:   #FFFFFF;
+    --border:       #F0DEE6;
+    --text-dark:    #201225;
+    --text-mid:     #5A4555;
+    --text-muted:   #93818D;
+  }
+
+  /* ── HERO ── */
+  .page-header{
+    background: linear-gradient(135deg, #1B0E20 0%, #3B1230 55%, #4E1638 100%);
+    position: relative; overflow: hidden;
+  }
+  .page-header::before{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image: repeating-linear-gradient(
+      to bottom, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px,
+      transparent 1px, transparent 22px);
+    opacity: 0.5;
+  }
+  .hero-flex{
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 2.5rem; flex-wrap: wrap; position:relative; z-index:1;
+  }
+  .hero-text{ flex: 1 1 380px; }
+
+  /* ── SIGNATURE: mini cartronet a l'hero ── */
+  .bingo-mini{
+    flex: 0 0 300px; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 14px;
+    padding: 1.1rem; backdrop-filter: blur(6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  }
+  .bingo-mini-head{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom: 0.7rem;
+  }
+  .bingo-mini-tag{
+    font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.08em;
+    color: rgba(255,255,255,0.4); text-transform:uppercase;
+  }
+  .bingo-mini-num{
+    font-family:'Playfair Display',serif; font-style:italic; font-size:0.85rem;
+    color: var(--accent-light);
+  }
+  .bmgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:5px; }
+  .bmcell{
+    background: rgba(255,255,255,0.94); border-radius: 6px;
+    padding: 0.55rem 0.4rem; text-align:center; position:relative;
+    min-height: 52px; display:flex; flex-direction:column; justify-content:center;
+  }
+  .bmcell .a{ font-size:0.66rem; font-weight:600; color:var(--text-dark); line-height:1.25; }
+  .bmcell .t{ font-size:0.6rem; color:var(--text-muted); margin-top:2px; line-height:1.2; }
+  .bmcell.marked{ background: var(--accent); }
+  .bmcell.marked .a{ color:#fff; }
+  .bmcell.marked .t{ color: rgba(255,255,255,0.75); }
+  .bmcell.marked::after{
+    content:'✓'; position:absolute; top:3px; right:6px;
+    font-size:0.6rem; color: var(--gold);
+  }
+
+  /* ── PDF SHOWCASE ── */
+  .pdf-showcase{
+    border: 1px solid var(--border); border-radius: 1rem; overflow:hidden;
+    background: var(--warm-white);
+  }
+  .pdf-showcase-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 0.9rem 1.25rem; background: var(--text-dark); color:white;
+  }
+  .pdf-showcase-bar .name{ font-family:'DM Mono',monospace; font-size:0.78rem; opacity:0.85; }
+  .btn-dl{
+    display:inline-flex; align-items:center; gap:0.4rem;
+    background: var(--accent); color:white; text-decoration:none;
+    font-size:0.78rem; font-weight:500; padding: 0.45rem 0.95rem;
+    border-radius: 2rem; transition: background 0.2s;
+  }
+  .btn-dl:hover{ background: var(--accent-light); }
+  .pdf-frame{ width:100%; height: 640px; border:none; display:block; background:#EDE3DC; }
+  .pdf-note{ font-size:0.78rem; color: var(--text-muted); padding: 0.9rem 1.25rem; border-top:1px solid var(--border); }
+
+  /* ── PIPELINE ── */
+  .flow{ display:flex; align-items:stretch; gap:0; border:1px solid var(--border); border-radius:1rem; overflow:hidden; margin-bottom:1.5rem;}
+  .flow-step{ flex:1; padding:1.25rem 1.1rem; position:relative; background:var(--warm-white); border-right:1px solid var(--border);}
+  .flow-step:last-child{ border-right:none; background: var(--accent-pale); }
+  .flow-num{ font-family:'DM Mono',monospace; font-size:0.62rem; color:var(--text-muted); margin-bottom:0.5rem;}
+  .flow-icon{ font-size:1.3rem; margin-bottom:0.45rem; }
+  .flow-name{ font-size:0.85rem; font-weight:600; color:var(--text-dark); margin-bottom:0.2rem;}
+  .flow-sub{ font-size:0.72rem; color:var(--text-muted); line-height:1.5;}
+  .flow-arrow{
+    position:absolute; right:-11px; top:50%; transform:translateY(-50%);
+    width:22px;height:22px;border-radius:50%; background:var(--cream);
+    border:1px solid var(--border); display:flex;align-items:center;justify-content:center;
+    font-size:0.7rem; color:var(--text-muted); z-index:2;
+  }
+  .flow-step:nth-last-child(2) .flow-arrow{ display:flex; }
+  .flow-step:last-child .flow-arrow{ display:none; }
+
+  /* ── ESTRUCTURA DE DIRECTORI ── */
+  .dir-tree{
+    font-family:'DM Mono',monospace; font-size:0.8rem; line-height:1.85;
+    color: var(--text-mid); background: var(--cream);
+    border:1px solid var(--border); border-radius:0.875rem;
+    padding:1.25rem 1.5rem; overflow-x:auto; white-space:pre;
+  }
+  .dir-tree .dim{ color: var(--text-muted); }
+  .dir-tree .hl{ color: var(--accent); font-weight:500; }
+
+  /* ── FITXA DE CODI (reutilitza pub-card) ── */
+  .pub-card.code a{ color: var(--accent); text-decoration:none; font-family:'DM Mono',monospace; font-size:0.7rem; }
+  .pub-card.code a:hover{ text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-back">← Portada</a>
+  <span class="nav-title">Bingo Musical 🎶</span>
+  <div class="nav-links">
+    <a href="#pipeline">Pipeline</a>
+    <a href="#resultat">Resultat</a>
+    <a href="#estructura">Estructura</a>
+    <a href="#codi">Codi</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner hero-flex">
+    <div class="hero-text">
+      <div class="project-tag">Projecte personal · Python · Automatització d'esdeveniments</div>
+      <h1>🎵 Bingo Musical</h1>
+      <p>Script en Python que agafa una llista de cançons i genera un nombre arbitrari de cartrons de bingo únics, ja maquetats sobre la plantilla de l'esdeveniment i llestos per imprimir.</p>
+      <div class="header-stats">
+        <div class="hstat"><div class="val">X</div><div class="lbl">Cançons a la llista</div></div>
+        <div class="hstat"><div class="val">Y</div><div class="lbl">Cartrons generats</div></div>
+        <div class="hstat"><div class="val">3</div><div class="lbl">Cartrons per full A4</div></div>
+      </div>
+    </div>
+
+    <div class="bingo-mini">
+      <div class="bingo-mini-head">
+        <span class="bingo-mini-tag">Cartró d'exemple</span>
+        <span class="bingo-mini-num">Nº 42</span>
+      </div>
+      <div class="bmgrid">
+        <div class="bmcell marked"><div class="a">Corren</div><div class="t">Gossos</div></div>
+        <div class="bmcell"><div class="a">La Perla</div><div class="t">ROSALÍA</div></div>
+        <div class="bmcell"><div class="a">Fito y Fitipaldis</div><div class="t">Soldadito marinero</div></div>
+        <div class="bmcell marked"><div class="a">La flaca</div><div class="t">Jarabe De Palo</div></div>
+        <div class="bmcell"><div class="a">Coti x Coti</div><div class="t">The Tyets</div></div>
+        <div class="bmcell"><div class="a">Superestrella</div><div class="t">Aitana</div></div>
+        <div class="bmcell"><div class="a">4-3-3</div><div class="t">Els Amics de les Arts; The Tyets</div></div>
+        <div class="bmcell"><div class="a">Mari Carmen</div><div class="t">La Pegatina</div></div>
+        <div class="bmcell"><div class="a">Nos volveremos a ver</div><div class="t">La Raiz</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<div id="pipeline" class="s-label" style="margin-top:3rem;">Com funciona</div>
+<div class="s-title">De la playlist al cartró imprès</div>
+<div class="flow">
+  <div class="flow-step">
+    <div class="flow-num">01</div>
+    <div class="flow-icon">🎧</div>
+    <div class="flow-name">Playlist de Spotify</div>
+    <div class="flow-sub">S'exporta amb Spotlistr/Chosic (o l'API de Spotify) a artista + títol.</div>
+    <div class="flow-arrow">→</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">02</div>
+    <div class="flow-icon">📄</div>
+    <div class="flow-name">cançons.txt</div>
+    <div class="flow-sub">Una cançó per línia: "Artista - Títol". Cap Excel de por enmig.</div>
+    <div class="flow-arrow">→</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">03</div>
+    <div class="flow-icon">🐍</div>
+    <div class="flow-name">generar_bingo.py</div>
+    <div class="flow-sub">Assigna cançons als cartrons i els dibuixa sobre la plantilla.</div>
+    <div class="flow-arrow">→</div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">04</div>
+    <div class="flow-icon">🖨️</div>
+    <div class="flow-name">PDF final</div>
+    <div class="flow-sub">3 cartrons per full DIN A4, llest per imprimir i retallar.</div>
+  </div>
+</div>
+
+<div class="insight insight-green"><span class="insight-icon">✅</span><span><strong>Zero duplicats</strong> — l'script comprova que no hi hagi dos cartrons idèntics ni línies repetides entre cartrons diferents.</span></div>
+<div class="insight insight-blue"><span class="insight-icon">🎯</span><span><strong>Dibuix vectorial</strong> — el text es dibuixa directament amb reportlab, així que canviar el nombre de files/columnes no fa perdre qualitat: la mida de lletra s'ajusta sola.</span></div>
+<div class="insight insight-warn"><span class="insight-icon">🗂️</span><span><strong>Pipeline alternatiu</strong> — es manté el flux original basat en Excel (carpeta <code>llegat/</code>) per compatibilitat amb l'script de fa dos anys.</span></div>
+
+
+<div id="resultat" class="s-label" style="margin-top:3rem;">Resultat</div>
+<div class="s-title">El producte final</div>
+<div class="pdf-showcase">
+  <div class="pdf-showcase-bar">
+    <span class="name">BingoMusical_final.pdf</span>
+    <a class="btn-dl" href="BingoMusical_final.pdf" download>⬇ Descarregar el PDF</a>
+  </div>
+  <iframe class="pdf-frame" src="BingoMusical_final.pdf"></iframe>
+  <div class="pdf-note">
+    Exemple de l'edició anterior — el d'aquest any es genera amb la mateixa plantilla actualitzada i la llista de cançons nova. Si el visor no carrega (per exemple en mòbil), fes servir el botó de descàrrega.
+  </div>
+</div>
+
+
+<div id="estructura" class="s-label" style="margin-top:3rem;">Estructura</div>
+<div class="s-title">Organització del directori</div>
+<div class="dir-tree">bingo-musical/
+├── cançons.txt                 <span class="dim"># llista de cançons: "Artista - Títol"</span>
+├── <span class="hl">generar_bingo.py</span>              <span class="dim"># script principal → PDF final directe</span>
+├── BingoMusical.png             <span class="dim"># plantilla de fons (es canvia cada any)</span>
+└── BingoMusical_final.pdf       <span class="dim"># resultat: Cartrons llestos per imprimir</span>
+</div>
+<div id="codi" class="s-label" style="margin-top:3rem;">Codi</div>
+<div class="s-title">Scripts del projecte</div>
+<div class="grid-2">
+  <div class="pub-card code">
+    <div class="pub-type">Script principal</div>
+    <div class="pub-title">generar_bingo.py</div>
+    <div class="pub-auth">Genera els cartrons i el PDF final en un sol pas, sense Excel ni imatges intermèdies.</div>
+    <div style="margin-top:0.6rem;"><a href="generar_bingo.py" download>↓ Descarregar script</a></div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:2.5rem 0 1rem;font-size:0.78rem;color:var(--text-muted)">
+  Bingo Musical · Iker Martin · Projecte personal · Juliol 2026
+</div>
+
+</main>
+</body>
+</html>
