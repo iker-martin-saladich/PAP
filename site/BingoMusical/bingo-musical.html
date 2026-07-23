@@ -129,6 +129,54 @@
   .pub-card.code a:hover{ text-decoration:underline; }
   .docs-grid{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:1rem; }
   @media (max-width: 700px){ .docs-grid{ grid-template-columns:1fr; } }
+
+  /* ── GENERADOR (app dins la pàgina) ── */
+.app-notice{
+  background: var(--accent-pale); border:1px solid var(--accent-light);
+  border-radius:0.75rem; padding:1rem 1.25rem; margin-bottom:1.5rem;
+  font-size:0.85rem; color:var(--text-mid); display:flex; align-items:center;
+  justify-content:space-between; gap:1rem; flex-wrap:wrap;
+}
+.app-notice strong{ color:var(--accent); }
+.field-label{ font-size:0.78rem; font-weight:500; color:var(--text-mid); display:block; margin-bottom:0.5rem; }
+.file-drop{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:0.45rem; width:100%; min-height:132px; box-sizing:border-box;
+  border:1.5px dashed var(--border); border-radius:0.75rem;
+  padding:1.1rem 1.15rem; text-align:center; cursor:pointer; transition:border-color .2s, background .2s;
+  background: var(--cream); font-size:0.82rem; color:var(--text-muted); line-height:1.5;
+}
+.file-drop:hover, .file-drop.over{ border-color:var(--accent-light); background:var(--accent-pale); color:var(--accent); }
+.file-drop input{ display:none; }
+.file-drop .fd-name{ font-weight:500; color:var(--text-dark); margin-top:0.15rem; word-break:break-word; }
+.tpl-preview{ margin-top:0.85rem; border-radius:0.6rem; overflow:hidden; border:1px solid var(--border); display:none; }
+.tpl-preview img{ width:100%; display:block; }
+textarea.cancons-box{
+  width:100%; margin-top:0.75rem; font-family:'DM Mono',monospace; font-size:0.78rem;
+  border:1px solid var(--border); border-radius:0.6rem; padding:0.75rem;
+  resize:vertical; color:var(--text-dark); background:var(--warm-white);
+}
+.opts-row{ display:flex; gap:1.75rem; flex-wrap:wrap; margin-bottom:1rem; }
+.opt-field{ display:flex; flex-direction:column; gap:0.35rem; }
+.opt-field label{ font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; }
+.opt-field input{
+  width:5rem; padding:0.4rem 0.6rem; border:1px solid var(--border);
+  border-radius:0.5rem; font-family:'DM Mono',monospace; font-size:0.85rem; color:var(--text-dark);
+}
+.btn-generar{
+  display:inline-flex; align-items:center; gap:0.5rem; border:none; cursor:pointer;
+  background: var(--accent); color:white; font-size:0.88rem; font-weight:500;
+  padding:0.75rem 1.5rem; border-radius:2rem; transition:background .2s, opacity .2s;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-generar:hover{ background:var(--accent-light); }
+.btn-generar:disabled{ opacity:0.5; cursor:not-allowed; }
+.gen-status{ margin-top:1rem; font-size:0.82rem; color:var(--text-muted); min-height:1.2em; }
+.gen-status.error{ color:#B23A3A; }
+.gen-status.ok{ color:var(--success); }
+.gen-progress{ height:6px; background:var(--border); border-radius:3px; overflow:hidden; margin-top:0.6rem; display:none; }
+.gen-progress-fill{ height:100%; width:0%; background:var(--accent); transition:width .15s; }
+
 </style>
 </head>
 <body>
@@ -138,6 +186,7 @@
   <span class="nav-title">Bingo Musical 🎶</span>
   <div class="nav-links">
     <a href="#pipeline">Pipeline</a>
+    <a href="#generador">Fes el teu</a>
     <a href="#resultat">Resultat</a>
     <a href="#estructura">Estructura</a>
     <a href="#documents">Documents</a>
@@ -186,7 +235,7 @@
     <div class="flow-num">01</div>
     <div class="flow-icon">🎧</div>
     <div class="flow-name">Playlist de Spotify</div>
-    <div class="flow-sub">S'exporta amb Spotlistr/Chosic (o l'API de Spotify) a artista + títol.</div>
+    <div class="flow-sub">S'exporta amb Spotlistr (o l'API de Spotify) a artista + títol.</div>
     <div class="flow-arrow">→</div>
   </div>
   <div class="flow-step">
@@ -214,6 +263,285 @@
 <div class="insight insight-green"><span class="insight-icon">✅</span><span><strong>Zero duplicats</strong> — l'script comprova que no hi hagi dos cartrons idèntics ni línies repetides entre cartrons diferents.</span></div>
 <div class="insight insight-blue"><span class="insight-icon">🎯</span><span><strong>Dibuix vectorial</strong> — el text es dibuixa directament amb reportlab, així que canviar el nombre de files/columnes no fa perdre qualitat: la mida de lletra s'ajusta sola.</span></div>
 
+<div id="generador" class="s-label" style="margin-top:3rem;">Prova-ho tu mateix</div>
+<div class="s-title">Genera el teu bingo musical</div>
+
+<div class="app-notice">
+  <span>🔒 Tot es genera <strong>al teu navegador</strong>: la plantilla i les cançons no surten mai del teu ordinador.</span>
+  <a class="btn-dl" href="BingoMusical.png" download>⬇ Plantilla d'exemple</a>
+</div>
+
+<div class="card" style="font-size:0.85rem; color:var(--text-mid); line-height:1.7;">
+  Els 3 requadres blancs de la plantilla han d'estar exactament al mateix lloc que a la <strong>plantilla d'exemple</strong> (descarrega-la de dalt i dissenya la teva a partir d'aquesta, mantenint els requadres al mateix lloc i la mateixa proporció de pàgina). Si vols provar-ho ràpid, fes servir la mateixa plantilla d'exemple tal qual.
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">1 · Plantilla</div>
+    <label class="file-drop" id="dropPlantilla">
+      <input type="file" id="inputPlantilla" accept="image/*">
+      <div>📎 Clica per pujar la imatge de la plantilla</div>
+      <div class="fd-name" id="nomPlantilla"></div>
+    </label>
+    <div class="tpl-preview" id="tplPreviewWrap"><img id="tplPreview" alt="Previsualització de la plantilla"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2 · Llista de cançons</div>
+    <label class="file-drop" id="dropCancons">
+      <input type="file" id="inputCancons" accept=".txt">
+      <div>📎 Clica per pujar un .txt (opcional)</div>
+      <div class="fd-name" id="nomCancons"></div>
+    </label>
+    <textarea class="cancons-box" id="textCancons" rows="7" placeholder="Artista - Títol&#10;Una cançó per línia...&#10;&#10;p. ex.&#10;Gossos - Corren&#10;Manel - Benvolgut"></textarea>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">3 · Opcions i generació</div>
+  <div class="opts-row">
+    <div class="opt-field"><label>Files / cartró</label><input type="number" id="optFiles" value="4" min="2" max="8"></div>
+    <div class="opt-field"><label>Columnes / cartró</label><input type="number" id="optColumnes" value="4" min="2" max="8"></div>
+    <div class="opt-field"><label>Nombre de cartrons</label><input type="number" id="optCartrons" value="150" min="1" max="500"></div>
+  </div>
+  <button class="btn-generar" id="btnGenerar">🎲 Generar el PDF</button>
+  <div class="gen-progress" id="genProgress"><div class="gen-progress-fill" id="genProgressFill"></div></div>
+  <div class="gen-status" id="genStatus"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  // ── Mateixes proporcions que RECTANGLES a generar_bingo.py, com a
+  //    fraccions de la pàgina, perquè funcioni sigui quina sigui la
+  //    resolució exacta de la plantilla que es pugi (sempre que mantingui
+  //    els requadres a la mateixa posició relativa que l'exemple). ──
+  const RECT_FRACCIONS = [
+    { x: 319/2480, y: 59/3508,   w: 1732/2480, h: 610/3508 },
+    { x: 313/2480, y: 1204/3508, w: 1732/2480, h: 610/3508 },
+    { x: 313/2480, y: 2349/3508, w: 1732/2480, h: 610/3508 },
+  ];
+  const FONT_MAX = 30, FONT_MIN = 8, MARGE = 20;
+
+  let plantillaDataUrl = null, plantillaW = 0, plantillaH = 0;
+
+  // ── Plantilla ──
+  const inputPlantilla = document.getElementById('inputPlantilla');
+  const nomPlantilla = document.getElementById('nomPlantilla');
+  const tplPreviewWrap = document.getElementById('tplPreviewWrap');
+  const tplPreview = document.getElementById('tplPreview');
+
+  inputPlantilla.addEventListener('change', () => {
+    const file = inputPlantilla.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        plantillaDataUrl = e.target.result;
+        plantillaW = img.naturalWidth;
+        plantillaH = img.naturalHeight;
+        nomPlantilla.textContent = `${file.name} (${plantillaW}×${plantillaH}px)`;
+        tplPreview.src = plantillaDataUrl;
+        tplPreviewWrap.style.display = 'block';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ── Cançons (fitxer opcional -> textarea) ──
+  const inputCancons = document.getElementById('inputCancons');
+  const nomCancons = document.getElementById('nomCancons');
+  const textCancons = document.getElementById('textCancons');
+
+  inputCancons.addEventListener('change', () => {
+    const file = inputCancons.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      textCancons.value = e.target.result;
+      nomCancons.textContent = file.name;
+    };
+    reader.readAsText(file, 'utf-8');
+  });
+
+  function parseCancons(text) {
+    return text.split('\n').map(l => l.trim()).filter(Boolean).map(line => {
+      const idx = line.indexOf(' - ');
+      if (idx === -1) return null;
+      return { artista: line.slice(0, idx).trim(), titol: line.slice(idx + 3).trim() };
+    }).filter(Boolean);
+  }
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  function sampleWithoutReplacement(arr, n) { return shuffle(arr.slice()).slice(0, n); }
+  function cardKey(card) { return JSON.stringify(card.map(row => row.map(c => c.artista + '|' + c.titol))); }
+  function rowKey(row) { return JSON.stringify(row.map(c => c.artista + '|' + c.titol)); }
+
+  function generarCartrons(cancons, nFiles, nColumnes, nCartrons, maxIntents) {
+    maxIntents = maxIntents || 300;
+    const caselles = nFiles * nColumnes;
+    if (cancons.length < caselles) {
+      throw new Error(`Necessites almenys ${caselles} cançons diferents per omplir un cartró de ${nFiles}x${nColumnes}; ara en tens ${cancons.length}.`);
+    }
+    const cartrons = [];
+    const bingosVists = new Set();
+    const filesVistes = new Set();
+    for (let c = 0; c < nCartrons; c++) {
+      let cartroFinal = null;
+      for (let intent = 0; intent < maxIntents; intent++) {
+        const seleccio = sampleWithoutReplacement(cancons, caselles);
+        const files = [];
+        for (let f = 0; f < nFiles; f++) files.push(seleccio.slice(f * nColumnes, (f + 1) * nColumnes));
+        const key = cardKey(files);
+        if (bingosVists.has(key)) continue;
+        const teDuplicat = files.some(row => filesVistes.has(rowKey(row)));
+        if (teDuplicat && intent < maxIntents - 1) continue;
+        cartroFinal = files;
+        break;
+      }
+      if (!cartroFinal) throw new Error("No s'ha pogut generar un cartró únic. Afegeix més cançons o redueix el nombre de cartrons.");
+      bingosVists.add(cardKey(cartroFinal));
+      cartroFinal.forEach(row => filesVistes.add(rowKey(row)));
+      cartrons.push(cartroFinal);
+    }
+    return cartrons;
+  }
+
+  function wrapCapped(doc, text, maxWidth, maxLines) {
+    maxLines = maxLines || 3;
+    const lines = doc.splitTextToSize(text, maxWidth);
+    if (lines.length > maxLines) {
+      const capped = lines.slice(0, maxLines);
+      capped[maxLines - 1] = capped[maxLines - 1].replace(/\s*$/, '') + '...';
+      return capped;
+    }
+    return lines;
+  }
+
+  function midaFontOptima(doc, files, cellW, cellH) {
+    const maxW = cellW - 2 * MARGE;
+    const maxH = cellH - 2 * MARGE;
+    for (let mida = FONT_MAX; mida >= FONT_MIN; mida--) {
+      doc.setFontSize(mida);
+      const lineH = mida * 1.25, espai = mida * 1.4;
+      let capProblema = false;
+      for (const fila of files) {
+        for (const c of fila) {
+          doc.setFont('helvetica', 'bold');
+          const lTitol = wrapCapped(doc, c.titol, maxW);
+          doc.setFont('helvetica', 'normal');
+          const lArtista = wrapCapped(doc, c.artista, maxW);
+          const altTotal = (lTitol.length + lArtista.length) * lineH + espai;
+          if (altTotal > maxH) { capProblema = true; break; }
+        }
+        if (capProblema) break;
+      }
+      if (!capProblema) return mida;
+    }
+    return FONT_MIN;
+  }
+
+  function dibuixarCartro(doc, x0, y0, w, h, files) {
+    const nCols = files[0].length;
+    const cellW = w / nCols, cellH = h / files.length;
+    const mida = midaFontOptima(doc, files, cellW, cellH);
+    const lineH = mida * 1.25, espai = mida * 1.4;
+    const maxW = cellW - 2 * MARGE;
+
+    doc.setLineWidth(2);
+    files.forEach((fila, filaIdx) => {
+      fila.forEach((c, colIdx) => {
+        const cx0 = x0 + colIdx * cellW;
+        const cy0 = y0 + filaIdx * cellH;
+        doc.rect(cx0, cy0, cellW, cellH);
+
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(mida);
+        const lTitol = wrapCapped(doc, c.titol, maxW);
+        doc.setFont('helvetica', 'normal');
+        const lArtista = wrapCapped(doc, c.artista, maxW);
+        const altTotal = (lTitol.length + lArtista.length) * lineH + espai;
+
+        let y = cy0 + (cellH - altTotal) / 2 + mida * 0.8;
+        const cx = cx0 + cellW / 2;
+
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(mida);
+        lTitol.forEach(line => { doc.text(line, cx, y, { align: 'center' }); y += lineH; });
+        y += (espai - lineH);
+        doc.setFont('helvetica', 'normal');
+        lArtista.forEach(line => { doc.text(line, cx, y, { align: 'center' }); y += lineH; });
+      });
+    });
+  }
+
+  function setStatus(msg, cls) {
+    const el = document.getElementById('genStatus');
+    el.textContent = msg;
+    el.className = 'gen-status' + (cls ? ' ' + cls : '');
+  }
+  function setProgress(pct) {
+    const wrap = document.getElementById('genProgress');
+    const fill = document.getElementById('genProgressFill');
+    if (pct == null) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    fill.style.width = pct + '%';
+  }
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  document.getElementById('btnGenerar').addEventListener('click', async () => {
+    const btn = document.getElementById('btnGenerar');
+    try {
+      if (!plantillaDataUrl) { setStatus('Puja primer una imatge de plantilla.', 'error'); return; }
+      const cancons = parseCancons(textCancons.value);
+      if (cancons.length === 0) { setStatus('Afegeix cançons amb el format "Artista - Títol", una per línia.', 'error'); return; }
+
+      const nFiles = parseInt(document.getElementById('optFiles').value, 10) || 4;
+      const nColumnes = parseInt(document.getElementById('optColumnes').value, 10) || 4;
+      const nCartrons = parseInt(document.getElementById('optCartrons').value, 10) || 150;
+
+      btn.disabled = true;
+      setStatus('Assignant cançons als cartrons...');
+      setProgress(0);
+      await wait(20);
+
+      const cartrons = generarCartrons(cancons, nFiles, nColumnes, nCartrons);
+
+      const doc = new window.jspdf.jsPDF({ unit: 'pt', format: [plantillaW, plantillaH] });
+      const perPagina = RECT_FRACCIONS.length;
+
+      for (let i = 0; i < cartrons.length; i += perPagina) {
+        if (i > 0) doc.addPage([plantillaW, plantillaH]);
+        doc.addImage(plantillaDataUrl, 0, 0, plantillaW, plantillaH);
+        RECT_FRACCIONS.forEach((rf, j) => {
+          if (i + j >= cartrons.length) return;
+          dibuixarCartro(doc, rf.x * plantillaW, rf.y * plantillaH, rf.w * plantillaW, rf.h * plantillaH, cartrons[i + j]);
+        });
+        setStatus(`Dibuixant cartrons... ${Math.min(i + perPagina, cartrons.length)}/${cartrons.length}`);
+        setProgress(Math.round((i + perPagina) / cartrons.length * 100));
+        await wait(0); // deixa respirar la interfície
+      }
+
+      doc.save('BingoMusical_final.pdf');
+      setStatus(`✓ Fet! ${cartrons.length} cartrons generats i descarregats.`, 'ok');
+      setProgress(null);
+    } catch (err) {
+      setStatus(err.message || String(err), 'error');
+      setProgress(null);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
 
 <div id="resultat" class="s-label" style="margin-top:3rem;">Resultat</div>
 <div class="s-title">El producte final</div>
@@ -262,3 +590,5 @@
 </main>
 </body>
 </html>
+
+
