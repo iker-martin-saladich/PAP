@@ -277,10 +277,10 @@ textarea.cancons-box{
 
 <div class="grid-2">
   <div class="card">
-    <div class="card-title">1 · Plantilla</div>
+    <div class="card-title">1 · Plantilla</div> 
     <label class="file-drop" id="dropPlantilla">
-      <input type="file" id="inputPlantilla" accept="image/*">
-      <div>📎 Clica per pujar la imatge de la plantilla</div>
+      <input type="file" id="inputPlantilla" accept="image/png">
+      <div>📎 Clica per pujar la imatge de la plantilla (format .png)</div>
       <div class="fd-name" id="nomPlantilla"></div>
     </label>
     <div class="tpl-preview" id="tplPreviewWrap"><img id="tplPreview" alt="Previsualització de la plantilla"></div>
@@ -318,13 +318,13 @@ textarea.cancons-box{
   //    fraccions de la pàgina, perquè funcioni sigui quina sigui la
   //    resolució exacta de la plantilla que es pugi (sempre que mantingui
   //    els requadres a la mateixa posició relativa que l'exemple). ──
-  const RECT_FRACCIONS = [
-    { x: 319/2480, y: 59/3508,   w: 1732/2480, h: 610/3508 },
-    { x: 313/2480, y: 1204/3508, w: 1732/2480, h: 610/3508 },
-    { x: 313/2480, y: 2349/3508, w: 1732/2480, h: 610/3508 },
+ const RECT_FRACCIONS = [
+    { x: 313/2480, y: 253/3508,  w: 1860/2480, h: 901/3508 },
+    { x: 313/2480, y: 1398/3508, w: 1860/2480, h: 901/3508 },
+    { x: 315/2480, y: 2544/3508, w: 1860/2480, h: 901/3508 },
   ];
-  const FONT_MAX = 30, FONT_MIN = 8, MARGE = 20;
-
+  const FONT_MAX = 30, FONT_MIN = 15, MARGE = 10;
+  
   let plantillaDataUrl = null, plantillaW = 0, plantillaH = 0;
 
   // ── Plantilla ──
